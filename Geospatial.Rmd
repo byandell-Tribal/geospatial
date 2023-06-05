@@ -1,0 +1,25 @@
+---
+title: "Geospatial"
+author: "Brian Yandell"
+date: "2023-06-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(raster)
+library(rgdal)
+```
+```{r}
+NEON_HARV <- "data/NEON-DS-Airborne-Remote-Sensing/HARV"
+```
+
+
+```{r}
+#GDALinfo("data/raster/HARV_dsmCrop.tif")
+GDALinfo(file.path(NEON_HARV, "DSM", "HARV_dsmCrop.tif"))
+```
+
