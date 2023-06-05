@@ -33,16 +33,12 @@ summary(terra::values(DSM_HARV))
 ```
 ## Plot raster data
 
-Create df from raster data for use in ggplot2 using S4 method for
-`SpatVector` object
+You must create df from raster data for use in ggplot2,
+say using S4 method for `SpatVector` object
 
 ```{r}
-DSM_HARV_df <-
-  as.data.frame(DSM_HARV, xy = TRUE)
-```
-
-```{r}
-ggplot2::ggplot(DSM_HARV_df) +
+ggplot2::ggplot(
+  as.data.frame(DSM_HARV, xy = TRUE)) +
   ggplot2::aes(x, y, fill = HARV_dsmCrop) +
   # Raster geometry
   ggplot2::geom_raster() +
@@ -54,5 +50,101 @@ Quick plot of raster
 
 ```{r}
 plot(DSM_HARV)
+```
+
+### Look at coordinate reference system
+
+- is it projected or not?
+- what units?
+- where is this place?
+
+```{r}
+terra::crs(DSM_HARV, proj = TRUE)
+```
+
+```{r}
+terra::minmax(DSM_HARV)
+```
+
+Force saving of min and max with object.
+
+```{r}
+DSM_HARV <- terra::setMinMax(DSM_HARV)
+```
+
+### Plot histogram of data
+
+```{r}
+ggplot2::ggplot(
+  as.data.frame(DSM_HARV, xy = TRUE)) +
+  ggplot2::aes(HARV_dsmCrop) +
+  # Histogram
+  ggplot2::geom_histogram()
+```
+
+```{r}
+ggplot2::ggplot(
+  as.data.frame(DSM_HARV, xy = TRUE)) +
+  ggplot2::aes(HARV_dsmCrop) +
+  # Histogram
+  ggplot2::geom_density()
+```
+
+Plot with breaks. **Caution:** if bins are uneven, it would be helpful to use the
+`width` option on `geom_bar()` to show this.
+
+```{r}
+custom_bins <- c(300,350,400,450)
+```
+
+```{r}
+ggplot2::ggplot(
+  dplyr::mutate(
+    as.data.frame(DSM_HARV, xy = TRUE),
+    fct_elevation = cut(HARV_dsmCrop, custom_bins))) +
+  ggplot2::aes(fct_elevation) +
+  # Bar chart
+  ggplot2::geom_bar()
+```
+
+```{r}
+ggplot2::ggplot(
+  # Cut values into bins based on `custom_bins` defined above.
+  dplyr::mutate(
+    as.data.frame(DSM_HARV, xy = TRUE),
+    fct_elevation = cut(HARV_dsmCrop, custom_bins))) +
+  ggplot2::aes(x, y, fill = fct_elevation) +
+  # Raster plot
+  ggplot2::geom_raster() +
+  # Visualize simple feature objects.
+  ggplot2::coord_sf() +
+  # Add terrain color pallette.
+  ggplot2::scale_fill_manual(values = grDevices::terrain.colors(3))
+```
+
+Challenge: use 6 bins. Add title and axis labels.
+
+```{r}
+custom_bins <- seq(300, 450, length.out = 7)
+```
+
+```{r}
+ggplot2::ggplot(
+  # Cut values into bins based on `custom_bins` defined above.
+  dplyr::mutate(
+    as.data.frame(DSM_HARV, xy = TRUE),
+    fct_elevation = cut(HARV_dsmCrop, custom_bins))) +
+  ggplot2::aes(x, y, fill = fct_elevation) +
+  # Raster plot
+  ggplot2::geom_raster() +
+  # Visualize simple feature objects.
+  ggplot2::coord_sf() +
+  # Add terrain color pallette.
+  ggplot2::scale_fill_manual(values = grDevices::terrain.colors(length(custom_bins) - 1)) +
+  # Add title and axes
+  ggplot2::ggtitle("Title") +
+  ggplot2::xlab("Longitude") +
+  ggplot2::ylab("Latitude")
+
 ```
 
