@@ -97,6 +97,9 @@ Plot with breaks. **Caution:** if bins are uneven, it would be helpful to use th
 custom_bins <- c(300,350,400,450)
 ```
 
+Using package `dplyr`. Rather than using pipes `%>%` I explicitly call the `dplyr`
+routing `mutate` with first argument as the data frame.
+
 ```{r}
 ggplot2::ggplot(
   dplyr::mutate(
