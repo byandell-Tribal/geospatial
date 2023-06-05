@@ -18,6 +18,8 @@ library(terra)
 NEON_HARV <- "data/NEON-DS-Airborne-Remote-Sensing/HARV"
 ```
 
+# Day 1
+
 ```{r}
 HARV_dsmCrop_info <-
   utils::capture.output(
@@ -145,7 +147,7 @@ ggplot2::ggplot(
   # Add terrain color pallette.
   ggplot2::scale_fill_manual(values = grDevices::terrain.colors(length(custom_bins) - 1)) +
   # Add title and axes
-  ggplot2::ggtitle("Title") +
+  ggplot2::ggtitle("NEON Harvard Forest Crop") +
   ggplot2::xlab("Longitude") +
   ggplot2::ylab("Latitude")
 
