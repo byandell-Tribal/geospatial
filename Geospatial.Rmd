@@ -10,16 +10,49 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-library(raster)
-library(rgdal)
+library(sf)
+library(terra)
 ```
-```{r}
+
+```{r eval=FALSE}
 NEON_HARV <- "data/NEON-DS-Airborne-Remote-Sensing/HARV"
 ```
 
+```{r}
+HARV_dsmCrop_info <-
+  utils::capture.output(
+    terra::describe("data/raster/HARV_dsmCrop.tif"))
+```
 
 ```{r}
-#GDALinfo("data/raster/HARV_dsmCrop.tif")
-GDALinfo(file.path(NEON_HARV, "DSM", "HARV_dsmCrop.tif"))
+(DSM_HARV <- terra::rast("data/raster/HARV_dsmCrop.tif"))
+```
+
+```{r}
+summary(terra::values(DSM_HARV))
+```
+## Plot raster data
+
+Create df from raster data for use in ggplot2 using S4 method for
+`SpatVector` object
+
+```{r}
+DSM_HARV_df <-
+  as.data.frame(DSM_HARV, xy = TRUE)
+```
+
+```{r}
+ggplot2::ggplot(DSM_HARV_df) +
+  ggplot2::aes(x, y, fill = HARV_dsmCrop) +
+  # Raster geometry
+  ggplot2::geom_raster() +
+  # Add Viridis gradient scale
+  ggplot2::scale_fill_viridis_c()
+```
+
+Quick plot of raster
+
+```{r}
+plot(DSM_HARV)
 ```
 
