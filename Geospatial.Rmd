@@ -145,11 +145,12 @@ ggplot2::ggplot(
   # Visualize simple feature objects.
   ggplot2::coord_sf() +
   # Add terrain color pallette.
-  ggplot2::scale_fill_manual(values = grDevices::terrain.colors(length(custom_bins) - 1)) +
+  ggplot2::scale_fill_manual(values = grDevices::terrain.colors(length(custom_bins) - 1),
+                             name = "Elevation") +
   # Add title and axes
   ggplot2::ggtitle("NEON Harvard Forest Crop") +
-  ggplot2::xlab("Longitude") +
-  ggplot2::ylab("Latitude")
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
 
 ```
 
