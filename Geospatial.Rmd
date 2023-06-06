@@ -176,7 +176,7 @@ Add crop layer. Here we embed data and aesthetics in each layer as needed.
 ```{r}
 ggplot2::ggplot() +
   
-  # Raster hill layer.
+  # Raster crop layer.
   ggplot2::geom_raster(
     data = as.data.frame(DSM_HARV,
                   xy = TRUE),
@@ -191,7 +191,167 @@ ggplot2::ggplot() +
     ggplot2::aes(x, y, alpha = HARV_DSMhill)) +
   # Set transparency `alpha` range.
   ggplot2::scale_alpha(range = c(0.15, 0.65),
-                       guide = "none")
+                       guide = "none") +
+
+  # Titles and Labels  
+  ggplot2::ggtitle("DSM Crop and Hill Plot") +
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
 ```
 
+## Raster Projections
+
+Import DTM data.
+
+```{r}
+DTM_HARV <- terra::rast("data/raster/HARV_dtmCrop.tif")
+DTM_hill_HARV <- terra::rast("data/raster/HARV_DTMhill_WGS84.tif")
+```
+
+These are in different units.
+
+```{r}
+terra::crs(DTM_HARV, proj = TRUE)
+```
+
+```{r}
+terra::crs(DTM_hill_HARV, proj = TRUE)
+```
+
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Raster hill layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(DTM_HARV,
+                  xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dtmCrop)) +
+  # Color code for crop.
+  ggplot2::scale_fill_viridis_c(guide = "none") +
+
+  # Titles and Labels  
+  ggplot2::ggtitle("DTM Crop Plot, UTM Projection") +
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
+```
+
+```{r}
+ggplot2::ggplot() +
+
+  # Raster hill layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(
+      DTM_hill_HARV,
+      xy = TRUE),
+    ggplot2::aes(x, y, alpha = HARV_DTMhill_WGS84)) +
+  
+  # Set transparency `alpha` range.
+  ggplot2::scale_alpha(
+    range = c(0.15, 0.65),
+    guide = "none") +
+  ggplot2::scale_fill_gradientn(
+    name = "Elevation",
+    colors = grDevices::terrain.colors(10)) +
+
+  # Titles and Labels  
+  ggplot2::ggtitle("DTM Hill Plot, no Projection") +
+  ggplot2::labs(x = "Longitude",
+                y = "Latitude")
+```
+
+Need to project the hillshade data. Add the projection to the hill data.
+Using the UTM projection 18N, `UTMZ18N` that was used for other dataset.
+
+```{r}
+terra::crs(
+  DTM_hill_HARV,
+  proj = TRUE)
+```
+
+```{r}
+terra::crs(
+  terra::project(
+    DTM_hill_HARV,
+    terra::crs(DTM_HARV)),
+  proj = TRUE)
+```
+
+```{r}
+as.data.frame(
+      terra::project(
+        DTM_hill_HARV,
+        terra::crs(DTM_HARV)),
+      xy = TRUE)
+```
+
+The projection extents are pretty close for these now.
+
+```{r}
+terra::ext(DTM_HARV)
+```
+
+```{r}
+terra::ext(
+  terra::project(
+    DTM_hill_HARV,
+    terra::crs(DTM_HARV)))
+```
+
+Now we can define the resolution as 1m.
+
+```{r}
+as.data.frame(
+      terra::project(
+        DTM_hill_HARV,
+        terra::crs(DTM_HARV),
+        res = terra::res(DTM_HARV)),
+      xy = TRUE)
+```
+
+```{r}
+terra::res(DTM_HARV)
+```
+
+```{r}
+terra::res(
+  terra::project(
+    DTM_hill_HARV,
+    terra::crs(DTM_HARV),
+    res = terra::res(DTM_HARV)))
+```
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Raster hill layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(DTM_HARV,
+                  xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dtmCrop)) +
+
+  # Raster hill layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(
+      # Project Hill data using projection from DTM at resolution 1m.
+      terra::project(
+        DTM_hill_HARV,
+        terra::crs(DTM_HARV),
+        res = terra::res(DTM_HARV)),
+      xy = TRUE),
+    ggplot2::aes(x, y, alpha = HARV_DTMhill_WGS84)) +
+  
+  # Set transparency `alpha` range.
+  ggplot2::scale_alpha(
+    range = c(0.15, 0.65),
+    guide = "none") +
+  ggplot2::scale_fill_gradientn(
+    name = "Elevation",
+    colors = grDevices::terrain.colors(10)) +
+
+  # Titles and Labels  
+  ggplot2::ggtitle("DTM Crop and Hill Plot") +
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
+```
 
