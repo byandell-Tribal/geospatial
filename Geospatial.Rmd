@@ -45,7 +45,7 @@ ggplot2::ggplot(
 
 Quick plot of raster
 
-```{r}
+```{r eval = FALSE}
 plot(DSM_HARV)
 ```
 
@@ -278,11 +278,11 @@ terra::crs(
 ```
 
 ```{r}
-as.data.frame(
+head(as.data.frame(
       terra::project(
         DTM_hill_HARV,
         terra::crs(DTM_HARV)),
-      xy = TRUE)
+      xy = TRUE))
 ```
 
 The projection extents are pretty close for these now.
@@ -301,12 +301,12 @@ terra::ext(
 Now we can define the resolution as 1m.
 
 ```{r}
-as.data.frame(
+head(as.data.frame(
       terra::project(
         DTM_hill_HARV,
         terra::crs(DTM_HARV),
         res = terra::res(DTM_HARV)),
-      xy = TRUE)
+      xy = TRUE))
 ```
 
 ```{r}
@@ -344,15 +344,163 @@ ggplot2::ggplot() +
   
   # Set transparency `alpha` range.
   ggplot2::scale_alpha(
-    range = c(0.15, 0.65),
-    guide = "none") +
+    name = "Transparency",
+    range = c(0.15, 0.65)) +
+  # Set gradient with terrain colors.
   ggplot2::scale_fill_gradientn(
     name = "Elevation",
     colors = grDevices::terrain.colors(10)) +
 
+  # Force as rectangle
+  ggplot2::coord_sf() +
   # Titles and Labels  
   ggplot2::ggtitle("DTM Crop and Hill Plot") +
   ggplot2::labs(x = "UTM Easting Coordinates (m)",
                 y = "UTM Northing Coordinates (m)")
+```
+
+## Raster Calculations and Raster Maps
+
+<center>
+```
+surface - terrain = height
+
+DSM - DTM = CHM (Canopy Height Model)
+```
+</center>
+
+Examine DTM and DSM data using `terra::crs` and `terra::res` to make sure
+they are compatible. Good also to look at them with `plot` or some such.
+
+There are two ways to do raster maps. Start with map operations. 
+
+```{r}
+CHM_HARV <- DSM_HARV - DTM_HARV
+```
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Raster crop layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(
+      CHM_HARV,
+      xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  
+  # Set gradient with terrain colors.
+  ggplot2::scale_fill_gradientn(
+    name = "Elevation",
+    colors = grDevices::terrain.colors(10)) +
+
+  # Force as rectangle
+  ggplot2::coord_sf() +
+  # Titles and Labels  
+  ggplot2::ggtitle("CHM Crop Plot") +
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
+
+```
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_density(
+    data = as.data.frame(
+      CHM_HARV,
+      xy = TRUE),
+    ggplot2::aes(HARV_dsmCrop))
+```
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Raster crop layer.
+  ggplot2::geom_raster(
+    # Cut values into bins based on `custom_bins` defined above.
+    data = 
+      dplyr::mutate(
+        as.data.frame(CHM_HARV, xy = TRUE),
+        canopy_discrete = cut(HARV_dsmCrop, breaks = 4)),
+    ggplot2::aes(x, y, fill = canopy_discrete)) +
+  
+  # Set gradient with terrain colors.
+  ggplot2::scale_fill_manual(
+    name = "Crop Height",
+    values = grDevices::terrain.colors(4)) +
+
+  # Force as rectangle
+  ggplot2::coord_sf() +
+  # Titles and Labels  
+  ggplot2::ggtitle("CHM Crop Plot") +
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
+
+
+```
+
+Another way: `terra::lapp` for more complex operations.
+Here we just do the difference of two raster maps, but more complicated 
+calculations are possible.
+
+```{r}
+CHM_HARV <- terra::lapp(
+  terra::sds(
+    list(DSM_HARV, DTM_HARV)),
+  fun = function(r1, r2) {
+    r1 - r2
+    })
+```
+
+## Export a geotiff
+
+See for instance <https://en.wikipedia.org/wiki/GeoTIFF>.
+NB: `*.tif` is old MIME; current preferred file name suffix is `*.tiff`.
+
+```{r eval = FALSE}
+terra::writeRaster(CHM_HARV, "CHM_HARV.tiff",
+                   filetype = "GTiff",
+                   overwrite = TRUE, NAflag = 999)
+```
+
+## Multi-band rasters
+
+RGB color photos
+
+Start with one layer. Use `crs`, `res`, etc.
+
+```{r}
+terra::rast("data/raster/HARV_RGB_Ortho.tif", lyrs = 1)
+```
+
+Now all layers
+```{r}
+(RGB_stack_HARV <- terra::rast("data/raster/HARV_RGB_Ortho.tif"))
+```
+
+```{r}
+terra::crs(RGB_stack_HARV, proj = TRUE)
+```
+
+```{r}
+str(as.data.frame(RGB_stack_HARV, xy = TRUE))
+```
+
+Here is a hexplot of two layers. This requires package `hexbin`.
+
+```{r}
+ggplot2::ggplot(
+  as.data.frame(
+    RGB_stack_HARV,
+    xy = TRUE)) +
+  ggplot2::aes(HARV_RGB_Ortho_1, HARV_RGB_Ortho_2) +
+  ggplot2::geom_hex()
+```
+
+While we can plot each layer separately using `geom_raster`.
+Instead we use `terra::plotRGB`. Note that this uses the raster data directly
+rather than converting first to data frame.
+
+```{r}
+terra::plotRGB(RGB_stack_HARV, r = 1, g = 2, b = 3)
 ```
 
