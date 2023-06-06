@@ -222,7 +222,7 @@ terra::crs(DTM_hill_HARV, proj = TRUE)
 ```{r}
 ggplot2::ggplot() +
   
-  # Raster hill layer.
+  # Raster crop layer.
   ggplot2::geom_raster(
     data = as.data.frame(DTM_HARV,
                   xy = TRUE),
@@ -324,7 +324,7 @@ terra::res(
 ```{r}
 ggplot2::ggplot() +
   
-  # Raster hill layer.
+  # Raster crop layer.
   ggplot2::geom_raster(
     data = as.data.frame(
       DTM_HARV,
