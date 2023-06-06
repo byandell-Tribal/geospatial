@@ -23,17 +23,24 @@ June 5-8, 2023](https://uw-madison-datascience.github.io/2023-06-05-uwmadison-dc
 
 ## Data and Packages
 
-- packages
-  + [sf](https://cran.r-project.org/web/packages/sf/index.html)
-  + [terra](https://cran.r-project.org/web/packages/terra/index.html)
-  + raster and rgdal or now obsolete
-- data sources
-  + [workshop data from carpentries site](https://ndownloader.figshare.com/files/23135981)
-  + [NEON Raster 00: Intro to Raster Data in R](https://www.neonscience.org/resources/learning-hub/tutorials/dc-raster-data-r): [Download Dataset](https://ndownloader.figshare.com/files/3701578)
-- two field sites
-  + Harvard Forest (HARV)
-  + San Joaquin Experimental Range (SJER)
-- raster data
-  + HARV_dsmCrop.tif
-  + HARV_dsmCrop.tif
-  + HARV_DSMhill.tif
+Key packages are
+
+- [sf](https://cran.r-project.org/web/packages/sf/index.html)
+- [terra](https://cran.r-project.org/web/packages/terra/index.html).
+
+Previous packages `raster` and `rgdal` or now obsolete.
+
+The data have been organized in The Carpentries nicely in FigShare as
+[workshop data from carpentries site](https://ndownloader.figshare.com/files/23135981).
+The data seem to come from NEON Raster Intro page
+[NEON Raster 00: Intro to Raster Data in R](https://www.neonscience.org/resources/learning-hub/tutorials/dc-raster-data-r), via [Download Dataset](https://ndownloader.figshare.com/files/3701578).
+The data are from two field sites:
+
+- Harvard Forest (HARV)
+- San Joaquin Experimental Range (SJER)
+
+The key raster data are the following "geotif" files:
+
+- HARV_dsmCrop.tif
+- HARV_dsmCrop.tif
+- HARV_DSMhill.tif

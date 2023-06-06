@@ -9,16 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-library(sf)
-library(terra)
-```
+# Setup
 
-```{r eval=FALSE}
-NEON_HARV <- "data/NEON-DS-Airborne-Remote-Sensing/HARV"
-```
+See <README.md>.
 
-# Day 1
+# Day 1: Raster Data
 
 ```{r}
 HARV_dsmCrop_info <-
@@ -153,4 +148,50 @@ ggplot2::ggplot(
                 y = "UTM Northing Coordinates (m)")
 
 ```
+
+# Day 2: More Raster Data
+
+Load more data
+
+```{r}
+DSM_hill_HARV <- terra::rast("data/raster/HARV_DSMhill.tif")
+```
+
+Using parameter `alpha` for [transparency level](https://ggplot2.tidyverse.org/reference/scale_alpha.html).
+
+```{r}
+ggplot2::ggplot(
+  as.data.frame(DSM_hill_HARV,  xy = TRUE)) +
+  # Set aesthetics.
+  ggplot2::aes(x, y, alpha = HARV_DSMhill) +
+  # Raster plot.
+  ggplot2::geom_raster() +
+  # Set transparency `alpha` range.
+  ggplot2::scale_alpha(range = c(0.15, 0.65),
+                       guide = "none")
+```
+
+Add crop layer. Here we embed data and aesthetics in each layer as needed.
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Raster hill layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(DSM_HARV,
+                  xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  # Color code for crop.
+  ggplot2::scale_fill_viridis_c(guide = "none") +
+  
+  # Raster hill layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(DSM_hill_HARV,
+                  xy = TRUE),
+    ggplot2::aes(x, y, alpha = HARV_DSMhill)) +
+  # Set transparency `alpha` range.
+  ggplot2::scale_alpha(range = c(0.15, 0.65),
+                       guide = "none")
+```
+
 
