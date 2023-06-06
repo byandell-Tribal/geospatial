@@ -256,8 +256,8 @@ ggplot2::ggplot() +
 
   # Titles and Labels  
   ggplot2::ggtitle("DTM Hill Plot, no Projection") +
-  ggplot2::labs(x = "Longitude",
-                y = "Latitude")
+  ggplot2::labs(x = "Latitude",
+                y = "Longitude")
 ```
 
 Need to project the hillshade data. Add the projection to the hill data.
@@ -326,8 +326,9 @@ ggplot2::ggplot() +
   
   # Raster hill layer.
   ggplot2::geom_raster(
-    data = as.data.frame(DTM_HARV,
-                  xy = TRUE),
+    data = as.data.frame(
+      DTM_HARV,
+      xy = TRUE),
     ggplot2::aes(x, y, fill = HARV_dtmCrop)) +
 
   # Raster hill layer.
