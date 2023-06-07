@@ -518,4 +518,167 @@ terra::plotRGB(RGB_stack_HARV, r = 1, g = 2, b = 3, stretch = "lin")
 terra::plotRGB(RGB_stack_HARV, r = 1, g = 2, b = 3, stretch = "hist")
 ```
 
+# Day 3 Vector Data
 
+[Lessons 6-9](https://uw-madison-datascience.github.io/r-raster-vector-geospatial/)
+
+[Shape files](https://mapscaping.com/what-is-a-shp-file/) (`*.shp`) require `*.shx` and `*.dbf`, and useful `*.prj` (projections)
+
+
+```{r}
+aoi_boundary_HARV <- sf::st_read(("data/vector/HarClip_UTMZ18.shp"))
+```
+Examine metadata. 
+
+The number of features in the object (also can use `nrow` and `ncol`).
+
+```{r}
+str(aoi_boundary_HARV)
+```
+
+```{r}
+dim(aoi_boundary_HARV)
+```
+
+The type of vector data stored in the object.
+
+```{r}
+sf::st_geometry_type(aoi_boundary_HARV)
+```
+
+The spatial extent (geographic area covered by) of theobject.
+
+```{r}
+sf::st_bbox(aoi_boundary_HARV)
+```
+
+The CRS (spatial projection) of the data.
+
+```{r}
+sf::st_crs(aoi_boundary_HARV)
+```
+
+```{r}
+ggplot2::ggplot() +
+  # Boundary box.
+  ggplot2::geom_sf(
+    data = aoi_boundary_HARV,
+    linewidth = 1,
+    color = "black", fill = "cyan1") +
+  ggplot2::ggtitle("AOI Boundary Plot") +
+  ggplot2::coord_sf()
+```
+
+Read in two more layers
+
+```{r}
+lines_HARV <- sf::st_read(("data/vector/HARV_roads.shp"))
+```
+
+```{r}
+names(lines_HARV)
+```
+
+```{r}
+footpath_HARV <- subset(lines_HARV, TYPE == "footpath")
+```
+
+```{r}
+ggplot2::ggplot() +
+
+  # Lines for footpaths
+  ggplot2::geom_sf(
+    data = footpath_HARV,
+    linewidth = 1,
+    color = "purple", fill = "blue") +
+
+  # Title and Labels.
+  ggplot2::ggtitle("Footpaths") +
+  ggplot2::labs(x = "Latitude",
+                y = "Longitude") +
+  ggplot2::coord_sf()
+```
+
+
+```{r}
+ggplot2::ggplot() +
+
+  # Lines for footpaths
+  ggplot2::geom_sf(
+    data = footpath_HARV,
+    ggplot2::aes(color = factor(ResVehic_1)),
+    linewidth = 1) +
+
+  # Title and Labels
+  ggplot2::ggtitle("Footpaths labeled by ResVehic_1") +
+  ggplot2::labs(x = "Latitude",
+                y = "Longitude",
+                color = "FootpathID") +
+  ggplot2::coord_sf()
+```
+
+```{r}
+points_HARV <- sf::st_read(("data/vector/HARVtower_UTM18N.shp"))
+```
+
+Overlay 
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Boundary box.
+  ggplot2::geom_sf(
+    data = aoi_boundary_HARV,
+    linewidth = 1,
+    color = "black", fill = "lightgray") +
+  
+  # Lines for roads.
+  ggplot2::geom_sf(
+    data = footpath_HARV,
+    ggplot2::aes(color = factor(ResVehic_1)),
+    linewidth = 1) +
+  
+  # Points for towers.
+  ggplot2::geom_sf(
+    data = points_HARV,
+    linewidth = 3,
+    color = "brown", fill = "red") +
+  
+  # 
+  ggplot2::ggtitle("Footpath, Tower and AOI Boundary") +
+  ggplot2::labs(x = "Latitude",
+                y = "Longitude",
+                color = "Footpath ID") +
+  ggplot2::coord_sf()
+```
+
+Now look at all roads.
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Boundary box.
+  ggplot2::geom_sf(
+    data = aoi_boundary_HARV,
+    linewidth = 1,
+    color = "black", fill = "cyan1") +
+  
+  # Lines for roads.
+  ggplot2::geom_sf(
+    data = lines_HARV,
+    ggplot2::aes(color = factor(TYPE)),
+    linewidth = 1) +
+  
+  # Points for towers.
+  ggplot2::geom_sf(
+    data = points_HARV,
+    linewidth = 3,
+    color = "brown", fill = "red") +
+  
+  # 
+  ggplot2::ggtitle("Roads, Tower and AOI Boundary") +
+  ggplot2::labs(x = "Latitude",
+                y = "Longitude",
+                color = "Road Type") +
+  ggplot2::coord_sf()
+```
