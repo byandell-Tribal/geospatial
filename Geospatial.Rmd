@@ -486,6 +486,7 @@ str(as.data.frame(RGB_stack_HARV, xy = TRUE))
 ```
 
 Here is a hexplot of two layers. This requires package `hexbin`.
+There are nearly 1M points, so helpful to condense in some way.
 
 ```{r}
 ggplot2::ggplot(
@@ -503,4 +504,18 @@ rather than converting first to data frame.
 ```{r}
 terra::plotRGB(RGB_stack_HARV, r = 1, g = 2, b = 3)
 ```
+
+## Image Stretching
+
+Spread out RGB to use full range of 0-255 for each layer.
+Add `stretch` argument to `plotRGB`.
+
+```{r}
+terra::plotRGB(RGB_stack_HARV, r = 1, g = 2, b = 3, stretch = "lin")
+```
+
+```{r}
+terra::plotRGB(RGB_stack_HARV, r = 1, g = 2, b = 3, stretch = "hist")
+```
+
 
