@@ -655,6 +655,7 @@ ggplot2::ggplot() +
 Now look at all roads.
 
 ```{r}
+linewidth = c(1,1,1.5,2,3)
 ggplot2::ggplot() +
   
   # Boundary box.
@@ -666,8 +667,9 @@ ggplot2::ggplot() +
   # Lines for roads.
   ggplot2::geom_sf(
     data = lines_HARV,
-    ggplot2::aes(color = factor(TYPE)),
-    linewidth = 1) +
+    # Color and linewidth by TYPE. The `linewidth` does not apper to work.
+    ggplot2::aes(color = factor(TYPE), linewidth = factor(TYPE)))+
+  ggplot2::scale_linewidth_manual(values = linewidth, name = "Road Width") +
   
   # Points for towers.
   ggplot2::geom_sf(
@@ -679,6 +681,140 @@ ggplot2::ggplot() +
   ggplot2::ggtitle("Roads, Tower and AOI Boundary") +
   ggplot2::labs(x = "Latitude",
                 y = "Longitude",
-                color = "Road Type") +
+                color = "Road Type")
+```
+
+## Crop Image using Limits
+
+Ideally, would like to be able to change x and y limits, but cannot seem to 
+get that to work. Looks like <https://datascience.blog.wzb.eu/2019/04/30/zooming-in-on-maps-with-sf-and-ggplot2/> might have useful insight. Key is that we need to use the same projection.
+
+```{r}
+lines_HARV_crop <- sf::st_crop(lines_HARV, 
+              xmin = -73, xmax = -72.10,
+              ymin = 42.535, ymax = 42.54)
+```
+
+```{r}
+p <- ggplot2::ggplot() +
+
+  # Lines for footpaths
+  ggplot2::geom_sf(
+    data = lines_HARV,
+    ggplot2::aes(color = factor(TYPE)),
+    linewidth = 1)  +
+
+  # Title and Labels
+  ggplot2::ggtitle("Footpaths labeled by ResVehic_1") +
+  ggplot2::labs(x = "Latitude",
+                y = "Longitude",
+                color = "FootpathID")
+p
+```
+
+Crop using `xlim` and `ylim`. Note use of `crs` to get right projection.
+
+```{r}
+target_crs <- '+proj=longlat'
+p +
+  ggplot2::coord_sf(xlim = c(-72.18, -72.17), ylim = c(42.53, 42.54),
+                    crs = target_crs)
+```
+
+To make this reproducible, would want to have this pick up `crs` from dataset
+and figure out croping in reasonable way, say based on subset of roads, or
+raster map.
+
+## Overlay Raster and Vector Data
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Raster crop layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(
+      CHM_HARV,
+      xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  
+  # Set gradient with terrain colors.
+  ggplot2::scale_fill_gradientn(
+    name = "Elevation",
+    colors = grDevices::terrain.colors(10)) +
+
+  # Lines for footpaths
+  ggplot2::geom_sf(
+    data = lines_HARV,
+    ggplot2::aes(color = factor(TYPE)),
+    linewidth = 1)  +
+
+  # Force as rectangle
+  ggplot2::coord_sf() +
+  # Titles and Labels  
+  ggplot2::ggtitle("CHM with Road Overlay") +
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
+
+```
+
+## 
+
+```{r}
+state_boundary_US <- 
+  sf::st_zm(
+    sf::st_read("data/vector/US-State-Boundaries-Census-2014.shp"))
+```
+
+```{r}
+plot(state_boundary_US)
+```
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = state_boundary_US) +
+  ggplot2::ggtitle("Map of US") + 
   ggplot2::coord_sf()
 ```
+
+```{r}
+country_boundary <- 
+  # Drop Z dimension.
+  sf::st_zm(
+    sf::st_read("data/vector/US-Boundary-Dissolved-States.shp"))
+```
+
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = state_boundary_US) +
+  ggplot2::geom_sf(data = country_boundary, fill = "transparent", color = "blue") +
+  ggplot2::ggtitle("Map of US") + 
+  ggplot2::coord_sf()
+```
+
+Note that projection for HARV has different units.
+
+```{r}
+sf::st_crs(state_boundary_US)$proj4string
+```
+
+```{r}
+sf::st_crs(country_boundary)$proj4string
+```
+```{r}
+sf::st_crs(points_HARV)$proj4string
+```
+
+Sloppy method that works for mapping on the fly.
+However, analytics operations would need to rectify the projections.
+Not doing that here.
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = state_boundary_US) +
+  ggplot2::geom_sf(data = country_boundary, fill = "transparent", color = "blue") +
+  ggplot2::geom_sf(data = points_HARV, color = "purple") +
+  ggplot2::ggtitle("Map of US with HARV site") + 
+  ggplot2::coord_sf()
+```
+
