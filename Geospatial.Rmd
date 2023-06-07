@@ -728,7 +728,7 @@ raster map.
 ## Overlay Raster and Vector Data
 
 ```{r}
-ggplot2::ggplot() +
+p <- ggplot2::ggplot() +
   
   # Raster crop layer.
   ggplot2::geom_raster(
@@ -748,16 +748,23 @@ ggplot2::ggplot() +
     ggplot2::aes(color = factor(TYPE)),
     linewidth = 1)  +
 
-  # Force as rectangle
-  ggplot2::coord_sf() +
   # Titles and Labels  
   ggplot2::ggtitle("CHM with Road Overlay") +
   ggplot2::labs(x = "UTM Easting Coordinates (m)",
                 y = "UTM Northing Coordinates (m)")
-
+p
 ```
 
-## 
+This should crop the above, but somehow not getting raster plot.
+
+```{r}
+target_crs <- '+proj=longlat'
+p +
+  ggplot2::coord_sf(xlim = c(-72.182, -72.168), ylim = c(42.53, 42.54),
+                    crs = target_crs)
+```
+
+## US Map
 
 ```{r}
 state_boundary_US <- 
