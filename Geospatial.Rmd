@@ -939,3 +939,111 @@ ggplot2::ggplot() +
   ggplot2::coord_sf()
 ```
 
+## Overlay new points
+
+
+```{r}
+ggplot2::ggplot() +
+  # Raster image
+  ggplot2::geom_raster(
+    data = as.data.frame(CHM_HARV, xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  ggplot2::scale_fill_gradientn(
+    name = "Canopy Height",
+    colors = grDevices::terrain.colors(10)) +
+  
+  # Add new points
+  ggplot2::geom_sf(data = plot_locations_sf_HARV, color = "blue") +
+  ggplot2::geom_sf(data = newplot_locations_HARV, color = "purple", size = 2) +
+
+  ggplot2::coord_sf()
+```
+
+You can also crop using an `extent` created with `terra::ext()`.
+
+## Extract values
+
+Look at tree heights (from CHM_HARV) with respect to various objects.
+
+AOI within its boundary
+
+```{r}
+tree_height <- terra::extract(CHM_HARV, aoi_boundary_HARV, row = FALSE)
+```
+
+```{r}
+summary(tree_height$HARV_dsmCrop)
+```
+
+Towers
+
+```{r}
+ggplot2::ggplot(
+  terra::extract(
+    CHM_HARV,
+    sf::st_buffer(points_HARV, dist = 20))) +
+  ggplot2::aes(HARV_dsmCrop) +
+  ggplot2::geom_density()
+```
+
+Mean and SD
+
+```{r}
+terra::extract(
+  CHM_HARV,
+  sf::st_buffer(points_HARV, dist = 20),
+  fun = mean)
+```
+
+```{r}
+terra::extract(
+  CHM_HARV,
+  sf::st_buffer(points_HARV, dist = 20),
+  fun = sd)
+```
+
+Goofy way to concatinate mean and SD.
+
+```{r}
+terra::extract(
+  CHM_HARV,
+  sf::st_buffer(points_HARV, dist = 20),
+  fun = function(x) {
+    paste(c(
+      signif(mean(x, na.rm = TRUE), 4),
+      signif(sd(x, na.rm = TRUE), 4)),
+                            collapse = " SD ")})
+```
+
+plot locatins
+
+```{r}
+ggplot2::ggplot(
+  terra::extract(
+  CHM_HARV,
+  sf::st_buffer(
+    sf::st_as_sf(
+      plot_locations_HARV,
+      coords = c("easting", "northing"),
+      crs = 32618),
+    dist = 20))) +
+  ggplot2::aes(HARV_dsmCrop) +
+  ggplot2::geom_density()
+
+```
+
+```{r}
+ggplot2::ggplot(
+  terra::extract(
+    CHM_HARV,
+    sf::st_buffer(
+      sf::st_as_sf(
+        plot_locations_HARV,
+        coords = c("easting", "northing"),
+        crs = 32618),
+      dist = 20),
+    fun = mean)) +
+  ggplot2::aes(HARV_dsmCrop) +
+  ggplot2::geom_histogram()
+```
+
