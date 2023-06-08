@@ -684,51 +684,10 @@ ggplot2::ggplot() +
                 color = "Road Type")
 ```
 
-## Crop Image using Limits
-
-Ideally, would like to be able to change x and y limits, but cannot seem to 
-get that to work. Looks like <https://datascience.blog.wzb.eu/2019/04/30/zooming-in-on-maps-with-sf-and-ggplot2/> might have useful insight. Key is that we need to use the same projection.
-
-```{r}
-lines_HARV_crop <- sf::st_crop(lines_HARV, 
-              xmin = -73, xmax = -72.10,
-              ymin = 42.535, ymax = 42.54)
-```
-
-```{r}
-p <- ggplot2::ggplot() +
-
-  # Lines for footpaths
-  ggplot2::geom_sf(
-    data = lines_HARV,
-    ggplot2::aes(color = factor(TYPE)),
-    linewidth = 1)  +
-
-  # Title and Labels
-  ggplot2::ggtitle("Footpaths labeled by ResVehic_1") +
-  ggplot2::labs(x = "Latitude",
-                y = "Longitude",
-                color = "FootpathID")
-p
-```
-
-Crop using `xlim` and `ylim`. Note use of `crs` to get right projection.
-
-```{r}
-target_crs <- '+proj=longlat'
-p +
-  ggplot2::coord_sf(xlim = c(-72.18, -72.17), ylim = c(42.53, 42.54),
-                    crs = target_crs)
-```
-
-To make this reproducible, would want to have this pick up `crs` from dataset
-and figure out croping in reasonable way, say based on subset of roads, or
-raster map.
-
 ## Overlay Raster and Vector Data
 
 ```{r}
-p <- ggplot2::ggplot() +
+ggplot2::ggplot() +
   
   # Raster crop layer.
   ggplot2::geom_raster(
@@ -752,10 +711,37 @@ p <- ggplot2::ggplot() +
   ggplot2::ggtitle("CHM with Road Overlay") +
   ggplot2::labs(x = "UTM Easting Coordinates (m)",
                 y = "UTM Northing Coordinates (m)")
-p
 ```
 
-This should crop the above, but somehow not getting raster plot.
+Crop roads to the image CHM_HARV.
+
+
+```{r}
+ggplot2::ggplot() +
+  
+  # Raster crop layer.
+  ggplot2::geom_raster(
+    data = as.data.frame(
+      CHM_HARV,
+      xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  
+  # Set gradient with terrain colors.
+  ggplot2::scale_fill_gradientn(
+    name = "Elevation",
+    colors = grDevices::terrain.colors(10)) +
+
+  # Lines for footpaths
+  ggplot2::geom_sf(
+    data = sf::st_crop(lines_HARV, CHM_HARV),
+    ggplot2::aes(color = factor(TYPE)),
+    linewidth = 1)  +
+
+  # Titles and Labels  
+  ggplot2::ggtitle("CHM with Road Overlay") +
+  ggplot2::labs(x = "UTM Easting Coordinates (m)",
+                y = "UTM Northing Coordinates (m)")
+```
 
 ```{r}
 target_crs <- '+proj=longlat'
@@ -822,6 +808,134 @@ ggplot2::ggplot() +
   ggplot2::geom_sf(data = country_boundary, fill = "transparent", color = "blue") +
   ggplot2::geom_sf(data = points_HARV, color = "purple") +
   ggplot2::ggtitle("Map of US with HARV site") + 
+  ggplot2::coord_sf()
+```
+
+# Day 4 Read in CSV to write SHP
+
+Read in data locations in CSV 
+```{r}
+plot_locations_HARV <- read.csv("data/HARV_PlotLocations.csv")
+str(plot_locations_HARV)
+```
+
+Creat vector point data
+
+```{r}
+plot_locations_sf_HARV <-
+  sf::st_as_sf(plot_locations_HARV,
+               coords = c("easting", "northing"),
+               crs = 32618)
+# sf::st_crs(CHM_HARV)
+```
+
+```{r}
+ggplot2::ggplot(plot_locations_sf_HARV) +
+  ggplot2::geom_sf()
+```
+
+```{r}
+newplot_locations_HARV <- 
+  sf::st_as_sf(
+    read.csv("data/HARV_2NewPhenPlots.csv"),
+    coords = c("decimalLon", "decimalLat"),
+               crs = 4326)
+```
+
+```{r}
+ggplot2::ggplot(newplot_locations_HARV) +
+  ggplot2::geom_sf()
+```
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = plot_locations_sf_HARV, color = "blue") +
+  ggplot2::geom_sf(data = newplot_locations_HARV, color = "purple", size = 2)
+```
+Can change coordinate system.
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = plot_locations_sf_HARV, color = "blue") +
+  ggplot2::geom_sf(data = newplot_locations_HARV, color = "purple", size = 2) +
+  ggplot2::coord_sf(datum = sf::st_crs(32618))
+```
+
+Can save objects.
+
+```{r}
+sf::st_write(plot_locations_sf_HARV,
+             "data/plot_locations_HARV.shp",
+             driver = "ESRI shapefile")
+```
+
+## Extract data from sraster dataa within an extent
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_raster(
+    data = as.data.frame(CHM_HARV, xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  ggplot2::scale_fill_gradientn(
+    name = "Canopy Height",
+    colors = grDevices::terrain.colors(10)) +
+  ggplot2::coord_sf()
+```
+
+Show CHM with AOI boundary box.
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_raster(
+    data = as.data.frame(CHM_HARV, xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  ggplot2::scale_fill_gradientn(
+    name = "Canopy Height",
+    colors = grDevices::terrain.colors(10)) +
+  
+  # Boundary box.
+  ggplot2::geom_sf(
+    data = aoi_boundary_HARV,
+    linewidth = 1,
+    color = "black", fill = "transparent") +
+  
+  ggplot2::coord_sf()
+
+```
+
+Crop to only see CHM in boundary box.
+
+```{r}
+ggplot2::ggplot() +
+  ggplot2::geom_raster(
+    data = as.data.frame(
+      terra::crop(CHM_HARV, aoi_boundary_HARV),
+      xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  ggplot2::scale_fill_gradientn(
+    name = "Canopy Height",
+    colors = grDevices::terrain.colors(10)) +
+  ggplot2::coord_sf()
+```
+
+Show this cropped with background area
+
+```{r}
+ggplot2::ggplot() +
+  # Extent in green
+  ggplot2::geom_sf(data = sf::st_as_sfc(sf::st_bbox(CHM_HARV)),
+          fill = "green", color = "green", alpha = .2) +
+  
+  # Raster image.
+  ggplot2::geom_raster(
+    data = as.data.frame(
+      terra::crop(CHM_HARV, aoi_boundary_HARV),
+      xy = TRUE),
+    ggplot2::aes(x, y, fill = HARV_dsmCrop)) +
+  ggplot2::scale_fill_gradientn(
+    name = "Canopy Height",
+    colors = grDevices::terrain.colors(10)) +
+  
   ggplot2::coord_sf()
 ```
 
