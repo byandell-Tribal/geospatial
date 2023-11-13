@@ -65,6 +65,16 @@ gdalcubes::gdalcubes_gdal_has_geos()
 There are likely multiple resources to understand these packages.
 
 - [Spatial Data Science by Edzer Pebesma and Roger Bivand](https://r-spatial.org/book/)
+- <https://github.com/appelmar/gdalcubes>
+- <https://r-spatial.org/>
+  + <https://github.com/r-spatial/stars>
+  + <https://github.com/r-spatial/sf>
+- <https://rspatial.org/>
+  + <https://github.com/rspatial/terra>
+  + <https://github.com/rspatial/raster>
+- [Comparison of terra and stars packages by Chris Brown](https://www.seascapemodels.org/rstats/2021/06/01/STARS.html)
+- [Marius Appel - Creating and Analyzing Multi-Variable Earth Observation Data Cubes in R (part 1)](https://www.youtube.com/watch?v=kE-se6zg6HE) (2 hours)
+- [Stack Overflow: stack geotiff with stars 'along' when 'band' dimension contains band + time information](https://stackoverflow.com/questions/75249639/stack-geotiff-with-stars-along-when-band-dimension-contains-band-time-info)
 
 See also the documentation for packages such as `sf`, `terra` and `gdlacubes`, which
 seem to be the main packages in use now.
