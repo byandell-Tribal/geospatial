@@ -819,7 +819,7 @@ plot_locations_HARV <- read.csv("data/HARV_PlotLocations.csv")
 str(plot_locations_HARV)
 ```
 
-Creat vector point data
+Create vector point data
 
 ```{r}
 plot_locations_sf_HARV <-

@@ -28,7 +28,7 @@ Key packages are
 - [sf](https://cran.r-project.org/web/packages/sf/index.html)
 - [terra](https://cran.r-project.org/web/packages/terra/index.html).
 
-Previous packages `raster` and `rgdal` or now obsolete.
+Previous packages `raster` and `rgdal` are now obsolete.
 
 The data have been organized in The Carpentries nicely in FigShare as
 [workshop data from carpentries site](https://ndownloader.figshare.com/files/23135981).
