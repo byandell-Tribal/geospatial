@@ -1,11 +1,8 @@
 # geospatial
-Geospatial Carpentries Workshop Play area
 
-[Geospatial Data Carpentry Workshop,
-UW-Madison,
-June 5-8, 2023](https://uw-madison-datascience.github.io/2023-06-05-uwmadison-dc/) <https://go.wisc.edu/i4gsfr>
+Geospatial Workshop Play Area
 
-[Carpentries Etherpad](https://pad.carpentries.org/2023-06-05-uwmadison-dc)
+## Geospatial Software Packages and Resources
 
 - [Introduction to R for Geospatial Data](https://datacarpentry.org/r-intro-geospatial/)
 - [Introduction to Geospatial Concepts](https://datacarpentry.org/organization-geospatial/)
@@ -19,16 +16,46 @@ June 5-8, 2023](https://uw-madison-datascience.github.io/2023-06-05-uwmadison-dc
   + [ESCAP: Land cover change maps with QGIS & RStudio](https://www.unescap.org/resources/producing-land-cover-change-maps-and-statistics-step-step-guide-use-qgis-and-rstudio)
   + [Columbia U: GIS, Cartographic and Spatial Analysis Tools in R / Rstudio](https://guides.library.columbia.edu/geotools/R)
 
-# Geospatial Raster Data
+There are likely multiple resources to understand these packages.
 
-## Data and Packages
+- [Spatial Data Science by Edzer Pebesma and Roger Bivand](https://r-spatial.org/book/)
+- [Comparison of terra and stars packages by Chris Brown](https://www.seascapemodels.org/rstats/2021/06/01/STARS.html)
+- [Marius Appel - Creating and Analyzing Multi-Variable Earth Observation Data Cubes in R (part 1)](https://www.youtube.com/watch?v=kE-se6zg6HE) (2 hours)
+- [Stack Overflow: stack geotiff with stars 'along' when 'band' dimension contains band + time information](https://stackoverflow.com/questions/75249639/stack-geotiff-with-stars-along-when-band-dimension-contains-band-time-info)
 
-Key packages are
+### R Packages
 
-- [sf](https://cran.r-project.org/web/packages/sf/index.html)
-- [terra](https://cran.r-project.org/web/packages/terra/index.html).
+- [gdalcubes](https://cran.r-project.org/package=gdalcubes)
+  + <https://github.com/appelmar/gdalcubes>
+  + [1. Creating data cubes from local MODIS imagery by Marius Appel](https://cran.r-project.org/web/packages/gdalcubes/vignettes/gc01_MODIS.html)
+- <https://r-spatial.org/>
+  + [sf](https://cran.r-project.org/package=sf) (<https://github.com/r-spatial/sf>)
+  + [stars](https://cran.r-project.org/package=stars)<https://github.com/r-spatial/stars>
+- <https://rspatial.org/>
+  + [terra](https://cran.r-project.org/package=terra) (<https://github.com/rspatial/terra>)
+  + [sf](https://cran.r-project.org/package=sf) (<https://github.com/rspatial/raster>)
+  
+- [rstac](https://cran.r-project.org/package=rstac): Access, search and download from SpatioTemporal Asset Catalog (STAC)
+- [osmdata](https://cran.r-project.org/package=osmdata): Download and import of 'OpenStreetMap' ('OSM') data
+- [tidyterra](https://cran.r-project.org/package=tidyterra): Extension of the 'tidyverse' for 'SpatRaster' and 'SpatVector' objects of the 'terra' package
 
-Previous packages `raster` and `rgdal` are now obsolete.
+- [geos](https://cran.r-project.org/package=geos): R API to the Open Source Geometry Engine ('GEOS')
+- [landsat](https://cran.r-project.org/package=landsat): Processing of Landsat and other multispectral satellite imagery
+
+
+Previous package `rgdal` is now obsolete. Unsure about `raster` package.
+
+## [ESIIL Hackathon, CU Boulder, November 15-17, 2023](https://cu-esiil.github.io/hackathon2023_datacube/)
+
+[ESIIL_Art_Data_Cube.Rmd](https://github.com/byandell/geospatial/blob/main/ESIIL_Art_Data_Cube.Rmd): Yandell edit of Ty Tuff's The Art of Making a Datacube
+
+## [Geospatial Data Carpentry Workshop, UW-Madison, June 5-8, 2023](https://uw-madison-datascience.github.io/2023-06-05-uwmadison-dc/) <https://go.wisc.edu/i4gsfr>
+
+[Carpentries Etherpad](https://pad.carpentries.org/2023-06-05-uwmadison-dc)
+
+[Geospatial.Rmd](https://github.com/byandell/geospatial/blob/main/Geospatial.Rmd): Rmarkdown from Workshop
+
+### Geospatial Data for Data Carpentry
 
 The data have been organized in The Carpentries nicely in FigShare as
 [workshop data from carpentries site](https://ndownloader.figshare.com/files/23135981).
