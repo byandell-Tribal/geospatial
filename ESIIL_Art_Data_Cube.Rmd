@@ -13,7 +13,7 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Code below was edited from [https://github.com/CU-ESIIL/hackathon2023_datacube/docs/code_for_building_cube/stac_mount_save.qmd](https://raw.githubusercontent.com/CU-ESIIL/hackathon2023_datacube/main/docs/code_for_building_cube/stac_mount_save.qmd) as the basis for
+Code below was edited from [https://github.com/CU-ESIIL/hackathon2023_datacube/main/docs/code_for_building_cube/stac_mount_save.qmd](https://raw.githubusercontent.com/CU-ESIIL/hackathon2023_datacube/main/docs/code_for_building_cube/stac_mount_save.qmd) as the basis for
 [Ty Tuff's The art of making a datacube](https://cu-esiil.github.io/hackathon2023_datacube/code_for_building_cube/stac_mount_save/).
 
 If Rmarkdown parameter `params$dontrun` is `r TRUE` then knitting this document will show the remaining code without running.
