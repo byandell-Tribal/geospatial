@@ -1047,3 +1047,23 @@ ggplot2::ggplot(
   ggplot2::geom_histogram()
 ```
 
+```{r}
+knitr::knit_exit()
+```
+
+# Download data using vsicurl
+
+This is experimental.
+
+```{r eval=FALSE}
+HARV_dsmCrop <- 
+    glue::glue(
+    # magic remote VSI connection
+    "/vsizip/vsicurl/", 
+    # copied link to download location
+    "https://figshare.com/articles/dataset/Spatio_temporal_Series_Teaching_Data_Subsets/2009586/NEON-DS-Landsat-NDVI.zip",
+    # path inside zip file (may have to pre-open to find)
+    "/HARV/2011/005_HARV_ndvi_crop.tif") |>
+  terra::rast()
+```
+

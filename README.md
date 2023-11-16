@@ -54,7 +54,11 @@ Previous package `rgdal` is now obsolete. Unsure about status of `raster` packag
 ## Data Repositories
 
 - <https://data-library.esiil.org>
-- See list on left panel of <https://cu-esiil.github.io/hackathon2023_datacube/code_for_building_cube/stac_mount_save/>
+  + [American Indian and Alaska Native Areas](https://data-library.esiil.org/indian_country/aiannh/AIANNH/)
+- See list on menu of
+<https://cu-esiil.github.io/hackathon2023_datacube/code_for_building_cube/Pull_flood_data/>
+
+These have been compiled in [datasets.csv](https://github.com/byandell/geospatial/blob/main/datasets.csv).
 
 ## Geospatial Workshops
 

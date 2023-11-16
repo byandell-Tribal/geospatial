@@ -1,0 +1,55 @@
+---
+title: "Alaska"
+author: "Brian Yandell"
+date: "2023-11-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This code is from [American Indian and Alaska Native Areas](https://data-library.esiil.org/indian_country/aiannh/AIANNH/).
+
+```{r}
+# Install and load necessary libraries
+library(sf)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+
+# Download dataset from source
+url <- "https://www2.census.gov/geo/tiger/TIGER2020/AIANNH/tl_2020_us_aiannh.zip"
+temp_file <- tempfile(fileext = ".zip")
+download.file(url, temp_file, mode = "wb")
+unzip(temp_file, exdir = tempdir())
+
+# Read the Shapefile
+shapefile_path <- file.path(tempdir(), "tl_2020_us_aiannh.shp")
+aiannh <- read_sf(shapefile_path)
+
+
+# Plot the count per LSAD
+ggplot() +
+  geom_sf(data = aiannh, aes( fill="steelblue")) +
+  theme_minimal() +
+  labs(title = "AIANNH Areas")+ theme(legend.position = "none")
+```
+
+```{r}
+# Count the number of AIANNH per legal statistical area description (LSAD)
+state_counts <- aiannh %>%
+  group_by(LSAD) %>%
+  summarize(count = n()) 
+
+
+# Plot the count per LSAD
+ggplot(state_counts, aes(x = reorder(LSAD, -count), y = count)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(x = "Legal Statistical Area Description (LSAD)", 
+       y = "Count", 
+       title = "Number of AIANNH per LSAD") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
