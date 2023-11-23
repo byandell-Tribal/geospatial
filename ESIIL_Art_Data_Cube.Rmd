@@ -7,6 +7,7 @@ params:
   dontrun: TRUE
   localname: "Boulder County"
   localarea: "boulder, co"
+  yearone: 2020
 ---
 
 ```{r setup, include=FALSE}
@@ -19,7 +20,19 @@ Code below was edited from [https://github.com/CU-ESIIL/hackathon2023_datacube/m
 In Rstudio, use `Knit with Parameters` to change parameters such as `params$localarea`. Use <https://osmnames.org/> to find an area of interest.
 
 ```{r}
+params$yeartwo <- params$yearone + 1
 params
+```
+
+Years unders study
+
+```{r}
+years_start  <- paste0(params$yearone, "-01-01")
+years_end    <- paste0(params$yeartwo, "-12-31")
+months_start <- paste0(c(params$yearone, params$yeartwo), "-05-01")
+months_end   <- paste0(c(params$yearone, params$yeartwo), "-06-30")
+days_start <- paste0(params$yeartwo, "-05-15")
+days_end   <- paste0(params$yeartwo, "-05-16")
 ```
 
 If Rmarkdown parameter `params$dontrun` is `r TRUE` then knitting this document will show the remaining code without running.
@@ -252,7 +265,7 @@ items <- s |>
 #             bbox_4326_local["ymin"],
 #             bbox_4326_local["xmax"], 
 #             bbox_4326_local["ymax"]), 
-    datetime = "2021-05-15/2021-05-16") |>
+    datetime = paste(days_start, days_end, sep = "/")) |>
   rstac::post_request() |>
   rstac::items_fetch(progress = FALSE)
 
@@ -291,16 +304,11 @@ v <- gdalcubes::cube_view(
     aggregation = "median", 
     resampling = "near",
     extent = list(
-        t0 = "2021-05-15", 
-        t1 = "2021-05-16",
+        t0 = days_start, t1 = days_end,
         left = bbox_32720_local["xmin"],
         right = bbox_32720_local["xmax"],
         top = bbox_32720_local["ymax"],
         bottom = bbox_32720_local["ymin"]))
-#        left = bbox_32720_local[1], 
-#        right = bbox_32720_local[2],
-#        top = bbox_32720_local[4], 
-#        bottom = bbox_32720_local[3]))
 
 b <- Sys.time()
 difftime(b, a)
@@ -396,8 +404,7 @@ items <- s |>
   rstac::stac_search(
     collections = "sentinel-s2-l2a-cogs",
     bbox = as.vector(bbox_4326_local),
-#    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
-    datetime = "2020-01-01/2022-12-31",
+    datetime = paste0(years_start, years_end, sep = "/"),
     limit = 500) |> 
   rstac::post_request() 
 
@@ -408,9 +415,14 @@ col <- gdalcubes::stac_image_collection(
   property_filter = function(x) {x[["eo:cloud_cover"]] < 30})
 
 v <- gdalcubes::cube_view(
-  srs = "EPSG:4326",  extent = list(t0 = "2020-01-01", t1 = "2022-12-31",
-  left = -105.694362, right = -105.052774,  top = 40.262785, bottom = 39.912886),
-  dx = 0.001, dy = 0.001, dt = "P1M", aggregation = "median", resampling = "bilinear")
+  srs = "EPSG:4326",
+  extent = list(t0 = years_start, t1 = years_end,
+                left   = bbox_4326_local["xmin"],
+                right  = bbox_4326_local["xmax"],
+                top    = bbox_4326_local["ymax"],
+                bottom = bbox_4326_local["ymin"]),
+  dx = 0.001, dy = 0.001, dt = "P1M",
+  aggregation = "median", resampling = "bilinear")
 
 ndvi.col = function(n) {
   rev(colorspace::sequential_hcl(n, "Green-Yellow"))
@@ -442,36 +454,30 @@ gdalcubes::gdalcubes_options(ncdf_compression_level = 0)
 `write_tif()` and `write_ncdf()` both return the path(s) to created file(s) as a character vector.
 
 ```{r, eval=FALSE, cache=TRUE, warning=FALSE, message=FALSE, collapse=TRUE}
-items_2020 <- s |>
-  rstac::stac_search(
-    collections = "sentinel-s2-l2a-cogs",
-    bbox = as.vector(bbox_4326_local),
-#    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
-    datetime = "2020-05-01/2020-06-30") |> 
-  rstac::post_request() 
+col_years <- list()
+for(i in 1:2) {
+  items_year <- s |>
+    rstac::stac_search(
+      collections = "sentinel-s2-l2a-cogs",
+      bbox = as.vector(bbox_4326_local),
+      datetime = paste0(months_start[i], months_end[i], sep = "/")) |>
+    rstac::post_request() 
+  col_years[[i]] <- rstac::stac_image_collection(
+    items_year$features, asset_names = assets)
+}
 
-items_2021 <- s |>
-  rstac::stac_search(
-    collections = "sentinel-s2-l2a-cogs",
-    bbox = as.vector(bbox_4326_local),
-#    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
-    datetime = "2021-05-01/2021-06-30") |> 
-  rstac::post_request() 
+v_year_one <- gdalcubes::cube_view(
+  srs = "EPSG:32720",
+  extent = list(t1 = months_start[1], t2 = months_end[1],
+                left = bbox_32720_local["xmin"],
+                right = bbox_32720_local["xmax"],
+                top = bbox_32720_local["ymax"],
+                bottom = bbox_32720_local["ymin"]),
+  dx = 100, dy = 100, dt = "P1D",
+  aggregation = "median", resampling = "bilinear")
 
-
-col_2020 <- rstac::stac_image_collection(items_2020$features, asset_names = assets)
-col_2021 <- rstac::stac_image_collection(items_2021$features, asset_names = assets)
-
-v_2020 <- gdalcubes::cube_view(
-  srs = "EPSG:32720",  extent = list(t0 = "2020-05-01", t1 = "2020-06-30",
-  left = bbox_32720_local["xmin"],
-  right = bbox_32720_local["xmax"],
-  top = bbox_32720_local["ymax"],
-  bottom = bbox_32720_local["ymin"]),
-  dx = 100, dy = 100, dt = "P1D", aggregation = "median", resampling = "bilinear")
-
-v_2021 <- gdalcubes::cube_view(
-  v_2020, extent = list(t0 = "2021-05-01", t1 = "2021-06-30"))
+v_year_two <- gdalcubes::cube_view(
+  v_year_one, extent = list(t0 = months_start[2], t2 = months_end[2]))
 
 max_ndvi_mosaic <- function(col, v) {
   gdalcubes::raster_cube(col, v) |>
@@ -480,12 +486,14 @@ max_ndvi_mosaic <- function(col, v) {
   gdalcubes::reduce_time("max(NDVI)")
 }
 
-(maxndvi_2020 <- max_ndvi_mosaic(col_2020, v_2020))
-(maxndvi_2021 <- max_ndvi_mosaic(col_2021, v_2021))
+(maxndvi_year_one <- max_ndvi_mosaic(col_years[[1]], v_year_one))
+(maxndvi_year_two <- max_ndvi_mosaic(col_years[[2]], v_year_two))
 
-difference <- maxndvi_2021 - maxndvi_2020
+difference <- maxndvi_year_two - maxndvi_year_one
 difference[difference > -0.15] <- NA
-names(difference) <- "Difference of max NDVI (2020 - 2019)"
+names(difference) <- paste0("Difference of max NDVI (",
+                            params$yeartwo, " - ",
+                            params$yearone, ")")
 ```
 
 #### GloRiC in shapefile format
