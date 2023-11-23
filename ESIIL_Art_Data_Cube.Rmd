@@ -20,19 +20,19 @@ Code below was edited from [https://github.com/CU-ESIIL/hackathon2023_datacube/m
 In Rstudio, use `Knit with Parameters` to change parameters such as `params$localarea`. Use <https://osmnames.org/> to find an area of interest.
 
 ```{r}
-params$yeartwo <- params$yearone + 1
 params
 ```
 
 Years unders study
 
 ```{r}
-years_start  <- paste0(params$yearone, "-01-01")
-years_end    <- paste0(params$yeartwo, "-12-31")
-months_start <- paste0(c(params$yearone, params$yeartwo), "-05-01")
-months_end   <- paste0(c(params$yearone, params$yeartwo), "-06-30")
-days_start <- paste0(params$yeartwo, "-05-15")
-days_end   <- paste0(params$yeartwo, "-05-16")
+yearone <- params$yearone
+years_start  <- paste0(yearone, "-01-01")
+years_end    <- paste0(yearone + 1, "-12-31")
+months_start <- paste0(yearone + 0:1, "-05-01")
+months_end   <- paste0(yearone + 0:1, "-06-30")
+days_start <- paste0(yearone + 1, "-05-15")
+days_end   <- paste0(yearone + 1, "-05-16")
 ```
 
 If Rmarkdown parameter `params$dontrun` is `r TRUE` then knitting this document will show the remaining code without running.
@@ -492,8 +492,7 @@ max_ndvi_mosaic <- function(col, v) {
 difference <- maxndvi_year_two - maxndvi_year_one
 difference[difference > -0.15] <- NA
 names(difference) <- paste0("Difference of max NDVI (",
-                            params$yeartwo, " - ",
-                            params$yearone, ")")
+                            yeartwo, " - ", yearone, ")")
 ```
 
 #### GloRiC in shapefile format
