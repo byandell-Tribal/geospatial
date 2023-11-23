@@ -247,10 +247,11 @@ s <- rstac::stac("https://earth-search.aws.element84.com/v0")
 items <- s |>
   rstac::stac_search(
     collections = "sentinel-s2-l2a-cogs",
-    bbox = c(bbox_4326_local["xmin"], 
-             bbox_4326_local["ymin"],
-             bbox_4326_local["xmax"], 
-             bbox_4326_local["ymax"]), 
+    bbox = as.vector(bbox_4326_local),
+#    bbox = c(bbox_4326_local["xmin"], 
+#             bbox_4326_local["ymin"],
+#             bbox_4326_local["xmax"], 
+#             bbox_4326_local["ymax"]), 
     datetime = "2021-05-15/2021-05-16") |>
   rstac::post_request() |>
   rstac::items_fetch(progress = FALSE)
@@ -292,10 +293,14 @@ v <- gdalcubes::cube_view(
     extent = list(
         t0 = "2021-05-15", 
         t1 = "2021-05-16",
-        left = bbox_32720_local[1], 
-        right = bbox_32720_local[2],
-        top = bbox_32720_local[4], 
-        bottom = bbox_32720_local[3]))
+        left = bbox_32720_local["xmin"],
+        right = bbox_32720_local["xmax"],
+        top = bbox_32720_local["ymax"],
+        bottom = bbox_32720_local["ymin"]))
+#        left = bbox_32720_local[1], 
+#        right = bbox_32720_local[2],
+#        top = bbox_32720_local[4], 
+#        bottom = bbox_32720_local[3]))
 
 b <- Sys.time()
 difftime(b, a)
@@ -390,7 +395,8 @@ a <- Sys.time()
 items <- s |>
   rstac::stac_search(
     collections = "sentinel-s2-l2a-cogs",
-    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
+    bbox = as.vector(bbox_4326_local),
+#    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
     datetime = "2020-01-01/2022-12-31",
     limit = 500) |> 
   rstac::post_request() 
@@ -439,14 +445,16 @@ gdalcubes::gdalcubes_options(ncdf_compression_level = 0)
 items_2020 <- s |>
   rstac::stac_search(
     collections = "sentinel-s2-l2a-cogs",
-    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
+    bbox = as.vector(bbox_4326_local),
+#    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
     datetime = "2020-05-01/2020-06-30") |> 
   rstac::post_request() 
 
 items_2021 <- s |>
   rstac::stac_search(
     collections = "sentinel-s2-l2a-cogs",
-    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
+    bbox = as.vector(bbox_4326_local),
+#    bbox = c(-105.694362,	39.912886,	-105.052774,	40.262785),
     datetime = "2021-05-01/2021-06-30") |> 
   rstac::post_request() 
 
@@ -456,8 +464,10 @@ col_2021 <- rstac::stac_image_collection(items_2021$features, asset_names = asse
 
 v_2020 <- gdalcubes::cube_view(
   srs = "EPSG:32720",  extent = list(t0 = "2020-05-01", t1 = "2020-06-30",
-  left = bbox_32720_local["xmin"], right = bbox_32720_local["xmax"],
-  top = bbox_32720_local["ymax"], bottom = bbox_32720_local["ymin"]),
+  left = bbox_32720_local["xmin"],
+  right = bbox_32720_local["xmax"],
+  top = bbox_32720_local["ymax"],
+  bottom = bbox_32720_local["ymin"]),
   dx = 100, dy = 100, dt = "P1D", aggregation = "median", resampling = "bilinear")
 
 v_2021 <- gdalcubes::cube_view(
