@@ -18,6 +18,8 @@ Code below was edited from [https://github.com/CU-ESIIL/hackathon2023_datacube/m
 [Ty Tuff's The art of making a datacube](https://cu-esiil.github.io/hackathon2023_datacube/code_for_building_cube/stac_mount_save/).
 
 In Rstudio, use `Knit with Parameters` to change parameters such as `params$localarea`. Use <https://osmnames.org/> to find an area of interest.
+**If you change `params$localarea` then you might have a `NULL` value  for attribute `multipolygon`, which is used in the `local_bounding_box` chunk. The `params$localname` is not checked.**
+
 
 ```{r}
 params
