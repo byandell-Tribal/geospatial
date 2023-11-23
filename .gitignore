@@ -52,3 +52,7 @@ rsconnect/
 *.Rproj
 data/
 .DS_Store
+*.pdf
+*.gif
+*_files/
+

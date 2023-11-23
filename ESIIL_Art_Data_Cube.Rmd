@@ -16,6 +16,12 @@ knitr::opts_chunk$set(echo = TRUE)
 Code below was edited from [https://github.com/CU-ESIIL/hackathon2023_datacube/main/docs/code_for_building_cube/stac_mount_save.qmd](https://raw.githubusercontent.com/CU-ESIIL/hackathon2023_datacube/main/docs/code_for_building_cube/stac_mount_save.qmd) as the basis for
 [Ty Tuff's The art of making a datacube](https://cu-esiil.github.io/hackathon2023_datacube/code_for_building_cube/stac_mount_save/).
 
+In Rstudio, use `Knit with Parameters` to change parameters such as `params$localarea`. Use <https://osmnames.org/> to find an area of interest.
+
+```{r}
+params
+```
+
 If Rmarkdown parameter `params$dontrun` is `r TRUE` then knitting this document will show the remaining code without running.
 
 ```{r}
@@ -27,7 +33,8 @@ if(params$dontrun) {
 
 # Libraries for Data Cube
 
-```{r load_libraries, cache=FALSE, message=FALSE, warning=FALSE, collapse=TRUE}
+```{r load_libraries, cache=FALSE, message=FALSE, warning=FALSE, collapse=TRUE, eval=FALSE}
+# We don't need to attach libraries since calls are explicit.
 #library(Rcpp)
 library(dplyr)
 library(ggplot2)
@@ -46,6 +53,8 @@ library(rstac)
 library(osmdata)
 library(tidyterra)
 library(raster) # used below once; is there a `stars` package option?
+
+library(gifski) # needed for gdalcubes::animate()
 
 # Other packages not directly used below
 #library(gdalUtils)
@@ -112,7 +121,8 @@ difftime(b, a)
 ### Calculate Slope from that DEM
 
 ```{r slope, cache=TRUE, warning=FALSE, message=FALSE, collapse=TRUE}
-SLOPE_continuous_CONUS_15s <- terra::terrain(DEM_continuous_CONUS_15s, "slope") 
+SLOPE_continuous_CONUS_15s <-
+  terra::terrain(DEM_continuous_CONUS_15s, "slope") 
 
 SLOPE_continuous_CONUS_15s
 ```
@@ -132,7 +142,8 @@ difftime(b, a)
 ### Calculate aspect from DEM
 
 ```{r aspect, cache=FALSE, warning=FALSE, message=FALSE, collapse=TRUE}
-(ASPECT_continuous_CONUS_15s <- terra::terrain(DEM_continuous_CONUS_15s, "aspect")) 
+(ASPECT_continuous_CONUS_15s <- 
+   terra::terrain(DEM_continuous_CONUS_15s, "aspect")) 
 ```
 
 ```{r ASPECT_plot, cache=TRUE, warning=FALSE, message=FALSE, collapse=TRUE}
@@ -156,13 +167,6 @@ difftime(b, a)
 ```
 
 ### Reproject and return bounding box coordinates for Area of Interest
-
-Data are stored in different coordinating systems, which makes it important
-to transform between them. Some common ones:
-
-- [EPSG:4326](https://epsg.io/4326): WGS84 = World Geodetic System 1984
-- [EPSG:32618](https://epsg.io/32618): WGS84 for UTM zone 18N (North America)
-- [EPSG:32730](https://epsg.io/32720): WGS84 for UTM zone 20S (South America)
 
 ```{r DEM_bounding_box, cache=TRUE, warning=FALSE, message=FALSE, collapse=TRUE}
 # Transform the filtered geometry to EPSG:4326 and store its bounding box
@@ -188,7 +192,7 @@ difftime(b, a)
 Get a polygon for `r params$localname`, reproject, and return bounding box. This is so I can make a smaller search in the stac catalog. 
 
 ```{r local_bounding_box, cache=TRUE, warning=FALSE, message=FALSE, collapse=TRUE}
-local_area <- getbb(params$localarea, format_out="sf_polygon")
+local_area <- osmdata::getbb(params$localarea, format_out="sf_polygon")
 
 local_area$multipolygon |> 
   sf::st_transform(crs = 4326) |>
@@ -257,7 +261,7 @@ length(items$features)
 # Prepare the assets for analysis
 assets <- c("B01", "B02", "B03", "B04", "B05", "B06", "B07", 
            "B08", "B8A", "B09", "B11", "B12", "SCL")
-s2_collection <- sf::stac_image_collection(
+s2_collection <- gdalcubes::stac_image_collection(
   items$features, asset_names = assets,
   # all images with less than 20% clouds
   property_filter = function(x) {x[["eo:cloud_cover"]] < 20})
@@ -391,7 +395,7 @@ items <- s |>
     limit = 500) |> 
   rstac::post_request() 
 
-S2.mask <- gdal_cubes::image_mask("SCL", values=c(3,8,9))
+S2.mask <- gdalcubes::image_mask("SCL", values=c(3,8,9))
 
 col <- gdalcubes::stac_image_collection(
   items$features, asset_names = assets, 

@@ -11,6 +11,7 @@ Yandell's Geospatial Workshops Play Area
   + [Introduction to Geospatial Concepts](https://datacarpentry.org/organization-geospatial/)
   + [Introduction to Geospatial Raster and Vector Data with R](https://uw-madison-datascience.github.io/r-raster-vector-geospatial/)
 - [Spatial Data Science book by Edzer Pebesma and Roger Bivand](https://r-spatial.org/book/)
+- [Geospatial Vector Data in R with SF (Coding Club)](https://ourcodingclub.github.io/tutorials/spatial-vector-sf/)
 - Online Comparisons of Some Spatial Packages
   + [Comparison of terra and stars packages by Chris Brown](https://www.seascapemodels.org/rstats/2021/06/01/STARS.html)
   + [Marius Appel - Creating and Analyzing Multi-Variable Earth Observation Data Cubes in R (part 1)](https://www.youtube.com/watch?v=kE-se6zg6HE) (2 hours)
@@ -46,6 +47,11 @@ Packages to Access Data
 
 - [rstac](https://cran.r-project.org/package=rstac): Access, search and download from SpatioTemporal Asset Catalog (STAC)
 - [osmdata](https://cran.r-project.org/package=osmdata): Download and import of 'OpenStreetMap' ('OSM') data
+  + <https://www.openstreetmap.org/>
+  + [Open Street Map Data](https://rspatialdata.github.io/osm.html)
+  + [Retrieving Open Street Map data using the osmdata package](https://rspatialdata.github.io/osm.html#Retrieving_Open_Street_Map_data_using_the_osmdata_package)
+  + [Database of Open Street Map Names](https://github.com/OSMNames/OSMNames)
+  + <https://osmnames.org/>
 - [geos](https://cran.r-project.org/package=geos): R API to the Open Source Geometry Engine ('GEOS')
 - [landsat](https://cran.r-project.org/package=landsat): Processing of Landsat and other multispectral satellite imagery
 
@@ -59,6 +65,13 @@ Previous package `rgdal` is now obsolete. Unsure about status of `raster` packag
 <https://cu-esiil.github.io/hackathon2023_datacube/code_for_building_cube/Pull_flood_data/>
 
 These have been compiled in [datasets.csv](https://github.com/byandell/geospatial/blob/main/datasets.csv).
+
+Data are stored in different coordinating systems, which makes it important
+to transform between them. Some common ones:
+
+- [EPSG:4326](https://epsg.io/4326): WGS84 = World Geodetic System 1984
+- [EPSG:32618](https://epsg.io/32618): WGS84 for UTM zone 18N (North America)
+- [EPSG:32730](https://epsg.io/32720): WGS84 for UTM zone 20S (South America)
 
 ## Geospatial Workshops
 
