@@ -17,6 +17,8 @@ Yandell's Geospatial Workshops Play Area
   + [Marius Appel - Creating and Analyzing Multi-Variable Earth Observation Data Cubes in R (part 1)](https://www.youtube.com/watch?v=kE-se6zg6HE) (2 hours)
   + [Stack Overflow: stack geotiff with stars 'along' when 'band' dimension contains band + time information](https://stackoverflow.com/questions/75249639/stack-geotiff-with-stars-along-when-band-dimension-contains-band-time-info)
 
+- [ArcGIS Online](https://www.arcgis.com/sharing/rest/oauth2/signup?client_id=arcgisonline&response_type=token)
+  + Free online accounts, with new features added over time
 - [QGIS](https://qgis.org/en/site/)
   + [RPubs: R to QGIS workflow](https://rpubs.com/DUE-methods1/r-qgis)
   + [Spatial stratified sampling with RStudio and QGIS](https://bookdown.org/einavg7/sp_technical_guide/spatial-stratified-sampling-with-rstudio-and-qgis.html)
