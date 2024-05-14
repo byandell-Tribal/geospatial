@@ -3,6 +3,9 @@ title: "student edition"
 format: gfm
 ---
 
+This comes from
+[github.com/CU-ESIIL/Innovation-Summit-2024/code/worksheet_redlining_student_edition.qmd](https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/code/worksheet_redlining_student_edition.qmd).
+
 # Make map
 
 The provided R script outlines a comprehensive workflow for mapping and analyzing geographic data using various spatial functions and visualization tools in R. This process involves loading, processing, and mapping data with a focus on urban planning and environmental analysis, particularly using the example of redlining data for the city of Denver.
@@ -18,7 +21,7 @@ Data Visualization (plot_city_redlining and split_plot): These functions are use
 
 Advanced Spatial Analysis (process_and_plot_sf_layers): This function performs complex spatial operations like buffering and intersecting different layers to analyze the interactions between them. It exemplifies how to handle and visualize spatial relationships and dependencies.
 
-```{r, collapse=TRUE}
+```{r, eval=FALSE,collapse=TRUE}
 library(sf)
 
 library(dplyr)
@@ -49,7 +52,7 @@ install_github('Chrisjb/basemapR')
 
 ```
 
-```{r}
+```{r eval=FALSE}
 library(glue)
 library(tidytext)
 library(osmextract)
@@ -72,11 +75,11 @@ load_city_redlining_data <- function(city_name) {
   url <- "https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk/main/MIv3Areas_2010TractCrosswalk.geojson"
   
   # Read the GeoJSON file into an sf object
-  redlining_data <- read_sf(url)
+  redlining_data <- sf::read_sf(url)
   
   # Filter the data for the specified city and non-empty grades
-  city_redline <- redlining_data %>%
-    filter(city == city_name)
+  city_redline <- redlining_data |>
+    dplyr::filter(city == city_name)
   
   # Return the filtered data
   return(city_redline)
@@ -98,8 +101,8 @@ get_places <- function(polygon_layer, type = "food") {
   }
   
   # Create a bounding box from the input sf object
-  bbox_here <- st_bbox(polygon_layer) |>
-    st_as_sfc()
+  bbox_here <- sf::st_bbox(polygon_layer) |>
+    sf::st_as_sfc()
   
   if (type == "roads") {
     my_layer <- "lines"
@@ -117,35 +120,36 @@ get_places <- function(polygon_layer, type = "food") {
   
   # Use the bbox to get data with oe_get(), specifying the desired layer and a custom SQL query for fresh food places
   tryCatch({
-    places <- oe_get(
+    places <- osmextract::oe_get(
       place = bbox_here,
       layer = my_layer,
       query = my_query,
       quiet = TRUE
     )
     
-    places <- st_make_valid(places)
+    places <- sf::st_make_valid(places)
     
     # Crop the data to the bounding box
-    cropped_places <- st_crop(places, bbox_here)
+    cropped_places <- sf::st_crop(places, bbox_here)
     
     # Plotting the cropped fresh food places
-    plot <- ggplot(data = cropped_places) +
-      geom_sf(fill="cornflowerblue", color="cornflowerblue") +
-      ggtitle(title) +
-      theme_tufte() +
-      theme(legend.position = "none",  # Optionally hide the legend
-            axis.text = element_blank(),     # Remove axis text
-            axis.title = element_blank(),    # Remove axis titles
-            axis.ticks = element_blank(),    # Remove axis ticks
-            plot.background = element_rect(fill = "white", color = NA),  # Set the plot background to white
-            panel.background = element_rect(fill = "white", color = NA),  # Set the panel background to white
-            panel.grid.major = element_blank(),  # Remove major grid lines
-            panel.grid.minor = element_blank()) 
+    plot <- ggplot2::ggplot(data = cropped_places) +
+      ggplot2::geom_sf(fill="cornflowerblue", color="cornflowerblue") +
+      ggplot2::ggtitle(title) +
+      ggthemes::theme_tufte() +
+      ggplot2::theme(
+        legend.position = "none",  # Optionally hide the legend
+        axis.text = ggplot2::element_blank(),     # Remove axis text
+        axis.title = ggplot2::element_blank(),    # Remove axis titles
+        axis.ticks = ggplot2::element_blank(),    # Remove axis ticks
+        plot.background = ggplot2::element_rect(fill = "white", color = NA),  # Set the plot background to white
+        panel.background = ggplot2::element_rect(fill = "white", color = NA),  # Set the panel background to white
+        panel.grid.major = ggplot2::element_blank(),  # Remove major grid lines
+        panel.grid.minor = ggplot2::element_blank()) 
     
     # Save the plot as a PNG file
     png_filename <- paste0(title, "_", Sys.Date(), ".png")
-    ggsave(png_filename, plot, width = 10, height = 8, units = "in")
+    ggplot2::ggsave(png_filename, plot, width = 10, height = 8, units = "in")
     
     # Return the cropped dataset
     return(cropped_places)
@@ -169,30 +173,30 @@ plot_city_redlining <- function(redlining_data, filename = "redlining_plot.png")
   rivers <- get_places(redlining_data, type = "rivers")
   
   # Filter residential zones with valid grades and where city survey is TRUE
-  residential_zones <- redlining_data %>%
-    filter(city_survey == TRUE & grade != "") 
+  residential_zones <- redlining_data |>
+    dplyr::filter(city_survey == TRUE & grade != "") 
 
   # Colors for the grades
   colors <- c("#76a865", "#7cb5bd", "#ffff00", "#d9838d")
 
   # Plot the data using ggplot2
-  plot <- ggplot() +
-    geom_sf(data = roads, lwd = 0.1) +
-    geom_sf(data = rivers, color = "blue", alpha = 0.5, lwd = 1.1) +
-    geom_sf(data = residential_zones, aes(fill = grade), alpha = 0.5) +
-    theme_tufte() +
-    scale_fill_manual(values = colors) +
-    labs(fill = 'HOLC Categories') +
-    theme(
-      plot.background = element_rect(fill = "white", color = NA),
-      panel.background = element_rect(fill = "white", color = NA),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
+  plot <- ggplot2::ggplot() +
+    ggplot2::geom_sf(data = roads, lwd = 0.1) +
+    ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.5, lwd = 1.1) +
+    ggplot2::geom_sf(data = residential_zones, aes(fill = grade), alpha = 0.5) +
+    ggthemes::theme_tufte() +
+    ggplot2::scale_fill_manual(values = colors) +
+    ggplot2::labs(fill = 'HOLC Categories') +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
       legend.position = "right"
     )
   
   # Save the plot as a high-resolution PNG file
-  ggsave(filename, plot, width = 10, height = 8, units = "in", dpi = 600)
+  ggplot2::ggsave(filename, plot, width = 10, height = 8, units = "in", dpi = 600)
   
   # Return the plot object if needed for further manipulation or checking
   return(plot)
@@ -202,32 +206,33 @@ plot_city_redlining <- function(redlining_data, filename = "redlining_plot.png")
 ```{r, collapse=TRUE}
 split_plot <- function(sf_data, roads, rivers) {
   # Filter for grades A, B, C, and D
-  sf_data_filtered <- sf_data %>% 
-    filter(grade %in% c('A', 'B', 'C', 'D'))
+  sf_data_filtered <- sf_data |> 
+    dplyr::filter(grade %in% c('A', 'B', 'C', 'D'))
 
   # Define a color for each grade
   grade_colors <- c("A" = "#76a865", "B" = "#7cb5bd", "C" = "#ffff00", "D" = "#d9838d")
 
   # Create the plot with panels for each grade
-  plot <- ggplot(data = sf_data_filtered) +
-    geom_sf(data = roads, alpha = 0.1, lwd = 0.1) +
-    geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
-    geom_sf(aes(fill = grade)) +
-    facet_wrap(~ grade, nrow = 1) +  # Free scales for different zoom levels if needed
-    scale_fill_manual(values = grade_colors) +
-    theme_minimal() +
-    labs(fill = 'HOLC Grade') +
-    theme_tufte() +
-    theme(plot.background = element_rect(fill = "white", color = NA),
-          panel.background = element_rect(fill = "white", color = NA),
-          legend.position = "none",  # Optionally hide the legend
-          axis.text = element_blank(),     # Remove axis text
-          axis.title = element_blank(),    # Remove axis titles
-          axis.ticks = element_blank(),    # Remove axis ticks
-          panel.grid.major = element_blank(),  # Remove major grid lines
-          panel.grid.minor = element_blank())  
+  plot <- ggplot2::ggplot(data = sf_data_filtered) +
+    ggplot2::geom_sf(data = roads, alpha = 0.1, lwd = 0.1) +
+    ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
+    ggplot2::geom_sf(aes(fill = grade)) +
+    ggplot2::facet_wrap(~ grade, nrow = 1) +  # Free scales for different zoom levels if needed
+    ggplot2::scale_fill_manual(values = grade_colors) +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(fill = 'HOLC Grade') +
+    ggthemes::theme_tufte() +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA),
+      legend.position = "none",  # Optionally hide the legend
+      axis.text = ggplot2::element_blank(),     # Remove axis text
+      axis.title = ggplot2::element_blank(),    # Remove axis titles
+      axis.ticks = ggplot2::element_blank(),    # Remove axis ticks
+      panel.grid.major = ggplot2::element_blank(),  # Remove major grid lines
+      panel.grid.minor = ggplot2::element_blank())  
 
-  ggsave(plot, filename = "HOLC_grades_individually.png", width = 10, height = 4, units = "in", dpi = 1200)
+  ggplot2::ggsave(plot, filename = "HOLC_grades_individually.png", width = 10, height = 4, units = "in", dpi = 1200)
   return(plot)
 }
 ```
@@ -246,54 +251,54 @@ plot_row
 ```{r, collapse=TRUE}
 process_and_plot_sf_layers <- function(layer1, layer2, output_file = "output_plot.png") {
  # Make geometries valid
-layer1 <- st_make_valid(layer1)
-layer2 <- st_make_valid(layer2)
+  layer1 <- sf::st_make_valid(layer1)
+  layer2 <- sf::st_make_valid(layer2)
 
-# Optionally, simplify geometries to remove duplicate vertices
-layer1 <- st_simplify(layer1, preserveTopology = TRUE) |>
-  filter(grade != "")
+  # Optionally, simplify geometries to remove duplicate vertices
+  layer1 <- sf::st_simplify(layer1, preserveTopology = TRUE) |>
+    dplyr::filter(grade != "")
 
-# Prepare a list to store results
-results <- list()
+  # Prepare a list to store results
+  results <- list()
 
-# Loop through each grade and perform operations
-for (grade in c("A", "B", "C", "D")) {
-  # Filter layer1 for current grade
-  layer1_grade <- layer1[layer1$grade == grade, ]
+  # Loop through each grade and perform operations
+  for (grade in c("A", "B", "C", "D")) {
+    # Filter layer1 for current grade
+    layer1_grade <- layer1[layer1$grade == grade, ]
 
-  # Buffer the geometries of the current grade
-  buffered_layer1_grade <- st_buffer(layer1_grade, dist = 500)
+    # Buffer the geometries of the current grade
+    buffered_layer1_grade <- sf::st_buffer(layer1_grade, dist = 500)
 
-  # Intersect with the second layer
-  intersections <- st_intersects(layer2, buffered_layer1_grade, sparse = FALSE)
-  selected_polygons <- layer2[rowSums(intersections) > 0, ]
+    # Intersect with the second layer
+    intersections <- sf::st_intersects(layer2, buffered_layer1_grade, sparse = FALSE)
+    selected_polygons <- layer2[rowSums(intersections) > 0, ]
 
-  # Add a new column to store the grade information
-  selected_polygons$grade <- grade
+    # Add a new column to store the grade information
+    selected_polygons$grade <- grade
 
-  # Store the result
-  results[[grade]] <- selected_polygons
-}
+    # Store the result
+    results[[grade]] <- selected_polygons
+  }
 
-# Combine all selected polygons from different grades into one sf object
-final_selected_polygons <- do.call(rbind, results)
+  # Combine all selected polygons from different grades into one sf object
+  final_selected_polygons <- do.call(rbind, results)
 
   # Define colors for the grades
   grade_colors <- c("A" = "grey", "B" = "grey", "C" = "grey", "D" = "grey")
 
   # Create the plot
   plot <- ggplot() +
-    geom_sf(data = roads, alpha = 0.05, lwd = 0.1) +
-    geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
-    geom_sf(data = layer1, fill = "grey", color = "grey", size = 0.1) +
+    ggplot2::geom_sf(data = roads, alpha = 0.05, lwd = 0.1) +
+    ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
+    ggplot2::geom_sf(data = layer1, fill = "grey", color = "grey", size = 0.1) +
     facet_wrap(~ grade, nrow = 1) +
-    geom_sf(data = final_selected_polygons,fill = "green", color = "green", size = 0.1) +
+    ggplot2::geom_sf(data = final_selected_polygons,fill = "green", color = "green", size = 0.1) +
     facet_wrap(~ grade, nrow = 1) +
     #scale_fill_manual(values = grade_colors) +
     #scale_color_manual(values = grade_colors) +
     theme_minimal() +
     labs(fill = 'HOLC Grade') +
-    theme_tufte() +
+    ggthemes::theme_tufte() +
     theme(plot.background = element_rect(fill = "white", color = NA),
       panel.background = element_rect(fill = "white", color = NA),
       legend.position = "none",
@@ -312,37 +317,35 @@ final_selected_polygons <- do.call(rbind, results)
 ```
 
 # NDVI
+
 This section pertain to the processing of satellite imagery to calculate the Normalized Difference Vegetation Index (NDVI), a popular remote sensing measurement used to assess the presence and condition of green vegetation. The NDVI process helps in understanding the spatial distribution of vegetation, urban heat effects, and environmental management.
 
-How to Use the NDVI Functions
+## How to Use the NDVI Functions
+
 Process Satellite Data (process_satellite_data): This function takes a polygon layer (e.g., administrative boundaries or any spatial delineation in sf format), a start and end date, and specific satellite assets (e.g., bands of Sentinel-2). It calculates the NDVI for the specified area and period, creating an animated GIF to visually represent changes over time. This is useful for observing phenological changes or assessing vegetation health periodically.
 
 Yearly Average NDVI (yearly_average_ndvi): This function calculates the yearly average NDVI for a given spatial extent defined by a polygon layer. It filters cloud-free satellite images within a year to compute a median NDVI, providing insights into the annual vegetation status which is crucial for environmental monitoring and urban planning.
 
 Create Mask and Plot (create_mask_and_plot): After processing NDVI, this function overlays the NDVI data on a map with additional geographical layers (e.g., roads, rivers). It applies a mask to segment the NDVI results by different grades or zones within the area, which is particularly useful for detailed spatial analysis in urban planning or environmental studies.
 
-
-
-
-
 ```{r, collapse=TRUE}
 create_mask_and_plot <- function(redlining_sf, background_raster = ndvi$raster, roads = NULL, rivers = NULL){
   start_time <- Sys.time()  # Start timing
   
   # Validate and prepare the redlining data
-  redlining_sf <- redlining_sf %>%
-    filter(grade != "") %>%
-    st_make_valid()
+  redlining_sf <- redlining_sf |>
+    dplyr::filter(grade != "") |>
+    sf::st_make_valid()
   
   
-bbox <- st_bbox(redlining_sf)  # Get original bounding box
+  bbox <- sf::st_bbox(redlining_sf)  # Get original bounding box
 
 
-expanded_bbox <- expand_bbox(bbox, 6000, 1000)  # 
-
+  expanded_bbox <- basemapR::expand_bbox(bbox, 6000, 1000)  # 
    
-expanded_bbox_poly <- st_as_sfc(expanded_bbox, crs = st_crs(redlining_sf)) %>%
-    st_make_valid()
+  expanded_bbox_poly <- 
+    sf::st_as_sfc(expanded_bbox, crs = sf::st_crs(redlining_sf)) |>
+    sf::st_make_valid()
   
   # Initialize an empty list to store masks
   masks <- list()
@@ -354,10 +357,10 @@ expanded_bbox_poly <- st_as_sfc(expanded_bbox, crs = st_crs(redlining_sf)) %>%
     grade_polygons <- redlining_sf[redlining_sf$grade == grade, ]
     
     # Create an "inverted" mask by subtracting these polygons from the background
-    mask <- st_difference(expanded_bbox_poly, st_union(grade_polygons))
+    mask <- sf::st_difference(expanded_bbox_poly, sf::st_union(grade_polygons))
     
     # Store the mask in the list with the grade as the name
-    masks[[grade]] <- st_sf(geometry = mask, grade = grade)
+    masks[[grade]] <- sf::st_sf(geometry = mask, grade = grade)
   }
   
   # Combine all masks into a single sf object
@@ -367,31 +370,34 @@ expanded_bbox_poly <- st_as_sfc(expanded_bbox, crs = st_crs(redlining_sf)) %>%
   mask_sf$grade <- ifelse(mask_sf$grade == "C.2", "C", mask_sf$grade)
 
   # Prepare the plot
-  plot <- ggplot() +
-    geom_spatraster(data = background_raster, aes(fill = NDVI)) +
-  scale_fill_viridis_c(name = "NDVI", option = "viridis", direction = -1) +
+  plot <- ggplot2::ggplot() +
+    tidyterra::geom_spatraster(data = background_raster, aes(fill = NDVI)) +
+    ggplot2::scale_fill_viridis_c(name = "NDVI", option = "viridis", direction = -1) +
    
-    geom_sf(data = mask_sf, aes(color = grade), fill = "white", size = 0.1, show.legend = FALSE) +
-    scale_color_manual(values = c("A" = "white", "B" = "white", "C" = "white", "D" = "white"), name = "Grade") +
-    facet_wrap(~ grade, nrow = 1) +
-     geom_sf(data = roads, alpha = 1, lwd = 0.1, color="white") +
-    geom_sf(data = rivers, color = "white", alpha = 0.5, lwd = 1.1) +
-    labs(title = "NDVI: Normalized Difference Vegetation Index") +
-    theme_minimal() +
-    coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]), 
-           ylim = c(bbox["ymin"], bbox["ymax"]), 
-           expand = FALSE) + 
-    theme(plot.background = element_rect(fill = "white", color = NA),
-          panel.background = element_rect(fill = "white", color = NA),
-          legend.position = "bottom",
-          axis.text = element_blank(),
-          axis.title = element_blank(),
-          axis.ticks = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())
+    ggplot2::geom_sf(data = mask_sf, aes(color = grade), fill = "white", size = 0.1, show.legend = FALSE) +
+    ggplot2::scale_color_manual(
+      values = c("A" = "white", "B" = "white", "C" = "white", "D" = "white"), name = "Grade") +
+    ggplot2::facet_wrap(~ grade, nrow = 1) +
+    ggplot2::geom_sf(data = roads, alpha = 1, lwd = 0.1, color="white") +
+    ggplot2::geom_sf(data = rivers, color = "white", alpha = 0.5, lwd = 1.1) +
+    ggplot2::labs(title = "NDVI: Normalized Difference Vegetation Index") +
+    ggplot2::theme_minimal() +
+    ggplot2::coord_sf(
+      xlim = c(bbox["xmin"], bbox["xmax"]), 
+      ylim = c(bbox["ymin"], bbox["ymax"]), 
+      expand = FALSE) + 
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA),
+      legend.position = "bottom",
+      axis.text = ggplot2::element_blank(),
+      axis.title = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank())
 
   # Save the plot
-  ggsave("redlining_mask_ndvi.png", plot, width = 10, height = 4, dpi = 600)
+  ggplot2::ggsave("redlining_mask_ndvi.png", plot, width = 10, height = 4, dpi = 600)
 
   end_time <- Sys.time()  # End timing
   runtime <- end_time - start_time
@@ -407,56 +413,59 @@ yearly_average_ndvi <- function(polygon_layer, output_file = "ndvi.png", dx = 0.
   start_time <- Sys.time()
 
   # Calculate the bbox from the polygon layer
-  bbox <- st_bbox(polygon_layer)
+  bbox <- sf::st_bbox(polygon_layer)
   
-  s = stac("https://earth-search.aws.element84.com/v0")
+  s = rstac::stac("https://earth-search.aws.element84.com/v0")
 
   # Search for Sentinel-2 images within the bbox for June
-  items <- s |> stac_search(
+  items <- s |> rstac::stac_search(
     collections = "sentinel-s2-l2a-cogs",
     bbox = c(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"]),
     datetime = "2023-01-01/2023-12-31",
-    limit = 500
-  ) %>% 
-  post_request()
+    limit = 500) |> 
+  rstac::post_request()
   
   # Create a collection of images filtering by cloud cover
-  col <- stac_image_collection(items$features, asset_names = c("B04", "B08"), property_filter = function(x) {x[["eo:cloud_cover"]] < 80})
+  col <- gdalcubes::stac_image_collection(
+    items$features, asset_names = c("B04", "B08"),
+    property_filter = function(x) {x[["eo:cloud_cover"]] < 80})
   
   # Define a view for processing the data specifically for June
-  v <- cube_view(srs = "EPSG:4326", 
-                 extent = list(t0 = "2023-01-01", t1 = "2023-12-31",
-                               left = bbox["xmin"], right = bbox["xmax"], 
-                               top = bbox["ymax"], bottom = bbox["ymin"]),
-                 dx = dx, dy = dy, dt = "P1Y", 
-                 aggregation = "median", resampling = "bilinear")
+  v <- gdalcubes::cube_view(
+    srs = "EPSG:4326", 
+    extent = list(t0 = "2023-01-01", t1 = "2023-12-31",
+    left = bbox["xmin"], right = bbox["xmax"], 
+    top = bbox["ymax"], bottom = bbox["ymin"]),
+    dx = dx, dy = dy, dt = "P1Y", 
+    aggregation = "median", resampling = "bilinear")
 
   # Process NDVI
-  ndvi_rast <- raster_cube(col, v) %>%
-    select_bands(c("B04", "B08")) %>%
-    apply_pixel("(B08-B04)/(B08+B04)", "NDVI") %>%
-    write_tif() |>
+  ndvi_rast <- gdalcubes::raster_cube(col, v) |>
+    gdalcubes::select_bands(c("B04", "B08")) |>
+    gdalcubes::apply_pixel("(B08-B04)/(B08+B04)", "NDVI") |>
+    gdalcubes::write_tif() |>
     terra::rast()
   
  
   # Convert terra Raster to ggplot using tidyterra
-ndvi_plot <-   ggplot() +
-    geom_spatraster(data = ndvi_rast, aes(fill = NDVI)) +
-    scale_fill_viridis_c(option = "viridis", direction = -1, name = "NDVI") +
-    labs(title = "NDVI mean for 2023") +
-    theme_minimal() +
-    coord_sf() +
-    theme(plot.background = element_rect(fill = "white", color = NA),
-      panel.background = element_rect(fill = "white", color = NA),
+ndvi_plot <- ggplot2::ggplot() +
+    tidyterra::geom_spatraster(data = ndvi_rast, aes(fill = NDVI)) +
+    ggplot2::scale_fill_viridis_c(option = "viridis", direction = -1, name = "NDVI") +
+    ggplot2::labs(title = "NDVI mean for 2023") +
+    ggplot2::theme_minimal() +
+    ggplot2::coord_sf() +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA),
       legend.position = "right",
-          axis.text = element_blank(),
-          axis.title = element_blank(),
-          axis.ticks = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank()) 
+      axis.text = ggplot2::element_blank(),
+      axis.title = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()) 
 
   # Save the plot as a high-resolution PNG file
-  ggsave(output_file, ndvi_plot, width = 10, height = 8, dpi = 600)
+  ggplot2::ggsave(output_file, ndvi_plot, width = 10, height = 8, dpi = 600)
 
   # Calculate processing time
   end_time <- Sys.time()
@@ -474,11 +483,14 @@ ndvi_background_low$plot
 
 
 ```{r, cache=TRUE}
-ndvi <- create_mask_and_plot(denver_redlining, background_raster = ndvi_background_low$raster, roads = roads, rivers = rivers)
+ndvi <- create_mask_and_plot(
+  denver_redlining, background_raster = ndvi_background_low$raster,
+  roads = roads, rivers = rivers)
 ndvi$plot
 ```
 
 # City of Denver Open Data Portal
+
 This section serves as an interface to the City of Denver Open Data Portal for geographic data analysis. It features a functional approach to access, process, and visualize diverse city inventory datasets. Each dataset—ranging from tree density to crime statistics—is available through direct download and analysis via a centralized function, process_city_inventory_data, which utilizes shapefiles and spatial data frameworks to generate insightful visualizations.
 
 Overview and Usage Instructions:
@@ -487,55 +499,59 @@ Function Setup (process_city_inventory_data): This function automates the downlo
 Choice Function (process_city_inventory_data_choice): To streamline user interaction and selection from multiple datasets, this function allows users to choose a dataset by number and pass a spatial polygon for analysis. It maps user input to specific datasets and triggers data processing for that choice.
 
 ```{r}
-process_city_inventory_data <- function(address, inner_file, polygon_layer, output_filename,variable_label= 'Tree Density') {
+process_city_inventory_data <- function(address, inner_file, polygon_layer, 
+                                        output_filename,variable_label= 'Tree Density') {
   # Download and read the shapefile
-  full_path <- glue("/vsizip/vsicurl/{address}/{inner_file}")
-  shape_data <- st_read(full_path, quiet = TRUE) |> st_as_sf()
+  full_path <- glue::glue("/vsizip/vsicurl/{address}/{inner_file}")
+  shape_data <- sf::st_read(full_path, quiet = TRUE) |> sf::st_as_sf()
 
   # Process the shape data with the provided polygon layer
-  processed_data <- process_and_plot_sf_layers(polygon_layer, shape_data, paste0(output_filename, ".png"))
+  processed_data <- process_and_plot_sf_layers(polygon_layer, shape_data,
+                                               paste0(output_filename, ".png"))
 
   # Extract trees from the processed data
   trees <- processed_data$sf
   denver_redlining_residential <- polygon_layer |> filter(grade != "")
 
   # Generate the density plot
-  plot <- ggplot() +
-    geom_sf(data = roads, alpha = 0.05, lwd = 0.1) +
-    geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
-    geom_sf(data = denver_redlining_residential, fill = "grey", color = "grey", size = 0.1) +
-    facet_wrap(~ grade, nrow = 1) +
-    stat_density_2d(data = trees, 
-                    mapping = aes(x = map_dbl(geometry, ~.[1]),
-                                  y = map_dbl(geometry, ~.[2]),
-                                  fill = stat(density)),
-                    geom = 'tile',
-                    contour = FALSE,
-                    alpha = 0.9) +
-    scale_fill_gradientn(colors = c("transparent", "white", "limegreen"),
-                         values = scales::rescale(c(0, 0.1, 1)),  # Adjust these based on your density range
-                         guide = "colourbar") +
-    theme_minimal() +
-    labs(fill = variable_label) +
-    theme_tufte() +
-    theme(plot.background = element_rect(fill = "white", color = NA),
-          panel.background = element_rect(fill = "white", color = NA),
-          legend.position = "bottom",
-          axis.text = element_blank(),
-          axis.title = element_blank(),
-          axis.ticks = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())
+  plot <- ggplot2::ggplot() +
+    ggplot2::geom_sf(data = roads, alpha = 0.05, lwd = 0.1) +
+    ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
+    ggplot2::geom_sf(data = denver_redlining_residential, fill = "grey", color = "grey", size = 0.1) +
+    ggplot2::facet_wrap(~ grade, nrow = 1) +
+    ggplot2::stat_density_2d(
+      data = trees, 
+      mapping = aes(x = purrr::map_dbl(geometry, ~.[1]),
+                    y = purrr::map_dbl(geometry, ~.[2]),
+                    fill = stat(density)),
+      geom = 'tile',
+      contour = FALSE,
+      alpha = 0.9) +
+    ggplot2::scale_fill_gradientn(
+      colors = c("transparent", "white", "limegreen"),
+      values = scales::rescale(c(0, 0.1, 1)),  # Adjust these based on your density range
+      guide = "colourbar") +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(fill = variable_label) +
+    ggthemes::theme_tufte() +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA),
+      legend.position = "bottom",
+      axis.text = ggplot2::element_blank(),
+      axis.title = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank())
 
   # Save the plot
-  ggsave(paste0(output_filename, "_density_plot.png"), plot, width = 10, height = 4, units = "in", dpi = 600)
+  ggplot2::ggsave(paste0(output_filename, "_density_plot.png"), plot, width = 10,
+                  height = 4, units = "in", dpi = 600)
 
   # Return the plot and the tree layer
   return(list(plot = plot, layer = trees))
 }
 ```
-
-
 
 ```{r}
 process_city_inventory_data_choice <- function(choice, polygon_layer) {
@@ -612,7 +628,3 @@ result <- process_city_inventory_data_choice(1, denver_redlining)
 print(result$plot)  # To display the generated plot
 
 ```
-
-
-
-
