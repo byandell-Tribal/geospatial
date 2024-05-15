@@ -23,7 +23,9 @@ plot_city_redlining <- function(redlining_data, filename = "redlining_plot.png")
   plot <- ggplot2::ggplot() +
     ggplot2::geom_sf(data = roads, lwd = 0.1) +
     ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.5, lwd = 1.1) +
-    ggplot2::geom_sf(data = residential_zones, aes(fill = grade), alpha = 0.5) +
+    ggplot2::geom_sf(data = residential_zones,
+                     ggplot2::aes(fill = grade),
+                     alpha = 0.5) +
     ggthemes::theme_tufte() +
     ggplot2::scale_fill_manual(values = colors) +
     ggplot2::labs(fill = 'HOLC Categories') +

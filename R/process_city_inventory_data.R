@@ -23,7 +23,7 @@ process_city_inventory_data <- function(address, inner_file, polygon_layer,
       data = trees, 
       mapping = aes(x = purrr::map_dbl(geometry, ~.[1]),
                     y = purrr::map_dbl(geometry, ~.[2]),
-                    fill = stat(density)),
+                    fill = ggplot2::after_stat(density)),
       geom = 'tile',
       contour = FALSE,
       alpha = 0.9) +
