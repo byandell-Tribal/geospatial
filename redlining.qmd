@@ -1,0 +1,102 @@
+---
+title: "student edition"
+format: gfm
+---
+
+This comes from
+[github.com/CU-ESIIL/Innovation-Summit-2024/code/worksheet_redlining_student_edition.qmd](https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/code/worksheet_redlining_student_edition.qmd).
+
+# Make map
+
+The provided R script outlines a comprehensive workflow for mapping and analyzing geographic data using various spatial functions and visualization tools in R. This process involves loading, processing, and mapping data with a focus on urban planning and environmental analysis, particularly using the example of redlining data for the city of Denver.
+
+Overview and Usage
+Setup and Dependencies: The script starts by loading necessary R packages like sf for handling spatial data, ggplot2 for plotting, and others like gdalcubes and dplyr for data manipulation and analysis. It also includes installation of custom libraries like basemapR via devtools.
+
+Data Loading (load_city_redlining_data): This function retrieves redlining data from a specified URL, filters it by city, and reads it into an sf object, which is a standard format for storing geometric location data and associated attributes in R.
+
+Data Retrieval (get_places): This function is designed to fetch additional geographic data like roads and rivers based on the bounding box of the provided spatial layer. It demonstrates the integration of external data sources into spatial analysis workflows.
+
+Data Visualization (plot_city_redlining and split_plot): These functions are used to create detailed maps that overlay various data layers such as roads, rivers, and residential zones based on redlining grades. The use of thematic mapping and faceting provides insights into the spatial distribution of urban features.
+
+Advanced Spatial Analysis (process_and_plot_sf_layers): This function performs complex spatial operations like buffering and intersecting different layers to analyze the interactions between them. It exemplifies how to handle and visualize spatial relationships and dependencies.
+
+The following `source`s all functions used below. Next step might be to organized this project as a package.
+
+```{r}
+fns <- list.files("R")
+for(i in fns) source(file.path("R", i))
+```
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+# Load redlining data for Denver
+denver_redlining <- load_city_redlining_data("Denver")
+denver_redlining
+```
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+roads <- get_places(denver_redlining, type="roads")
+
+rivers <- get_places(denver_redlining, type="rivers")
+```
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+plot_city_redlining(denver_redlining)
+```
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+split_plot(denver_redlining, roads, rivers)
+```
+
+# NDVI
+
+This section pertain to the processing of satellite imagery to calculate the Normalized Difference Vegetation Index (NDVI), a popular remote sensing measurement used to assess the presence and condition of green vegetation. The NDVI process helps in understanding the spatial distribution of vegetation, urban heat effects, and environmental management.
+
+## How to Use the NDVI Functions
+
+Process Satellite Data (process_satellite_data): This function takes a polygon layer (e.g., administrative boundaries or any spatial delineation in sf format), a start and end date, and specific satellite assets (e.g., bands of Sentinel-2). It calculates the NDVI for the specified area and period, creating an animated GIF to visually represent changes over time. This is useful for observing phenological changes or assessing vegetation health periodically.
+
+Yearly Average NDVI (yearly_average_ndvi): This function calculates the yearly average NDVI for a given spatial extent defined by a polygon layer. It filters cloud-free satellite images within a year to compute a median NDVI, providing insights into the annual vegetation status which is crucial for environmental monitoring and urban planning.
+
+Create Mask and Plot (create_mask_and_plot): After processing NDVI, this function overlays the NDVI data on a map with additional geographical layers (e.g., roads, rivers). It applies a mask to segment the NDVI results by different grades or zones within the area, which is particularly useful for detailed spatial analysis in urban planning or environmental studies.
+
+```{r, cache=TRUE}
+ndvi_background_low <- yearly_average_ndvi(denver_redlining, dx = 0.01, dy = 0.01)
+ndvi_background_low$plot
+```
+
+```{r, cache=TRUE}
+ndvi <- create_mask_and_plot(
+  denver_redlining, background_raster = ndvi_background_low$raster,
+  roads = roads, rivers = rivers)
+ndvi$plot
+```
+
+# City of Denver Open Data Portal
+
+This section serves as an interface to the City of Denver Open Data Portal for geographic data analysis. It features a functional approach to access, process, and visualize diverse city inventory datasets. Each dataset—ranging from tree density to crime statistics—is available through direct download and analysis via a centralized function, process_city_inventory_data, which utilizes shapefiles and spatial data frameworks to generate insightful visualizations.
+
+Overview and Usage Instructions:
+Function Setup (process_city_inventory_data): This function automates the downloading and reading of shapefiles from specified URLs, processes them according to the geographic area provided (polygon layer), and then plots density maps. These maps can be used to assess various urban factors like tree density or crime rates within specific city zones.
+
+Choice Function (process_city_inventory_data_choice): To streamline user interaction and selection from multiple datasets, this function allows users to choose a dataset by number and pass a spatial polygon for analysis. It maps user input to specific datasets and triggers data processing for that choice.
+
+The function process_city_inventory_data_choice allows users to select from a predefined set of datasets for processing. It takes two arguments: choice, an integer that specifies the dataset to process, and polygon_layer, an sf object that represents the geographic area to be analyzed. The choice argument should be a number between 1 and 7, each corresponding to different types of city data:
+
+1. **Tree Density** - Tree inventory data.
+2. **Traffic Accidents Density** - Traffic accidents data.
+3. **Instream Sampling Sites Density** - Environmental sampling sites data.
+4. **Soil Samples Density** - Soil sample data.
+5. **Public Art Density** - Public art locations.
+6. **Liquor Licenses Density** - Liquor license data.
+7. **Crime Density** - City crime data.
+
+To use this function, simply specify the choice of data and the geographic area as an sf object. The function will process the selected data and return a list containing the generated plot and other relevant data layers. This allows for easy integration and analysis of various city data layers based on spatial parameters.
+
+```{r}
+# Example usage:
+result <- process_city_inventory_data_choice(1, denver_redlining,
+  "https://www.denvergov.org/media/gis/DataCatalog")
+print(result$plot)  # To display the generated plot
+
+```
