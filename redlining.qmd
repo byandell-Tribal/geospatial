@@ -8,7 +8,7 @@ This comes from
 
 See teacher addition
 
-- <https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/worksheet_redlining/>
+- <https://cu-esiil.github.io/Innovation-Summit-2024/docs/worksheets/worksheet_redlining/>
 - <https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/docs/worksheets/worksheet_redlining.qmd>
 
 # Make map
