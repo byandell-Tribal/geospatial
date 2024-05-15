@@ -13,6 +13,10 @@ split_plot <- function(sf_data, roads, rivers) {
   sf_data_filtered <- sf_data |> 
     dplyr::filter(grade %in% c('A', 'B', 'C', 'D'))
   
+  # Kludge as ggplot2 expects `geometry` object to have class `vector`.
+  # This still does not work when rendering.
+  sf_data_filtered$geometry <- as.vector(sf_data_filtered$geometry)
+  
   # Define a color for each grade
   grade_colors <- c("A" = "#76a865", "B" = "#7cb5bd", "C" = "#ffff00", "D" = "#d9838d")
   
@@ -20,7 +24,7 @@ split_plot <- function(sf_data, roads, rivers) {
   plot <- ggplot2::ggplot(data = sf_data_filtered) +
     ggplot2::geom_sf(data = roads, alpha = 0.1, lwd = 0.1) +
     ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
-    ggplot2::geom_sf(aes(fill = grade)) +
+    ggplot2::geom_sf(ggplot2::aes(fill = grade)) +
     ggplot2::facet_wrap(~ grade, nrow = 1) +  # Free scales for different zoom levels if needed
     ggplot2::scale_fill_manual(values = grade_colors) +
     ggplot2::theme_minimal() +

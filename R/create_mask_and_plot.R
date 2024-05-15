@@ -49,10 +49,14 @@ create_mask_and_plot <- function(redlining_sf, background_raster = ndvi$raster, 
   
   # Prepare the plot
   plot <- ggplot2::ggplot() +
-    tidyterra::geom_spatraster(data = background_raster, aes(fill = NDVI)) +
+    tidyterra::geom_spatraster(data = background_raster,
+                               ggplot2::aes(fill = NDVI)) +
     ggplot2::scale_fill_viridis_c(name = "NDVI", option = "viridis", direction = -1) +
     
-    ggplot2::geom_sf(data = mask_sf, aes(color = grade), fill = "white", size = 0.1, show.legend = FALSE) +
+    ggplot2::geom_sf(data = mask_sf,
+                     ggplot2::aes(color = grade),
+                     fill = "white", size = 0.1,
+                     show.legend = FALSE) +
     ggplot2::scale_color_manual(
       values = c("A" = "white", "B" = "white", "C" = "white", "D" = "white"), name = "Grade") +
     ggplot2::facet_wrap(~ grade, nrow = 1) +

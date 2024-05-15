@@ -48,7 +48,8 @@ yearly_average_ndvi <- function(polygon_layer, output_file = "ndvi.png", dx = 0.
   
   # Convert terra Raster to ggplot using tidyterra
   ndvi_plot <- ggplot2::ggplot() +
-    tidyterra::geom_spatraster(data = ndvi_rast, aes(fill = NDVI)) +
+    tidyterra::geom_spatraster(data = ndvi_rast,
+                               ggplot2::aes(fill = NDVI)) +
     ggplot2::scale_fill_viridis_c(option = "viridis", direction = -1, name = "NDVI") +
     ggplot2::labs(title = "NDVI mean for 2023") +
     ggplot2::theme_minimal() +

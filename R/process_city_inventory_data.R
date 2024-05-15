@@ -21,9 +21,10 @@ process_city_inventory_data <- function(address, inner_file, polygon_layer,
     ggplot2::facet_wrap(~ grade, nrow = 1) +
     ggplot2::stat_density_2d(
       data = trees, 
-      mapping = aes(x = purrr::map_dbl(geometry, ~.[1]),
-                    y = purrr::map_dbl(geometry, ~.[2]),
-                    fill = ggplot2::after_stat(density)),
+      mapping = ggplot2::aes(
+        x = purrr::map_dbl(geometry, ~.[1]),
+        y = purrr::map_dbl(geometry, ~.[2]),
+        fill = ggplot2::after_stat(density)),
       geom = 'tile',
       contour = FALSE,
       alpha = 0.9) +
