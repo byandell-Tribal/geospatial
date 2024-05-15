@@ -6,6 +6,11 @@ format: gfm
 This comes from
 [github.com/CU-ESIIL/Innovation-Summit-2024/code/worksheet_redlining_student_edition.qmd](https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/code/worksheet_redlining_student_edition.qmd).
 
+See teacher addition
+
+- <https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/worksheet_redlining/>
+- <https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/docs/worksheets/worksheet_redlining.qmd>
+
 # Make map
 
 The provided R script outlines a comprehensive workflow for mapping and analyzing geographic data using various spatial functions and visualization tools in R. This process involves loading, processing, and mapping data with a focus on urban planning and environmental analysis, particularly using the example of redlining data for the city of Denver.
