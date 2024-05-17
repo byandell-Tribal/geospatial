@@ -1,4 +1,4 @@
-#' Title
+#' Stream year average NDVI
 #'
 #' @param polygon_layer 
 #' @param output_file 

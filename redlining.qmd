@@ -8,23 +8,24 @@ This comes from
 
 See teacher addition
 
-- <https://cu-esiil.github.io/Innovation-Summit-2024/docs/worksheets/worksheet_redlining/>
+- <https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/worksheet_redlining/>
 - <https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/docs/worksheets/worksheet_redlining.qmd>
 
 # Make map
 
 The provided R script outlines a comprehensive workflow for mapping and analyzing geographic data using various spatial functions and visualization tools in R. This process involves loading, processing, and mapping data with a focus on urban planning and environmental analysis, particularly using the example of redlining data for the city of Denver.
 
-Overview and Usage
-Setup and Dependencies: The script starts by loading necessary R packages like sf for handling spatial data, ggplot2 for plotting, and others like gdalcubes and dplyr for data manipulation and analysis. It also includes installation of custom libraries like basemapR via devtools.
+# Overview and Usage
 
-Data Loading (load_city_redlining_data): This function retrieves redlining data from a specified URL, filters it by city, and reads it into an sf object, which is a standard format for storing geometric location data and associated attributes in R.
+**Setup and Dependencies**: The script starts by loading necessary R packages like sf for handling spatial data, ggplot2 for plotting, and others like gdalcubes and dplyr for data manipulation and analysis. It also includes installation of custom libraries like basemapR via devtools.
 
-Data Retrieval (get_places): This function is designed to fetch additional geographic data like roads and rivers based on the bounding box of the provided spatial layer. It demonstrates the integration of external data sources into spatial analysis workflows.
+**Data Loading** (load_city_redlining_data): This function retrieves redlining data from a specified URL, filters it by city, and reads it into an sf object, which is a standard format for storing geometric location data and associated attributes in R.
 
-Data Visualization (plot_city_redlining and split_plot): These functions are used to create detailed maps that overlay various data layers such as roads, rivers, and residential zones based on redlining grades. The use of thematic mapping and faceting provides insights into the spatial distribution of urban features.
+**Data Retrieval** (get_places): This function is designed to fetch additional geographic data like roads and rivers based on the bounding box of the provided spatial layer. It demonstrates the integration of external data sources into spatial analysis workflows.
 
-Advanced Spatial Analysis (process_and_plot_sf_layers): This function performs complex spatial operations like buffering and intersecting different layers to analyze the interactions between them. It exemplifies how to handle and visualize spatial relationships and dependencies.
+**Data Visualization** (plot_city_redlining and split_plot): These functions are used to create detailed maps that overlay various data layers such as roads, rivers, and residential zones based on redlining grades. The use of thematic mapping and faceting provides insights into the spatial distribution of urban features.
+
+**Advanced Spatial Analysis** (process_and_plot_sf_layers): This function performs complex spatial operations like buffering and intersecting different layers to analyze the interactions between them. It exemplifies how to handle and visualize spatial relationships and dependencies.
 
 The following `source`s all functions used below. Next step might be to organized this project as a package.
 
@@ -103,10 +104,9 @@ The function process_city_inventory_data_choice allows users to select from a pr
 
 To use this function, simply specify the choice of data and the geographic area as an sf object. The function will process the selected data and return a list containing the generated plot and other relevant data layers. This allows for easy integration and analysis of various city data layers based on spatial parameters.
 
-```{r}
-# Example usage:
+```{r eval=FALSE}
+# Example usage: (this does not work on Cyverse in render mode)
 result <- process_city_inventory_data_choice(1, denver_redlining,
   "https://www.denvergov.org/media/gis/DataCatalog")
 print(result$plot)  # To display the generated plot
-
 ```

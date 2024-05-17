@@ -1,4 +1,4 @@
-#' Title
+#' Map NDVI per HOLC grade
 #'
 #' @param redlining_sf 
 #' @param background_raster 

@@ -1,4 +1,4 @@
-#' Title
+#' Plot POI over HOLC grades
 #'
 #' @param redlining_data 
 #' @param filename 

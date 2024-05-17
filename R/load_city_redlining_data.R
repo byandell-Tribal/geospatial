@@ -1,3 +1,5 @@
+#' Stream HOLC data from a city
+#' 
 #' Load and filter redlining data by city
 #'
 #' @param city_name 

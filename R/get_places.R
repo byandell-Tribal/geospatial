@@ -1,4 +1,4 @@
-#' Title
+#' Get Points-of-Interest from city of interest
 #'
 #' @param polygon_layer 
 #' @param type 

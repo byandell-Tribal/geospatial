@@ -1,4 +1,4 @@
-#' Title
+#' Plot the HOLC grades individually
 #'
 #' @param sf_data 
 #' @param roads 

@@ -1,3 +1,15 @@
+#' Map Denver City provided data per HOLC grade
+#'
+#' @param address 
+#' @param inner_file 
+#' @param polygon_layer 
+#' @param output_filename 
+#' @param variable_label 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 process_city_inventory_data <- function(address, inner_file, polygon_layer, 
                                         output_filename,
                                         variable_label= 'Tree Density') {

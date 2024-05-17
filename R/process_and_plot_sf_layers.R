@@ -1,4 +1,4 @@
-#' Title
+#' Map an amenity over each grade
 #'
 #' @param layer1 
 #' @param layer2 
