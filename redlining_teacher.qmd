@@ -1,7 +1,6 @@
 ---
 title: "Redlining"
 format: gfm
-  
 ---
 
 # Exploring the Impact of Historical Redlining on Urban Greenspace: A Collaborative Examination of Maps, Justice, and Resilience
