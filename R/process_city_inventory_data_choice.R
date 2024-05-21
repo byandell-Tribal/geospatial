@@ -17,6 +17,7 @@
 #'
 #' @return
 #' @export
+#' 
 process_city_inventory_data_choice <- function(choice, polygon_layer,
   source = "https://www.denvergov.org/media/gis/DataCatalog") {
   # Define the dataset choices

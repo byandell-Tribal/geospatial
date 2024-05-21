@@ -7,6 +7,14 @@
 #'
 #' @return
 #' @export
+#' @importFrom dplyr filter
+#' @importFrom ggplot2 aes coord_sf element_blank element_rect facet_wrap
+#'             geom_sf ggplot ggsave labs scale_color_manual
+#'             scale_fill_viridis_c theme theme_minimal
+#' @importFrom sf st_as_sfc st_bbox st_crs st_difference st_make_valid st_sf st_union
+#' @importFrom tidyterra geom_spatraster
+#' @importFrom basemapR expand_bbox
+#' 
 create_mask_and_plot <- function(redlining_sf, background_raster = ndvi$raster, roads = NULL, rivers = NULL){
   start_time <- Sys.time()  # Start timing
   
@@ -18,9 +26,8 @@ create_mask_and_plot <- function(redlining_sf, background_raster = ndvi$raster, 
   
   bbox <- sf::st_bbox(redlining_sf)  # Get original bounding box
   
-  
   expanded_bbox <- basemapR::expand_bbox(bbox, 6000, 1000)  # 
-  
+
   expanded_bbox_poly <- 
     sf::st_as_sfc(expanded_bbox, crs = sf::st_crs(redlining_sf)) |>
     sf::st_make_valid()

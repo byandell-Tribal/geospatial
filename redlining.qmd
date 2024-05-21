@@ -6,10 +6,22 @@ format: gfm
 This comes from
 [github.com/CU-ESIIL/Innovation-Summit-2024/code/worksheet_redlining_student_edition.qmd](https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/code/worksheet_redlining_student_edition.qmd).
 
-See teacher addition
+See also teacher addition
 
 - <https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/worksheet_redlining/>
 - <https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/docs/worksheets/worksheet_redlining.qmd>
+
+### Load Routines
+
+See note in `redlining_teacher.qmd` about `basemapR` and `expand_bbox()`.
+
+```{r eval=FALSE}
+devtools::install_github('Chrisjb/basemapR')
+```
+
+```{r}
+library(geospatial)
+```
 
 # Make map
 
@@ -26,13 +38,6 @@ The provided R script outlines a comprehensive workflow for mapping and analyzin
 **Data Visualization** (plot_city_redlining and split_plot): These functions are used to create detailed maps that overlay various data layers such as roads, rivers, and residential zones based on redlining grades. The use of thematic mapping and faceting provides insights into the spatial distribution of urban features.
 
 **Advanced Spatial Analysis** (process_and_plot_sf_layers): This function performs complex spatial operations like buffering and intersecting different layers to analyze the interactions between them. It exemplifies how to handle and visualize spatial relationships and dependencies.
-
-The following `source`s all functions used below. Next step might be to organized this project as a package.
-
-```{r}
-fns <- list.files("R")
-for(i in fns) source(file.path("R", i))
-```
 
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
 # Load redlining data for Denver

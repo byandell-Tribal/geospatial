@@ -8,8 +8,15 @@
 #'
 #' @return
 #' @export
+#' @importFrom dplyr filter
+#' @importFrom purrr map_dbl
+#' @importFrom ggplot2 aes after_stat element_blank element_rect facet_wrap
+#'             geom_sf ggplot ggsave labs scale_fill_gradientn
+#'             stat_density_2d theme theme_minimal
+#' @importFrom ggthemes theme_tufte
+#' @importFrom sf st_read
+#' @importFrom glue glue
 #'
-#' @examples
 process_city_inventory_data <- function(address, inner_file, polygon_layer, 
                                         output_filename,
                                         variable_label= 'Tree Density') {
@@ -23,7 +30,7 @@ process_city_inventory_data <- function(address, inner_file, polygon_layer,
   
   # Extract trees from the processed data
   trees <- processed_data$sf
-  denver_redlining_residential <- polygon_layer |> filter(grade != "")
+  denver_redlining_residential <- polygon_layer |> dplyr::filter(grade != "")
   
   # Generate the density plot
   plot <- ggplot2::ggplot() +

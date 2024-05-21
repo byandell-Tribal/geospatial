@@ -10,6 +10,21 @@ This comes from the teacher addition
 - <https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/worksheet_redlining/>
 - <https://github.com/CU-ESIIL/Innovation-Summit-2024/blob/main/docs/worksheets/worksheet_redlining.qmd>
 
+The `basemapR` package used in `create_mask_and_plot()` comes from
+<https://github.com/Chrisjb/basemapR>.
+However, see
+
+- <https://github.com/openstreetmap/openstreetmap-website/issues/2316>
+- <https://spatialsample.tidymodels.org/news> 2023-11-07
+
+```{r eval=FALSE}
+devtools::install_github('Chrisjb/basemapR')
+```
+
+```{r}
+library(geospatial)
+```
+
 ## Introduction
 
 This group exploration delves into the long-term impacts of historical redlining on urban greenspace, emphasizing the powerful role of maps in shaping environmental and social landscapes. By drawing on the research by Nardone et al. (2021), you will collaboratively investigate how discriminatory practices encoded in maps have led to persistent disparities in urban settings. This exploration aims to uncover the resilience of communities in adapting to these entrenched injustices and to foster a deeper understanding of how mapping can serve both as a tool of exclusion and as a means for promoting social equity.
@@ -112,28 +127,6 @@ library(glue)
 library(purrr)
 ```
 </details>
-
-The following `source`s all functions used below. Next step might be to organized this project as a package.
-Functions from student edition are assumed same and not repeated.
-
-```{r}
-fns <- list.files("R")
-for(i in fns) source(file.path("R", i))
-```
-
-The functions
-- `create_mask_and_plot()`
-- `create_wordclouds_by_grade()`
-- `get_city_state_list_from_redlining_data()`
-- `get_places()`
-- `load_city_redlining_data()`
-- `plot_city_redlining()`
-- `process_and_plot_sf_layers()`
-- `process_city_inventory_data()`
-- `process_city_inventory_data_choice()`
-- `process_satellite_data()`
-- `split_plot()`
-- `yearly_average_ndvi()`
 
 <details>
 <summary>Stream list of available HOLC cities</summary>

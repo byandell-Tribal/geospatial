@@ -7,6 +7,16 @@
 #'
 #' @return
 #' @export
+#' @importFrom ggplot2 aes coord_sf element_blank
+#'             element_rect labs ggplot ggsave
+#'             scale_fill_viridis_c theme theme_minimal
+#' @importFrom sf st_bbox
+#' @importFrom rstac post_request stac stac_search
+#' @importFrom gdalcubes apply_pixel cube_view raster_cube
+#'             select_bands stac_image_collection write_tif
+#' @importFrom terra rast
+#' @importFrom tidyterra geom_spatraster
+#' 
 yearly_average_ndvi <- function(polygon_layer, output_file = "ndvi.png", dx = 0.01, dy = 0.01) {
   # Record start time
   start_time <- Sys.time()
@@ -44,7 +54,6 @@ yearly_average_ndvi <- function(polygon_layer, output_file = "ndvi.png", dx = 0.
     gdalcubes::apply_pixel("(B08-B04)/(B08+B04)", "NDVI") |>
     gdalcubes::write_tif() |>
     terra::rast()
-  
   
   # Convert terra Raster to ggplot using tidyterra
   ndvi_plot <- ggplot2::ggplot() +

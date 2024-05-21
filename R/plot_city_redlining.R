@@ -5,8 +5,11 @@
 #'
 #' @return
 #' @export
+#' @importFrom dplyr filter
+#' @importFrom ggplot2 aes element_blank element_rect geom_sf
+#'             ggplot ggsave labs scale_fill_manual theme
+#' @importFrom ggthemes theme_tufte
 #'
-#' @examples
 plot_city_redlining <- function(redlining_data, filename = "redlining_plot.png") {
   # Fetch additional geographic data based on redlining data
   roads <- get_places(redlining_data, type = "roads")

@@ -6,8 +6,9 @@
 #'
 #' @return
 #' @export
+#' @importFrom dplyr filter
+#' @importFrom sf read_sf
 #'
-#' @examples
 load_city_redlining_data <- function(city_name) {
   # URL to the GeoJSON data
   url <- "https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk/main/MIv3Areas_2010TractCrosswalk.geojson"

@@ -6,8 +6,12 @@
 #'
 #' @return
 #' @export
+#' @importFrom dplyr filter
+#' @importFrom ggplot2 element_blank element_rect geom_sf
+#'             ggplot ggsave labs theme theme_minimal 
+#' @importFrom ggthemes theme_tufte
+#' @importFrom sf st_buffer st_intersects st_make_valid st_simplify
 #'
-#' @examples
 process_and_plot_sf_layers <- function(layer1, layer2, output_file = "output_plot.png") {
   # Make geometries valid
   layer1 <- sf::st_make_valid(layer1)
@@ -46,29 +50,30 @@ process_and_plot_sf_layers <- function(layer1, layer2, output_file = "output_plo
   grade_colors <- c("A" = "grey", "B" = "grey", "C" = "grey", "D" = "grey")
   
   # Create the plot
-  plot <- ggplot() +
+  plot <- ggplot2::ggplot() +
     ggplot2::geom_sf(data = roads, alpha = 0.05, lwd = 0.1) +
     ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.1, lwd = 1.1) +
     ggplot2::geom_sf(data = layer1, fill = "grey", color = "grey", size = 0.1) +
     facet_wrap(~ grade, nrow = 1) +
-    ggplot2::geom_sf(data = final_selected_polygons,fill = "green", color = "green", size = 0.1) +
+    ggplot2::geom_sf(data = final_selected_polygons, fill = "green", color = "green", size = 0.1) +
     facet_wrap(~ grade, nrow = 1) +
     #scale_fill_manual(values = grade_colors) +
     #scale_color_manual(values = grade_colors) +
-    theme_minimal() +
-    labs(fill = 'HOLC Grade') +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(fill = 'HOLC Grade') +
     ggthemes::theme_tufte() +
-    theme(plot.background = element_rect(fill = "white", color = NA),
-          panel.background = element_rect(fill = "white", color = NA),
-          legend.position = "none",
-          axis.text = element_blank(),
-          axis.title = element_blank(),
-          axis.ticks = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA),
+      legend.position = "none",
+      axis.text = ggplot2::element_blank(),
+      axis.title = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank())
   
   # Save the plot as a high-resolution PNG file
-  ggsave(output_file, plot, width = 10, height = 4, units = "in", dpi = 1200)
+  ggplot2::ggsave(output_file, plot, width = 10, height = 4, units = "in", dpi = 1200)
   
   # Return the plot for optional further use
   return(list(plot=plot, sf = final_selected_polygons))

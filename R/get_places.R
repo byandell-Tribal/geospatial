@@ -5,8 +5,12 @@
 #'
 #' @return
 #' @export
-#'
-#' @examples
+#' @importFrom ggplot2 element_blank element_rect geom_sf
+#'             ggplot ggsave ggtitle theme
+#' @importFrom ggthemes theme_tufte
+#' @importFrom sf st_as_sfc st_bbox st_crop st_make_valid
+#' @importFrom osmextract oe_get
+#' 
 get_places <- function(polygon_layer, type = "food") {
   # Check if the input is an sf object
   if (!inherits(polygon_layer, "sf")) {

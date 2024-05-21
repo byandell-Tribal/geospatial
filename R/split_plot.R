@@ -6,8 +6,10 @@
 #'
 #' @return
 #' @export
+#' @importFrom ggplot2 element_blank element_rect facet_wrap geom_sf
+#'             ggplot ggsave labs scale_fill_manual theme theme_minimal
+#' @importFrom ggthemes theme_tufte
 #'
-#' @examples
 split_plot <- function(sf_data, roads, rivers) {
   # Filter for grades A, B, C, and D
   sf_data_filtered <- sf_data |> 

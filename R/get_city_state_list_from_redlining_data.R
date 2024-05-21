@@ -1,17 +1,20 @@
 #' List cities where HOLC data are available
 #'
 #' Function to get a list of unique cities and states from the redlining data
+#' 
+#' @param url URL to the GeoJSON data
+#' 
 #' @return
 #' @export
-#'
-#' @examples
-get_city_state_list_from_redlining_data <- function() {
-  # URL to the GeoJSON data
-  url <- "https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk/main/MIv3Areas_2010TractCrosswalk.geojson"
+#' @importFrom dplyr arrange distinct select
+#' @importFrom sf read_sf st_set_geometry
+#' 
+get_city_state_list_from_redlining_data <- function(
+    url = "https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk/main/MIv3Areas_2010TractCrosswalk.geojson") {
   
   # Read the GeoJSON file into an sf object
   redlining_data <- tryCatch({
-    read_sf(url)
+    sf::read_sf(url)
   }, error = function(e) {
     stop("Error reading GeoJSON data: ", e$message)
   })
@@ -22,11 +25,11 @@ get_city_state_list_from_redlining_data <- function() {
   }
   
   # Extract a unique list of city and state pairs without the geometries
-  city_state_df <- redlining_data %>%
-    select(city, state) %>%
-    st_set_geometry(NULL) %>%  # Drop the geometry to avoid issues with invalid shapes
-    distinct(city, state) %>%
-    arrange(state, city )  # Arrange the list alphabetically by state, then by city
+  city_state_df <- redlining_data |>
+    dplyr::select(city, state) |>
+    sf::st_set_geometry(NULL) |>  # Drop the geometry to avoid issues with invalid shapes
+    dplyr::distinct(city, state) |>
+    dplyr::arrange(state, city )  # Arrange the list alphabetically by state, then by city
   
   # Return the dataframe of unique city-state pairs
   return(city_state_df)
