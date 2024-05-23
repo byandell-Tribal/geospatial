@@ -15,7 +15,7 @@ Authors@R: c(person("Erick Verleye",
 Depends:
     R (>= 4.2.0)
 Imports:
-    basemapR, colorspace, dplyr, gdalcubes, ggplot2,
+    basemapR, colorspace, dplyr, DT, gdalcubes, ggplot2,
     ggthemes, glue, graphics, grid, osmextract, purrr, rstac,
     sf, shiny, stats, terra, tidyterra, tidytext
 LazyData: true

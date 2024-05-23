@@ -4,7 +4,7 @@
 #' @return reactive server
 #' @export
 #' @importFrom shiny bootstrapPage checkboxInput moduleServer NS plotOutput
-#'             renderPlot renderUI selectInput sliderInput uiOutput
+#'             renderPlot renderUI selectInput shinyApp sliderInput uiOutput
 #' @importFrom graphics hist lines rug
 #' @importFrom stats density
 geyserServer <- function(id) {
