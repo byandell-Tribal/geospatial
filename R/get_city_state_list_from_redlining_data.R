@@ -34,38 +34,3 @@ get_city_state_list_from_redlining_data <- function(
   # Return the dataframe of unique city-state pairs
   return(city_state_df)
 }
-#' Shiny App of cities with HOLC data
-#'
-#' For now, this uses the default redlining GeoJSON URL to extract
-#' cities from user-selected state(s). It is possible to put in your
-#' own URL, but it is tricky to find these URLs.
-#' 
-#' @return reactive app
-#' @export
-#' @rdname get_city_state_list_from_redlining_data
-#' @importFrom dplyr filter
-#' @importFrom shiny bootstrapPage reactive selectInput shinyApp textInput
-#' @importFrom DT dataTableOutput renderDataTable
-redline_city_stateApp <- function() {
-  ui <- shiny::bootstrapPage(
-    shiny::selectInput("state", "State:",
-                       choices = datasets::state.abb,
-                       selected = "CO", multiple = TRUE),
-    DT::dataTableOutput("city_state"),
-    shiny::textInput("url", "GeoJSON URL (default redline if blank):")
-  )
-  server <- function(input, output, session) {
-    city_state <- shiny::reactive({
-      if(shiny::isTruthy(input$url))
-        get_city_state_list_from_redlining_data(input$url)
-      else
-        get_city_state_list_from_redlining_data()
-    })
-    output$city_state <- DT::renderDataTable(
-      dplyr::filter(shiny::req(city_state()),
-                    state %in% input$state),
-      escape = FALSE,
-      options = list(scrollX = TRUE, pageLength = 10))
-  }
-  shiny::shinyApp(ui, server)
-}
