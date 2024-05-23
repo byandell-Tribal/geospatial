@@ -16,8 +16,8 @@ Depends:
     R (>= 4.2.0)
 Imports:
     basemapR, colorspace, dplyr, gdalcubes, ggplot2,
-    ggthemes, glue, grid, osmextract, purrr, rstac,
-    sf, terra, tidyterra, tidytext
+    ggthemes, glue, graphics, grid, osmextract, purrr, rstac,
+    sf, shiny, stats, terra, tidyterra, tidytext
 LazyData: true
 License: GPL-3
 Encoding: UTF-8
