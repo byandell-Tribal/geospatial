@@ -3,11 +3,11 @@
 #' @param input,output,session shiny server reactives
 #' @return reactive server
 #' @export
-#' @importFrom shiny checkboxInput moduleServer NS plotOutput renderPlot
-#'             renderUI selectInput sliderInput uiOutput
+#' @importFrom shiny bootstrapPage checkboxInput moduleServer NS plotOutput
+#'             renderPlot renderUI selectInput sliderInput uiOutput
 #' @importFrom graphics hist lines rug
 #' @importFrom stats density
-geyser <- function(id) {
+geyserServer <- function(id) {
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
@@ -42,7 +42,7 @@ geyser <- function(id) {
 }
 #' Shiny Module Input for Geyser
 #' @return nothing returned
-#' @rdname geyser
+#' @rdname geyserServer
 #' @export
 geyserInput <- function(id) {
   ns <- shiny::NS(id)
@@ -61,7 +61,7 @@ geyserInput <- function(id) {
 }
 #' Shiny Module UI for Geyser
 #' @return nothing returned
-#' @rdname geyser
+#' @rdname geyserServer
 #' @export
 geyserUI <- function(id) {
   ns <- shiny::NS(id)
@@ -69,9 +69,25 @@ geyserUI <- function(id) {
 }
 #' Shiny Module Output for Geyser
 #' @return nothing returned
-#' @rdname geyser
+#' @rdname geyserServer
 #' @export
 geyserOutput <- function(id) {
   ns <- shiny::NS(id)
   shiny::plotOutput(ns("main_plot"), height = "300px")
+}
+#' Shiny Module App for Geyser
+#' @return nothing returned
+#' @rdname geyserServer
+#' @export
+geyserApp <- function() {
+  ui <- shiny::bootstrapPage(
+    geyserInput("geyser"), 
+    geyserOutput("geyser"),
+    # Display this only if the density is shown
+    geyserUI("geyser")
+  )
+  server <- function(input, output, session) {
+    geyserServer("geyser")
+  }
+  shiny::shinyApp(ui, server)
 }

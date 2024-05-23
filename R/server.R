@@ -4,5 +4,5 @@
 #' @return reactive server
 #' @export
 server <- function(input, output, session) {
-  geyser("geyser")
+  geyserServer("geyser")
 }

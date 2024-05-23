@@ -1,6 +1,4 @@
-title <- "Geospatial Shiny"
-
-ui <- geospatial::ui(title)
+ui <- geospatial::ui()
 
 server <- function(input, output, session) {
   geospatial::server(input, output, session)
