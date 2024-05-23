@@ -5,7 +5,7 @@
 #' @param dx 
 #' @param dy 
 #'
-#' @return
+#' @return list with `ggplot`, `processing_time`, `raster` objects
 #' @export
 #' @importFrom ggplot2 aes coord_sf element_blank
 #'             element_rect labs ggplot ggsave

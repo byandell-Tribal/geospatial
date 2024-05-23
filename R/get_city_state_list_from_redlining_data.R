@@ -4,7 +4,7 @@
 #' 
 #' @param url URL to the GeoJSON data
 #' 
-#' @return
+#' @return object of class `sf`
 #' @export
 #' @importFrom dplyr arrange distinct select
 #' @importFrom sf read_sf st_set_geometry

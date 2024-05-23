@@ -6,7 +6,7 @@
 #' @param output_filename 
 #' @param variable_label 
 #'
-#' @return
+#' @return list with `ggplot` object and trees `sf` object
 #' @export
 #' @importFrom dplyr filter
 #' @importFrom purrr map_dbl

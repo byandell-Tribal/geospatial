@@ -1,15 +1,8 @@
 #' Shiny Server for geospatial Package
 #'
-#' @param input 
-#' @param output 
-#' @param session 
-#'
+#' @param input,output,session shiny server reactives
 #' @return reactive server
 #' @export
-#' @importFrom shiny NS renderUI
-#' @importFrom graphics hist
-#'
-#' @examples
 server <- function(input, output, session) {
-  geyser("geyserApp")
+  geyser("geyser")
 }

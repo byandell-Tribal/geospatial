@@ -5,7 +5,7 @@
 #' @param roads 
 #' @param rivers 
 #'
-#' @return
+#' @return list with `plot`, `runtime`, `mask_sf`
 #' @export
 #' @importFrom dplyr filter
 #' @importFrom ggplot2 aes coord_sf element_blank element_rect facet_wrap

@@ -1,8 +1,6 @@
 #' Shiny Server for geyser Example
 #'
-#' @param input 
-#' @param output 
-#' @param session 
+#' @param input,output,session shiny server reactives
 #' @return reactive server
 #' @export
 #' @importFrom shiny checkboxInput moduleServer NS plotOutput renderPlot

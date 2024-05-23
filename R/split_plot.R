@@ -3,8 +3,7 @@
 #' @param sf_data 
 #' @param roads 
 #' @param rivers 
-#'
-#' @return
+#' @return ggplot object
 #' @export
 #' @importFrom ggplot2 element_blank element_rect facet_wrap geom_sf
 #'             ggplot ggsave labs scale_fill_manual theme theme_minimal

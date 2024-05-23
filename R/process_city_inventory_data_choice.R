@@ -14,8 +14,7 @@
 #' @param choice 
 #' @param polygon_layer 
 #' @param source 
-#'
-#' @return
+#' @return list with `ggplot` object and trees `sf` object
 #' @export
 #' 
 process_city_inventory_data_choice <- function(choice, polygon_layer,

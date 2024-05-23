@@ -3,7 +3,7 @@
 #' @param polygon_layer 
 #' @param type 
 #'
-#' @return
+#' @return nothing returned; side effect of base plot or message
 #' @export
 #' @importFrom ggplot2 element_blank element_rect geom_sf
 #'             ggplot ggsave ggtitle theme

@@ -3,7 +3,7 @@
 #' @param redlining_data 
 #' @param filename 
 #'
-#' @return
+#' @return ggplot object
 #' @export
 #' @importFrom dplyr filter
 #' @importFrom ggplot2 aes element_blank element_rect geom_sf

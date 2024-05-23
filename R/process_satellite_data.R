@@ -8,7 +8,7 @@
 #' @param fps 
 #' @param output_file 
 #'
-#' @return
+#' @return `difftime` object
 #' @export
 #' @importFrom colorspace sequential_hcl
 #' @importFrom sf st_bbox

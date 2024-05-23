@@ -6,7 +6,7 @@
 #' @param max_size 
 #' @param col_select 
 #'
-#' @return
+#' @return ggplot object
 #' @export
 #' @importFrom dplyr count filter select ungroup
 #' @importFrom tidytext unnest_tokens

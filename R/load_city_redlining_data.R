@@ -3,8 +3,7 @@
 #' Load and filter redlining data by city
 #'
 #' @param city_name 
-#'
-#' @return
+#' @return object of class `sf`
 #' @export
 #' @importFrom dplyr filter
 #' @importFrom sf read_sf

@@ -4,7 +4,7 @@
 #' @param layer2 
 #' @param output_file 
 #'
-#' @return
+#' @return list with `ggplot` object and polygon `sf` object
 #' @export
 #' @importFrom dplyr filter
 #' @importFrom ggplot2 element_blank element_rect geom_sf
