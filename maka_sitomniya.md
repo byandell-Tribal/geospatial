@@ -1,5 +1,10 @@
 # Maka Sitomniya Data Needs
 
+This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups).
+Maka Sitomniya will be developing one or more sovereign enclaves (see
+[https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk/edit#slide=id.p](Sovereign Data Container) slide deck).
+See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>.
+
 ## Specific Sources
 
 Bob Rabin and Robert Newman: Bob Rabin mentioned data products from NOAA/NESDIS that may be of interest in classifying Vegetation Health and Evaporative Stress Index (see links below). These products are estimated from NOAA Geostationary satellite observations and weather model data. They are available as 2-week averages (and longer) at spatial resolutions up to 4 km. Additional products may come from NLCD and other sources.
