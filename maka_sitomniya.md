@@ -1,6 +1,6 @@
 # Maka Sitomniya Data Needs
 
-This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups) Maka Sitomniya will be developing one or more sovereign enclaves (see [Sovereign Data Container](https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk) slide deck). See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>.
+This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups) Maka Sitomniya that will be developing one or more sovereign enclaves (see [Sovereign Data Container](https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk) slide deck). See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>.
 
 ## Specific Sources
 
