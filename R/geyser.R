@@ -3,6 +3,7 @@
 #' @param input,output,session shiny server reactives
 #' @return reactive server
 #' @export
+#' @rdname geyser
 #' @importFrom shiny bootstrapPage checkboxInput moduleServer NS plotOutput
 #'             renderPlot renderUI selectInput shinyApp sliderInput uiOutput
 #' @importFrom graphics hist lines rug
@@ -41,8 +42,9 @@ geyserServer <- function(id) {
   })
 }
 #' Shiny Module Input for Geyser
+#' @param id identifier for shiny reactive
 #' @return nothing returned
-#' @rdname geyserServer
+#' @rdname geyser
 #' @export
 geyserInput <- function(id) {
   ns <- shiny::NS(id)
@@ -60,16 +62,18 @@ geyserInput <- function(id) {
                   value = FALSE))
 }
 #' Shiny Module UI for Geyser
+#' @param id identifier for shiny reactive
 #' @return nothing returned
-#' @rdname geyserServer
+#' @rdname geyser
 #' @export
 geyserUI <- function(id) {
   ns <- shiny::NS(id)
   shiny::uiOutput(ns("bw_adjust"))
 }
 #' Shiny Module Output for Geyser
+#' @param id identifier for shiny reactive
 #' @return nothing returned
-#' @rdname geyserServer
+#' @rdname geyser
 #' @export
 geyserOutput <- function(id) {
   ns <- shiny::NS(id)
@@ -77,7 +81,7 @@ geyserOutput <- function(id) {
 }
 #' Shiny Module App for Geyser
 #' @return nothing returned
-#' @rdname geyserServer
+#' @rdname geyser
 #' @export
 geyserApp <- function() {
   ui <- shiny::bootstrapPage(
