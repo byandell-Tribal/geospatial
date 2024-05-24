@@ -1,7 +1,7 @@
 #' Get Points-of-Interest from city of interest
 #'
 #' @param polygon_layer 
-#' @param type 
+#' @param type type limited to "roads" and "rivers"
 #'
 #' @return nothing returned; side effect of base plot or message
 #' @export
@@ -11,7 +11,7 @@
 #' @importFrom sf st_as_sfc st_bbox st_crop st_make_valid
 #' @importFrom osmextract oe_get
 #' 
-get_places <- function(polygon_layer, type = "food") {
+get_places_student <- function(polygon_layer, type = "food") {
   # Check if the input is an sf object
   if (!inherits(polygon_layer, "sf")) {
     stop("The provided object is not an sf object.")
