@@ -2,6 +2,22 @@
 
 Yandell's Geospatial Workshops Play Area
 
+This is now a library. You can clone the library onto your machin, or you can install it with the following. Note that all needed packages are listed as Depends _except_ `basemapR` (see below).
+
+You can also install as follows without cloning the library:
+
+```
+devtools::install_github('Chrisjb/basemapR')
+devtools::install()
+```
+
+There is a draft shiny app for the `redline` example at this point, which will mature. Try
+
+```
+library(geospatial)
+redlineApp()
+```
+
 ## Geospatial Resources
 
 ### Books and Online Docs
