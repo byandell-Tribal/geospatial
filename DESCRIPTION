@@ -1,5 +1,5 @@
 Package: geospatial
-Version: 0.5.1
+Version: 0.5.2
 Date: 2024-05-24
 Title: Geospatial Workshop Tools
 Description: Tools to study geospatial data
@@ -13,11 +13,12 @@ Authors@R: c(person("Erick Verleye",
                 role = c("aut"),
                 email = "brian.yandell@wisc.edu"))
 Depends:
-    R (>= 4.2.0)
+    R (>= 4.2.0),
+    gifski
 Imports:
     basemapR, colorspace, dplyr, DT, gdalcubes, ggplot2,
-    ggthemes, glue, graphics, grid, osmextract, purrr, rstac,
-    sf, shiny, stats, terra, tidyterra, tidytext
+    ggthemes, ggwordcloud, glue, graphics, grid, osmextract, purrr,
+    rstac, sf, shiny, stats, terra, tidyterra, tidytext
 LazyData: true
 License: GPL-3
 Encoding: UTF-8

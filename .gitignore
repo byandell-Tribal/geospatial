@@ -56,6 +56,4 @@ data/
 *.gif
 *_files/
 *.png
-man/
-NAMESPACE
 

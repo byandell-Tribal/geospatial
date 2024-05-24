@@ -178,7 +178,7 @@ government_buildings <- get_places(denver_redlining, type="government_buildings"
 <details>
 <summary>Plot 4 HOLC grades individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-plot_row <- split_plot(denver_redlining, roads, rivers)
+split_plot(denver_redlining, roads, rivers)
 ```
 
 </details>
@@ -197,7 +197,8 @@ plot_row <- split_plot(denver_redlining, roads, rivers)
 <details>
 <summary>WORD CLOUD: Names of places with fresh food</summary>
 ```{r, cache=TRUE}
-food_word_cloud <- create_wordclouds_by_grade(food_match$sf, output_file = "food_word_cloud_per_grade.png")
+create_wordclouds_by_grade(food_match$sf,
+  output_file = "food_word_cloud_per_grade.png")
 ```
 </details>
 
@@ -206,9 +207,11 @@ food_word_cloud <- create_wordclouds_by_grade(food_match$sf, output_file = "food
 <details>
 <summary>Map processed food over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
- layer1 <- denver_redlining
- layer2 <- food_processed
- processed_food_match <- process_and_plot_sf_layers(layer1, layer2, "processed_food_match.png")
+layer1 <- denver_redlining
+layer2 <- food_processed
+processed_food_match <- process_and_plot_sf_layers(
+  layer1, layer2, "processed_food_match.png")
+print(processed_food_match$plot)
 ```
 </details>
 
@@ -217,7 +220,11 @@ food_word_cloud <- create_wordclouds_by_grade(food_match$sf, output_file = "food
 <details>
 <summary>WORD CLOUD: Names of places with processed food</summary>
 ```{r, cache=TRUE}
-processed_food_cloud <- create_wordclouds_by_grade(processed_food_match$sf, output_file = "processed_food_word_cloud_per_grade.png",title = "Processed food place names where larger text is more frequent", max_size =17)
+create_wordclouds_by_grade(
+  processed_food_match$sf,
+  output_file = "processed_food_word_cloud_per_grade.png",
+  title = "Processed food place names where larger text is more frequent",
+  max_size =17)
 ```
 </details>
 
@@ -233,10 +240,11 @@ processed_food_cloud <- create_wordclouds_by_grade(processed_food_match$sf, outp
 <details>
 <summary>Map natural habitats over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
- layer1 <- denver_redlining
- layer2 <- natural_habitats
- natural_habitats_match <- process_and_plot_sf_layers(layer1, layer2, "natural_habitats_match.png")
- print(natural_habitats_match$plot)
+layer1 <- denver_redlining
+layer2 <- natural_habitats
+natural_habitats_match <- process_and_plot_sf_layers(
+  layer1, layer2, "natural_habitats_match.png")
+print(natural_habitats_match$plot)
 ```
 </details>
 
@@ -245,7 +253,12 @@ processed_food_cloud <- create_wordclouds_by_grade(processed_food_match$sf, outp
 <details>
 <summary>WORD CLOUD: Name of natural habitat area</summary>
 ```{r, cache=TRUE}
-natural_habitats_cloud <- create_wordclouds_by_grade(natural_habitats_match$sf, output_file = "natural_habitats_word_cloud_per_grade.png",title = "Natural habitats place names where larger text is more frequent", max_size =35)
+natural_habitats_cloud <- create_wordclouds_by_grade(
+  natural_habitats_match$sf,
+  output_file = "natural_habitats_word_cloud_per_grade.png",
+  title = "Natural habitats place names where larger text is more frequent",
+  max_size =35)
+print(natural_habitats_cloud)
 ```
 </details>
 
@@ -254,7 +267,9 @@ natural_habitats_cloud <- create_wordclouds_by_grade(natural_habitats_match$sf, 
 <details>
 <summary>Stream NDVI data: animation</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-processing_time <- process_satellite_data(denver_redlining, "2022-05-31", "2023-05-31", c("B04", "B08"))
+processing_time <- process_satellite_data(
+  denver_redlining, "2022-05-31", "2023-05-31", c("B04", "B08"))
+print(processing_time)
 ```
 </details>
 

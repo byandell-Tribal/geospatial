@@ -31,7 +31,7 @@ process_satellite_data <- function(polygon_layer, start_date, end_date, assets, 
     bbox = c(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"]),
     datetime = paste(start_date, end_date, sep = "/"),
     limit = 500
-  ) %>% 
+  ) |> 
     rstac::post_request()
   
   # Define mask for Sentinel-2 image quality
@@ -54,10 +54,10 @@ process_satellite_data <- function(polygon_layer, start_date, end_date, assets, 
     rev(colorspace::sequential_hcl(n, "Green-Yellow"))
   }
   
-  #raster_cube(col, v, mask = S2.mask) %>%
-  gdalcubes::raster_cube(col, v) %>%
-    gdalcubes::select_bands(c("B04", "B08")) %>%
-    gdalcubes::apply_pixel("(B08-B04)/(B08+B04)", "NDVI") %>%
+  #raster_cube(col, v, mask = S2.mask) |>
+  gdalcubes::raster_cube(col, v) |>
+    gdalcubes::select_bands(c("B04", "B08")) |>
+    gdalcubes::apply_pixel("(B08-B04)/(B08+B04)", "NDVI") |>
     gdalcubes::animate(col = ndvi_col, zlim = c(-0.2, 1), key.pos = 1, save_as = output_file, fps = fps)
   
   # Calculate processing time

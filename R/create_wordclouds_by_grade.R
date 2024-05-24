@@ -8,11 +8,12 @@
 #'
 #' @return ggplot object
 #' @export
-#' @importFrom dplyr count filter select ungroup
+#' @importFrom dplyr count filter n select ungroup
 #' @importFrom tidytext unnest_tokens
 #' @importFrom ggplot2 aes element_rect element_text facet_wrap ggplot ggsave
 #'             labs scale_color_gradient scale_size_area theme theme_minimal
 #' @importFrom grid unit
+#' @importFrom ggwordcloud geom_text_wordcloud_area
 #' 
 create_wordclouds_by_grade <- function(sf_object,
                                        output_file = "food_word_cloud_per_grade.png",
@@ -25,7 +26,7 @@ create_wordclouds_by_grade <- function(sf_object,
     tidytext::unnest_tokens(output = "word", input = col_select, token = "words") |>
     dplyr::count(grade, word, sort = TRUE) |>
     dplyr::ungroup() |>
-    dplyr::filter(n() > 1)  # Filter to remove overly common or single-occurrence words
+    dplyr::filter(dplyr::n() > 1)  # Filter to remove overly common or single-occurrence words
   
   # Ensure there are no NA values in the 'word' column
   text_data <- text_data |> dplyr::filter(!is.na(word))
@@ -37,7 +38,7 @@ create_wordclouds_by_grade <- function(sf_object,
   
   # Create a word cloud using ggplot2 and ggwordcloud
   p <- ggplot2::ggplot( ) +
-    geom_text_wordcloud_area(data=text_data,
+    ggwordcloud::geom_text_wordcloud_area(data=text_data,
                              ggplot2::aes(label = word, size = n),
                              rm_outside = TRUE) +
     ggplot2::scale_size_area(max_size = max_size) +
