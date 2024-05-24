@@ -1,9 +1,6 @@
 # Maka Sitomniya Data Needs
 
-This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups).
-Maka Sitomniya will be developing one or more sovereign enclaves (see
-[https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk/edit#slide=id.p](Sovereign Data Container) slide deck).
-See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>.
+This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups). Maka Sitomniya will be developing one or more sovereign enclaves (see [Sovereign Data Container[https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk] slide deck). See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>.
 
 ## Specific Sources
 
@@ -24,7 +21,6 @@ Bob Rabin and Robert Newman: Bob Rabin mentioned data products from NOAA/NESDIS 
     -   [South Dakota State Wildlife Action Plan](https://gfp.sd.gov/wildlife-action-plan/)
     -   [North Dakota State Wildlife Action Plan](https://gf.nd.gov/wildlife/swap)
     -   [Nebraska State Wildlife Action Plan](https://digitalcommons.unl.edu/nebgamepubs/131/)
-
 -   Additional items
     -   Archived Evaporative Stress Index data (Bob Rabin)
     -   Are there animal / plant distribution data available for this region that includes ecologically-important or culturally important species / beings)?
