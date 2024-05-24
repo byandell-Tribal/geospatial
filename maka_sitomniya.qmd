@@ -1,0 +1,21 @@
+---
+title: "Maka Sitomniya"
+format: gfm
+---
+
+Bob Rabin mentioned data products from NOAA/NESDIS that may be of interest in classifying Vegetation Health and Evaporative Stress Index (see links below). These products are estimated from NOAA Geostationary satellite observations and weather model data. They are available as 2-week averages (and longer) at spatial resolutions up to 4 km. Additional products may come from NLCD and other sources.
+
+-   [NESDIS STAR](https://www.nesdis.noaa.gov/)
+    -   [Drought Monitor](https://www.star.nesdis.noaa.gov/smcd/emb/droughtMon/products_droughtMon.php)
+    -   [Vegetetation Health](https://www.star.nesdis.noaa.gov/smcd/emb/vci/VH/vh_browse.php) (Select Data type "Vegetation Health (VHI)" and Region "USA" )
+    -   [Download Data](https://www.star.nesdis.noaa.gov/smcd/emb/vci/VH/vh_ftp.php)
+-   [NOAA CLASS system](https://www.aev.class.noaa.gov/saa/products/welcome)
+    -   Archive data for Vegetation Health
+-   [National Land Cover Data (NLCD)](https://www.mrlc.gov/)
+    -   Historical time series and change data (2001, 2004, 2006, 2008, 2011, 2013, 2016, 2019, and 2021)
+    -   Drought index data (which may be in what Bob linked)
+    -   Tree canopy cover (TCC) data from the same webpage.
+-   Additional items
+    -   Archived Evaporative Stress Index data (Bob Rabin)
+    -   Are there animal / plant distribution data available for this region that includes ecologically-important or culturally important species / beings)?
+    -   [Planet Labs](https://www.planet.com/) is useable at sub-regional extents: 3m satellite imagery that as 4-band and most recently 8? band. Good if there is need for high spatial and temporal resolution multispectral imagery for specific problems (monitoring specific sites, for example, on a monthly basis at high resolution). Because it is multispec we can get useful indices (NDVI is a classic, that only requires R and NR). I use it mostly for veg indices and habitat dynamics.
