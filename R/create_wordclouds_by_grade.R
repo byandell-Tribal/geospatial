@@ -28,8 +28,8 @@ create_wordclouds_by_grade <- function(sf_object,
     dplyr::ungroup() |>
     dplyr::filter(dplyr::n() > 1)  # Filter to remove overly common or single-occurrence words
   
-  # Ensure there are no NA values in the 'word' column
-  text_data <- text_data |> dplyr::filter(!is.na(word))
+  # Ensure there are no NA values or 1-2 letter words in the 'word' column
+  text_data <- text_data |> dplyr::filter(!is.na(word) & nchar(word) > 2)
   
   # Handle cases where text_data might be empty
   if (nrow(text_data) == 0) {

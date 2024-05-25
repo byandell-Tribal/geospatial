@@ -159,26 +159,21 @@ denver_plot <- plot_city_redlining(denver_redlining)
 <details>
 <summary>Stream amenities by category</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-food <- get_places(denver_redlining, type="food")
-
-food_processed <- get_places(denver_redlining, type="processed_food")
-
-natural_habitats <- get_places(denver_redlining, type="natural_habitats")
-
-roads <- get_places(denver_redlining, type="roads")
-
-rivers <- get_places(denver_redlining, type="rivers")
-
+amenity <- list(
+  food = get_places(denver_redlining, type="food"),
+  food_processed = get_places(denver_redlining, type="processed_food"),
+  natural_habitats = get_places(denver_redlining, type="natural_habitats"),
+  roads = get_places(denver_redlining, type="roads"),
+  rivers = get_places(denver_redlining, type="rivers"),
 #water_bodies <- get_places(denver_redlining, type="water_bodies")
-
-government_buildings <- get_places(denver_redlining, type="government_buildings")
+  government_buildings = get_places(denver_redlining, type="government_buildings"))
 ```
 </details>
 
 <details>
 <summary>Plot 4 HOLC grades individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-split_plot(denver_redlining, roads, rivers)
+split_plot(denver_redlining, amenity$roads, amenity$rivers)
 ```
 
 </details>
@@ -188,7 +183,7 @@ split_plot(denver_redlining, roads, rivers)
 <summary>Map food over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
  layer1 <- denver_redlining
- layer2 <- food
+ layer2 <- amenity$food
  food_match <- process_and_plot_sf_layers(layer1, layer2, "food_match.png")
 ```
 </details>
@@ -208,7 +203,7 @@ create_wordclouds_by_grade(food_match$sf,
 <summary>Map processed food over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
 layer1 <- denver_redlining
-layer2 <- food_processed
+layer2 <- amenity$food_processed
 processed_food_match <- process_and_plot_sf_layers(
   layer1, layer2, "processed_food_match.png")
 print(processed_food_match$plot)
@@ -241,7 +236,7 @@ create_wordclouds_by_grade(
 <summary>Map natural habitats over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
 layer1 <- denver_redlining
-layer2 <- natural_habitats
+layer2 <- amenity$natural_habitats
 natural_habitats_match <- process_and_plot_sf_layers(
   layer1, layer2, "natural_habitats_match.png")
 print(natural_habitats_match$plot)
@@ -278,7 +273,7 @@ print(processing_time)
 <details>
 <summary>Stream NDVI: high resolution</summary>
 ```{r, warning=FALSE, message=FALSE, cache=TRUE}
-ndvi_background <- yearly_average_ndvi(denver_redlining,dx = 0.0001, dy = 0.0001)
+ndvi_background <- yearly_average_ndvi(denver_redlining, dx = 0.0001, dy = 0.0001)
 ```
 </details>
 
@@ -296,7 +291,9 @@ ndvi_background_low <- yearly_average_ndvi(denver_redlining)
 <details>
 <summary>Map low resolution NDVI per HOLC grade </summary>
 ```{r, cache=TRUE}
-ndvi <- create_mask_and_plot(denver_redlining, background_raster = ndvi_background_low$raster, roads = roads, rivers = rivers)
+ndvi <- create_mask_and_plot(denver_redlining,
+                             background_raster = ndvi_background_low$raster,
+                             roads = amenity$roads, rivers = amenity$rivers)
 ```
 </details>
 
@@ -423,7 +420,12 @@ Crime <- process_city_inventory_data(
 <details>
 <summary>WORD CLOUD: Types of crimes</summary>
 ```{r, cache=TRUE}
-crime_cloud <- create_wordclouds_by_grade(Crime$layer, output_file = "Crime_word_cloud_per_grade.png",title = "Crime type where larger text is more frequent", max_size =25, col_select = "OFFENSE_TY")
+crime_cloud <- create_wordclouds_by_grade(
+  Crime$layer,
+  output_file = "Crime_word_cloud_per_grade.png",
+  title = "Crime type where larger text is more frequent",
+  max_size =25,
+  col_select = "OFFENSE_TY")
 ```
 </details>
 
@@ -449,7 +451,12 @@ Denver_police_shootings <- process_city_inventory_data(
 <details>
 <summary>WORD CLOUD: Police involved shootings</summary>
 ```{r, cache=TRUE}
-Denver_police_shootings_cloud <- create_wordclouds_by_grade(Denver_police_shootings$layer, output_file = "police_shootings_word_cloud_per_grade.png",title = "police involved shooting per crime type where larger text is more frequent", max_size =35, col_select = "SHOOT_ACTI")
+Denver_police_shootings_cloud <- create_wordclouds_by_grade(
+  Denver_police_shootings$layer,
+  output_file = "police_shootings_word_cloud_per_grade.png",
+  title = "police involved shooting per crime type where larger text is more frequent",
+  max_size =35,
+  col_select = "SHOOT_ACTI")
 ```
 </details>
 
