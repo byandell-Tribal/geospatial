@@ -51,7 +51,7 @@ rivers <- get_places(denver_redlining, type="rivers")
 ```
 
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-plot_city_redlining(denver_redlining)
+plot_city_redlining(denver_redlining, roads, rivers)
 ```
 
 This next line seems to work but fails in render. It seems denver_redlining\$geometry is of class `sfc_MULTIPOLYGON/sfc`, which chokes in `vec_size()`. Maybe see <https://stackoverflow.com/questions/56117023/r-sf-ggplot-labeling-multiple-polygon-that-are-listed-within-id>.

@@ -2,16 +2,27 @@
 % Please edit documentation in R/plot_city_redlining.R
 \name{plot_city_redlining}
 \alias{plot_city_redlining}
+\alias{plot_city_redlining_grade}
 \title{Plot POI over HOLC grades}
 \usage{
-plot_city_redlining(redlining_data, filename = "redlining_plot.png")
+plot_city_redlining(
+  redlining_data,
+  roads = get_places(redlining_data, type = "roads"),
+  rivers = get_places(redlining_data, type = "rivers")
+)
+
+plot_city_redlining_grade(object)
 }
 \arguments{
 \item{redlining_data}{}
 
-\item{filename}{}
+\item{roads, rivers}{amenities from redlining_data}
+
+\item{object}{ggplot object}
 }
 \value{
+ggplot object
+
 ggplot object
 }
 \description{

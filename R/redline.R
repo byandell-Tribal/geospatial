@@ -10,8 +10,9 @@
 #' @rdname redline
 #' @importFrom dplyr filter
 #' @importFrom shiny column fluidPage fluidRow isTruthy mainPanel NS
-#'             reactive renderPlot req selectInput shinyApp
+#'             observeEvent reactive renderPlot req selectInput shinyApp
 #'             sidebarLayout sidebarPanel tagList textInput titlePanel
+#'             updateCheckboxInput updateSelectInput
 #' @importFrom DT dataTableOutput renderDataTable
 redlineServer <- function(id) {
   shiny::moduleServer(id, function(input, output, session) {
@@ -37,7 +38,7 @@ redlineServer <- function(id) {
       options = list(scrollX = TRUE, pageLength = 10))
     
     output$city <- shiny::renderUI({
-      shiny::selectInput(ns("city"), "City:", choices = NULL)
+      shiny::selectInput(ns("city"), "City with Grades A,B,C,D:", choices = NULL)
     })
     # Table City State
     output$show_city_state <- shiny::renderUI({
@@ -49,18 +50,30 @@ redlineServer <- function(id) {
       shiny::req(input$city)
       progress("Load City", load_city_redlining_data, input$city)
     })
-    output$city_plot <- shiny::renderUI({
+    plot_city <- shiny::reactive({
       if(shiny::isTruthy(input$show_city_plot)) {
         citdata <- shiny::req(city_data())
-        shiny::renderPlot({
-          progress("Plot City", plot_city_redlining, citdata)
-        })
+        progress("Plot City", plot_city_redlining, citdata)
       }
+    })
+    output$city_plot <- shiny::renderUI({
+      shiny::req(plot_city())
+      shiny::renderPlot({
+        if(shiny::isTruthy(input$grade_plot)) {
+          print(plot_city_redlining_grade(plot_city()))
+        } else {
+          print(plot_city())
+        }
+      })
     })
     shiny::observeEvent(cities(), {
       citlist <- cities()
       if("Denver" %in% citlist) citlist <- unique(c("Denver", citlist))
       shiny::updateSelectInput(session, "city", choices = citlist)
+    })
+    shiny::observeEvent(input$city, {
+      browser()
+      shiny::updateCheckboxInput(session, "show_city_plot", value = FALSE)
     })
   })
 }
@@ -78,8 +91,10 @@ redlineInput <- function(id) {
       shiny::column(8, shiny::uiOutput(ns("city")))),
     shiny::fluidRow(
       shiny::column(4, shiny::checkboxInput(ns("show_city_state"), "Show Table?")),
-      shiny::column(4, shiny::checkboxInput(ns("show_city_plot"), "Show plot?"))),
-    shiny::textInput(ns("url"), "GeoJSON URL (default redline if blank):"))
+      shiny::column(4, shiny::checkboxInput(ns("show_city_plot"), "Show plot?")),
+      shiny::column(4, shiny::checkboxInput(ns("grade_plot"), "Plot by Grade?"))),
+#    shiny::textInput(ns("url"), "GeoJSON URL (default redline if blank):")
+    )
 }
 #' Redline Output
 #' @param id identifier for shiny reactive

@@ -2,14 +2,21 @@
 % Please edit documentation in R/get_places.R
 \name{get_places}
 \alias{get_places}
+\alias{plot_places}
 \title{Get Points-of-Interest from city of interest}
 \usage{
 get_places(polygon_layer, type = "food")
+
+plot_places(cropped_places, title = "")
 }
 \arguments{
 \item{polygon_layer}{}
 
 \item{type}{feature type}
+
+\item{cropped_places}{sf object for cropped places}
+
+\item{title}{title of cropped places}
 }
 \value{
 nothing returned; side effect of base plot or message

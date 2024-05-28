@@ -12,6 +12,11 @@ Bob Rabin and Robert Newman: Bob Rabin mentioned data products from NOAA/NESDIS 
     -   [Download Data](https://www.star.nesdis.noaa.gov/smcd/emb/vci/VH/vh_ftp.php)
 -   [NOAA CLASS system](https://www.aev.class.noaa.gov/saa/products/welcome)
     -   Archive data for Vegetation Health
+-   [NOAA Multi-Radar Multi-Sensor Quantitative Precipitation Estimation (MRMS QPE)](https://inside.nssl.noaa.gov/mrms/)
+    -   Hourly and daily rainfall estimates on a 1-km grid over the entire U.S. from the network of National Weather Service radars and ground-based rain gauges. 
+These estimates are from an operational product developed at the NOAA National Severe Storms Lab (NSSL) in Oklahoma. An archive of about 5 years (2020-2024) now exists and is available from amazonaws.com.
+    -   [grib2 format files of 24-hour rainfall accumulation](https://noaa-mrms-pds.s3.amazonaws.com/index.html#CONUS/MultiSensor_QPE_24H_Pass2_00.00/)
+    -   [Flooded Locations And Simulated Hydrographs Project (FLASH)](https://inside.nssl.noaa.gov/flash/)  Rainfall estimates input to hydrological model to estimate and predict streamflow
 -   [National Land Cover Data (NLCD)](https://www.mrlc.gov/)
     -   Historical time series and change data (2001, 2004, 2006, 2008, 2011, 2013, 2016, 2019, and 2021)
     -   Drought index data (which may be in what Bob linked)

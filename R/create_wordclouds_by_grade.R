@@ -37,7 +37,7 @@ create_wordclouds_by_grade <- function(sf_object,
   }
   
   # Create a word cloud using ggplot2 and ggwordcloud
-  p <- ggplot2::ggplot( ) +
+  ggplot2::ggplot( ) +
     ggwordcloud::geom_text_wordcloud_area(data=text_data,
                              ggplot2::aes(label = word, size = n),
                              rm_outside = TRUE) +
@@ -52,13 +52,4 @@ create_wordclouds_by_grade <- function(sf_object,
         plot.title = ggplot2::element_text(size = 16, face = "bold"),
         legend.position = "none") +
     ggplot2::labs(title = title)
-  
-  # Attempt to save the plot and handle any errors
-  tryCatch({
-    ggsave(output_file, p, width = 10, height = 4, units = "in", dpi = 600)
-  }, error = function(e) {
-    cat("Error in saving the plot: ", e$message, "\n")
-  })
-  
-  return(p)
 }

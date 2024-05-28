@@ -148,15 +148,6 @@ knitr::kable(head(denver_redlining), format = "markdown")
 </details>
 
 <details>
-<summary>Plot Denver Redlining</summary>
-```{r, cache=TRUE, warning=FALSE, message=FALSE}
-denver_plot <- plot_city_redlining(denver_redlining)
-```
-
-</details>
-![](https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/redlining_plot.png)
-
-<details>
 <summary>Stream amenities by category</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
 amenity <- list(
@@ -171,9 +162,19 @@ amenity <- list(
 </details>
 
 <details>
+<summary>Plot Denver Redlining</summary>
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+denver_plot <- plot_city_redlining(denver_redlining, amenity$roads, amenity$rivers)
+```
+
+</details>
+![](https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/redlining_plot.png)
+
+<details>
 <summary>Plot 4 HOLC grades individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-split_plot(denver_redlining, amenity$roads, amenity$rivers)
+plot_city_redlining_grade(denver_plot)
+#split_plot(denver_redlining, amenity$roads, amenity$rivers)
 ```
 
 </details>
@@ -182,9 +183,8 @@ split_plot(denver_redlining, amenity$roads, amenity$rivers)
 <details>
 <summary>Map food over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
- layer1 <- denver_redlining
- layer2 <- amenity$food
- food_match <- process_and_plot_sf_layers(layer1, layer2, "food_match.png")
+food_match <- process_and_plot_sf_layers(denver_redlining, "food", amenity)
+food_match$plot
 ```
 </details>
 ![](https://cu-esiil.github.io/Innovation-Summit-2024/worksheets/food_match.png)
@@ -202,10 +202,7 @@ create_wordclouds_by_grade(food_match$sf,
 <details>
 <summary>Map processed food over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-layer1 <- denver_redlining
-layer2 <- amenity$food_processed
-processed_food_match <- process_and_plot_sf_layers(
-  layer1, layer2, "processed_food_match.png")
+processed_food_match <- process_and_plot_sf_layers(denver_redlining, "food_processed", amenity)
 print(processed_food_match$plot)
 ```
 </details>
@@ -235,10 +232,7 @@ create_wordclouds_by_grade(
 <details>
 <summary>Map natural habitats over each grade individually</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-layer1 <- denver_redlining
-layer2 <- amenity$natural_habitats
-natural_habitats_match <- process_and_plot_sf_layers(
-  layer1, layer2, "natural_habitats_match.png")
+natural_habitats_match <- process_and_plot_sf_layers(denver_redlining, "natural_habitats", amenity)
 print(natural_habitats_match$plot)
 ```
 </details>

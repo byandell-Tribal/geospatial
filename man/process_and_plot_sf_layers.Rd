@@ -4,14 +4,14 @@
 \alias{process_and_plot_sf_layers}
 \title{Map an amenity over each grade}
 \usage{
-process_and_plot_sf_layers(layer1, layer2, output_file = "output_plot.png")
+process_and_plot_sf_layers(object, layer2, amenity)
 }
 \arguments{
-\item{layer1}{}
+\item{object}{sf object}
 
-\item{layer2}{}
+\item{layer2}{name of amenity}
 
-\item{output_file}{}
+\item{amenity}{list of amenities}
 }
 \value{
 list with `ggplot` object and polygon `sf` object
