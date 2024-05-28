@@ -1,7 +1,6 @@
 #' Stream year average NDVI
 #'
 #' @param polygon_layer 
-#' @param output_file 
 #' @param dx 
 #' @param dy 
 #'
@@ -17,7 +16,7 @@
 #' @importFrom terra rast
 #' @importFrom tidyterra geom_spatraster
 #' 
-yearly_average_ndvi <- function(polygon_layer, output_file = "ndvi.png", dx = 0.01, dy = 0.01) {
+yearly_average_ndvi <- function(polygon_layer, dx = 0.01, dy = 0.01) {
   # Record start time
   start_time <- Sys.time()
   
@@ -72,10 +71,7 @@ yearly_average_ndvi <- function(polygon_layer, output_file = "ndvi.png", dx = 0.
       axis.ticks = ggplot2::element_blank(),
       panel.grid.major = ggplot2::element_blank(),
       panel.grid.minor = ggplot2::element_blank()) 
-  
-  # Save the plot as a high-resolution PNG file
-  ggplot2::ggsave(output_file, ndvi_plot, width = 10, height = 8, dpi = 600)
-  
+
   # Calculate processing time
   end_time <- Sys.time()
   processing_time <- difftime(end_time, start_time)

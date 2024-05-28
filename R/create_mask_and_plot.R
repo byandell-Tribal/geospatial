@@ -84,10 +84,7 @@ create_mask_and_plot <- function(redlining_sf, background_raster = ndvi$raster, 
       axis.ticks = ggplot2::element_blank(),
       panel.grid.major = ggplot2::element_blank(),
       panel.grid.minor = ggplot2::element_blank())
-  
-  # Save the plot
-  ggplot2::ggsave("redlining_mask_ndvi.png", plot, width = 10, height = 4, dpi = 600)
-  
+
   end_time <- Sys.time()  # End timing
   runtime <- end_time - start_time
   

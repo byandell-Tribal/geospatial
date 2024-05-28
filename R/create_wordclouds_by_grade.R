@@ -1,7 +1,6 @@
 #' Create word cloud per grade
 #'
 #' @param sf_object 
-#' @param output_file 
 #' @param title 
 #' @param max_size 
 #' @param col_select 
@@ -16,7 +15,6 @@
 #' @importFrom ggwordcloud geom_text_wordcloud_area
 #' 
 create_wordclouds_by_grade <- function(sf_object,
-                                       output_file = "food_word_cloud_per_grade.png",
                                        title = "Healthy food place names word cloud",
                                        max_size =25, col_select = "name") {
   # Extract relevant data and prepare text data

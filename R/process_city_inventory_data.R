@@ -63,11 +63,7 @@ process_city_inventory_data <- function(address, inner_file, polygon_layer,
       axis.ticks = ggplot2::element_blank(),
       panel.grid.major = ggplot2::element_blank(),
       panel.grid.minor = ggplot2::element_blank())
-  
-  # Save the plot
-  ggplot2::ggsave(paste0(output_filename, "_density_plot.png"), plot, width = 10,
-                  height = 4, units = "in", dpi = 600)
-  
+
   # Return the plot and the tree layer
   return(list(plot = plot, layer = trees))
 }
