@@ -10,7 +10,8 @@ process_satellite_data(
   end_date,
   assets,
   fps = 1,
-  output_file = "anim.gif"
+  output_file = "anim.gif",
+  use_mask = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ process_satellite_data(
 \item{fps}{}
 
 \item{output_file}{}
+
+\item{use_mask}{}
 }
 \value{
 `difftime` object

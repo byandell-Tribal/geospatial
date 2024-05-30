@@ -26,8 +26,13 @@ These estimates are from an operational product developed at the NOAA National S
     -   [South Dakota State Wildlife Action Plan](https://gfp.sd.gov/wildlife-action-plan/)
     -   [North Dakota State Wildlife Action Plan](https://gf.nd.gov/wildlife/swap)
     -   [Nebraska State Wildlife Action Plan](https://digitalcommons.unl.edu/nebgamepubs/131/)
+- [Evaporative Stress Index (ESI)](https://www.star.nesdis.noaa.gov/smcd/emb/droughtMon/products_droughtMon.php)
+    -   [Archive at 2-km resolution](ftp://ftp.star.nesdis.noaa.gov/pub/smcd/emb/lfang/GETD_STEMS)
+    -   Online data archive dates back to 2022; FTP site is updated daily with real-time ESI. 
+    -   Can request data back to 2003, with 2003-2017 at reduced resolution (8km).
+    -   Currently, the files are in NetCDF format.
 -   Additional items
-    -   Archived Evaporative Stress Index data (Bob Rabin)
+    -   [Emergent Trends Complicate the Interpretation of the United States Drought Monitor (USDM)](https://doi.org/10.1029/2023AV001070)
     -   Are there animal / plant distribution data available for this region that includes ecologically-important or culturally important species / beings)?
     -   [Planet Labs](https://www.planet.com/) is useable at sub-regional extents: 3m satellite imagery that as 4-band and most recently 8? band. Good if there is need for high spatial and temporal resolution multispectral imagery for specific problems (monitoring specific sites, for example, on a monthly basis at high resolution). Because it is multispec we can get useful indices (NDVI is a classic, that only requires R and NR). I use it mostly for veg indices and habitat dynamics.
 

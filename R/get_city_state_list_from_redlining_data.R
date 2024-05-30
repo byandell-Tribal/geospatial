@@ -1,6 +1,8 @@
 #' List cities where HOLC data are available
 #'
-#' Function to get a list of unique cities and states from the redlining data
+#' Function to get a list of unique cities and states from the redlining data.
+#' See <https://github.com/americanpanorama/mapping-inequality-census-crosswalk>
+#' for panorama files.
 #' 
 #' @param url URL to the GeoJSON data
 #' 
@@ -11,7 +13,8 @@
 #' @importFrom rlang .data
 #' 
 get_city_state_list_from_redlining_data <- function(
-    url = "https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk/main/MIv3Areas_2010TractCrosswalk.geojson") {
+    url = file.path("https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk",
+                    "main/MIv3Areas_2010TractCrosswalk.geojson")) {
   
   # Read the GeoJSON file into an sf object
   redlining_data <- tryCatch({
@@ -32,10 +35,10 @@ get_city_state_list_from_redlining_data <- function(
     select(city, state, grade) |>
     dplyr::mutate(grade = stringr::str_trim(.data$grade)) |>
     dplyr::distinct(.data$city, .data$state, .data$grade) |>
-    dplyr::filter(!is.na(.data$grade), !(.data$grade %in% c("", "E", "F"))) |>
+    dplyr::filter(!is.na(.data$grade), .data$grade != "") |>
     # Include only cities with all 4 grades
     dplyr::count(.data$city, .data$state) |>
-    dplyr::filter(.data$n == 4) |>
+    dplyr::filter(.data$n > 1) |>
     dplyr::select(-n) |>
     dplyr::arrange(.data$state, .data$city )  # Arrange the list alphabetically by state, then by city
   

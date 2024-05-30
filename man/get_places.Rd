@@ -2,10 +2,13 @@
 % Please edit documentation in R/get_places.R
 \name{get_places}
 \alias{get_places}
+\alias{get_amenities}
 \alias{plot_places}
 \title{Get Points-of-Interest from city of interest}
 \usage{
 get_places(polygon_layer, type = "food")
+
+get_amenities(polygon_layer, types = all_types, amenity = list())
 
 plot_places(cropped_places, title = "")
 }
@@ -13,6 +16,10 @@ plot_places(cropped_places, title = "")
 \item{polygon_layer}{}
 
 \item{type}{feature type}
+
+\item{types}{types of amenities}
+
+\item{amenity}{pre-set list of amenities}
 
 \item{cropped_places}{sf object for cropped places}
 

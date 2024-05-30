@@ -150,14 +150,7 @@ knitr::kable(head(denver_redlining), format = "markdown")
 <details>
 <summary>Stream amenities by category</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-amenity <- list(
-  food = get_places(denver_redlining, type="food"),
-  food_processed = get_places(denver_redlining, type="processed_food"),
-  natural_habitats = get_places(denver_redlining, type="natural_habitats"),
-  roads = get_places(denver_redlining, type="roads"),
-  rivers = get_places(denver_redlining, type="rivers"),
-#water_bodies <- get_places(denver_redlining, type="water_bodies")
-  government_buildings = get_places(denver_redlining, type="government_buildings"))
+amenity <- get_amenities(denver_redlining)
 ```
 </details>
 
@@ -253,9 +246,9 @@ print(natural_habitats_cloud)
 <details>
 <summary>Stream NDVI data: animation</summary>
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
-processing_time <- process_satellite_data(
+out <- process_satellite_data(
   denver_redlining, "2022-05-31", "2023-05-31", c("B04", "B08"))
-print(processing_time)
+print(out$processing_time)
 ```
 </details>
 

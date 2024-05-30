@@ -1,27 +1,28 @@
 #' Plot POI over HOLC grades
 #'
 #' @param redlining_data 
-#' @param roads,rivers amenities from redlining_data
+#' @param amenity amenity list
 #'
 #' @return ggplot object
 #' @export
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter mutate
+#' @importFrom rlang .data
 #' @importFrom ggplot2 aes element_blank element_rect geom_sf
 #'             ggplot ggsave labs scale_fill_manual theme
 #' @importFrom ggthemes theme_tufte
 #'
-plot_city_redlining <- function(redlining_data,
-                                roads = get_places(redlining_data, type = "roads"),
-                                rivers = get_places(redlining_data, type = "rivers")) {
+plot_city_redlining <- function(redlining_data, amenity = get_amenities(redlining_data)) {
 
   # Filter residential zones with valid grades and where city survey is TRUE
   # Colors for the grades
-  colors <- c("#76a865", "#7cb5bd", "#ffff00", "#d9838d")
+  colors <- c(A = "#76a865", B = "#7cb5bd", C = "#ffff00", D = "#d9838d", E = "grey", F = "grey")
   
   # Plot the data using ggplot2
-  ggplot2::ggplot(dplyr::filter(redlining_data, city_survey == TRUE & grade != "")) +
-    ggplot2::geom_sf(data = roads, alpha = 0.5, lwd = 0.1) +
-    ggplot2::geom_sf(data = rivers, color = "blue", alpha = 0.5, lwd = 1.1) +
+  ggplot2::ggplot(
+    dplyr::filter(redlining_data, .data$city_survey == TRUE & .data$grade != "") |>
+      dplyr::mutate(grade = ifelse(.data$grade %in% LETTERS[1:4], .data$grade, "D"))) +
+    ggplot2::geom_sf(data = amenity$roads, alpha = 0.5, lwd = 0.1) +
+    ggplot2::geom_sf(data = amenity$rivers, color = "blue", alpha = 0.5, lwd = 1.1) +
     ggplot2::geom_sf(ggplot2::aes(fill = grade), alpha = 0.5) +
     ggthemes::theme_tufte() +
     ggplot2::scale_fill_manual(values = colors) +

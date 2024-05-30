@@ -4,17 +4,10 @@
 \alias{yearly_average_ndvi}
 \title{Stream year average NDVI}
 \usage{
-yearly_average_ndvi(
-  polygon_layer,
-  output_file = "ndvi.png",
-  dx = 0.01,
-  dy = 0.01
-)
+yearly_average_ndvi(polygon_layer, dx = 0.01, dy = 0.01)
 }
 \arguments{
 \item{polygon_layer}{}
-
-\item{output_file}{}
 
 \item{dx}{}
 

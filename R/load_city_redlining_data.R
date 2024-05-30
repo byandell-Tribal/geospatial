@@ -5,7 +5,8 @@
 #' @param city_name 
 #' @return object of class `sf`
 #' @export
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter mutate
+#' @importFrom rlang .data
 #' @importFrom sf read_sf
 #'
 load_city_redlining_data <- function(city_name) {
@@ -17,7 +18,9 @@ load_city_redlining_data <- function(city_name) {
   
   # Filter the data for the specified city and non-empty grades
   city_redline <- redlining_data |>
-    dplyr::filter(city == city_name)
+    dplyr::filter(.data$city == city_name) |>
+    dplyr::mutate(grade = stringr::str_trim(.data$grade)) |>
+    dplyr::filter(!is.na(.data$grade), .data$grade != "")
   
   # Return the filtered data
   return(city_redline)

@@ -5,18 +5,14 @@
 \alias{plot_city_redlining_grade}
 \title{Plot POI over HOLC grades}
 \usage{
-plot_city_redlining(
-  redlining_data,
-  roads = get_places(redlining_data, type = "roads"),
-  rivers = get_places(redlining_data, type = "rivers")
-)
+plot_city_redlining(redlining_data, amenity = get_amenities(redlining_data))
 
 plot_city_redlining_grade(object)
 }
 \arguments{
 \item{redlining_data}{}
 
-\item{roads, rivers}{amenities from redlining_data}
+\item{amenity}{amenity list}
 
 \item{object}{ggplot object}
 }

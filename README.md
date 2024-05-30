@@ -18,6 +18,9 @@ library(geospatial)
 redlineApp()
 ```
 
+See slide deck for 
+[ESIIL Geospatial R Package](https://docs.google.com/presentation/d/1--FSPJZF6ZJeItBrasQxukgs6AN-YxHBA78tNlOGYv4).
+
 ## Geospatial Resources
 
 ### Books and Online Docs

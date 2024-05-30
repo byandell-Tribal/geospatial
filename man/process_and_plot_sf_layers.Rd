@@ -4,7 +4,7 @@
 \alias{process_and_plot_sf_layers}
 \title{Map an amenity over each grade}
 \usage{
-process_and_plot_sf_layers(object, layer2, amenity)
+process_and_plot_sf_layers(object, layer2, amenity, plot = NULL)
 }
 \arguments{
 \item{object}{sf object}
@@ -12,6 +12,8 @@ process_and_plot_sf_layers(object, layer2, amenity)
 \item{layer2}{name of amenity}
 
 \item{amenity}{list of amenities}
+
+\item{plot}{previous plot if not `NULL`}
 }
 \value{
 list with `ggplot` object and polygon `sf` object

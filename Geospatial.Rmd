@@ -9,6 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+This is based on 
+[Geospatial Data Carpentry Workshop, UW-Madison, June 5-8, 2023](https://uw-madison-datascience.github.io/2023-06-05-uwmadison-dc/).
+
 # Setup
 
 See <README.md>.

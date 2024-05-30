@@ -6,7 +6,6 @@
 \usage{
 create_wordclouds_by_grade(
   sf_object,
-  output_file = "food_word_cloud_per_grade.png",
   title = "Healthy food place names word cloud",
   max_size = 25,
   col_select = "name"
@@ -14,8 +13,6 @@ create_wordclouds_by_grade(
 }
 \arguments{
 \item{sf_object}{}
-
-\item{output_file}{}
 
 \item{title}{}
 

@@ -22,9 +22,9 @@ get_places <- function(polygon_layer, type = "food" ) {
     sf::st_as_sfc()
   
   switch(type,
-    food = {
-      my_layer <- "multipolygons"
-      my_query <- "SELECT * FROM multipolygons WHERE (
+         food = {
+           my_layer <- "multipolygons"
+           my_query <- "SELECT * FROM multipolygons WHERE (
                    shop IN ('supermarket', 'bodega', 'market', 'other_market', 'farm', 'garden_centre', 'doityourself', 'farm_supply', 'compost', 'mulch', 'fertilizer') OR
                    amenity IN ('social_facility', 'market', 'restaurant', 'coffee') OR
                    leisure = 'garden' OR
@@ -33,64 +33,64 @@ get_places <- function(polygon_layer, type = "food" ) {
                    shop = 'greengrocer' OR
                    amenity = 'marketplace'
                  )"
-    title <- "food"
-    },
-    "processed_food" = {
-      my_layer <- "multipolygons"
-      my_query <- "SELECT * FROM multipolygons WHERE (
+           title <- "Food"
+         },
+         "processed_food" = {
+           my_layer <- "multipolygons"
+           my_query <- "SELECT * FROM multipolygons WHERE (
                    amenity IN ('fast_food', 'cafe', 'pub') OR
                    shop IN ('convenience', 'supermarket') OR
                    shop = 'kiosk'
                  )"
-      title <- "Processed Food Locations"
-    },
-    "natural_habitats" = {
-      my_layer <- "multipolygons"
-      my_query <- "SELECT * FROM multipolygons WHERE (
+           title <- "Processed Food Locations"
+         },
+         "natural_habitats" = {
+           my_layer <- "multipolygons"
+           my_query <- "SELECT * FROM multipolygons WHERE (
                    boundary = 'protected_area' OR
                    natural IN ('tree', 'wood') OR
                    landuse = 'forest' OR
                    leisure = 'park'
                  )"
-      title <- "Natural habitats or City owned trees"
-    },
-    roads = {
-      my_layer <- "lines"
-      my_query <- "SELECT * FROM lines WHERE (
+           title <- "Natural habitats or City owned trees"
+         },
+         roads = {
+           my_layer <- "lines"
+           my_query <- "SELECT * FROM lines WHERE (
                    highway IN ('motorway', 'trunk', 'primary', 'secondary', 'tertiary') )"
-      title <- "Major roads"
-    },
-    rivers = {
-      my_layer <- "lines"
-      my_query <- "SELECT * FROM lines WHERE (
+           title <- "Major roads"
+         },
+         rivers = {
+           my_layer <- "lines"
+           my_query <- "SELECT * FROM lines WHERE (
                    waterway IN ('river'))"
-      title <- "Major rivers"
-    },
-    "internet_access" = {
-      my_layer <- "multipolygons"
-      my_query <- "SELECT * FROM multipolygons WHERE (
+           title <- "Major rivers"
+         },
+         "internet_access" = {
+           my_layer <- "multipolygons"
+           my_query <- "SELECT * FROM multipolygons WHERE (
                    amenity IN ('library', 'cafe', 'community_centre', 'public_building') AND
                    internet_access = 'yes' 
                  )"
-      title <- "Internet Access Locations"
-    },
-    "water_bodies" = {
-      my_layer <- "multipolygons"
-      my_query <- "SELECT * FROM multipolygons WHERE (
+           title <- "Internet Access Locations"
+         },
+         "water_bodies" = {
+           my_layer <- "multipolygons"
+           my_query <- "SELECT * FROM multipolygons WHERE (
                    natural IN ('water', 'lake', 'pond') OR
                    water IN ('lake', 'pond') OR
                    landuse = 'reservoir'
                  )"
-      title <- "Water Bodies"
-    },
-    "government_buildings" = {
-      my_layer <- "multipolygons"
-      my_query <- "SELECT * FROM multipolygons WHERE (
+           title <- "Water Bodies"
+         },
+         "government_buildings" = {
+           my_layer <- "multipolygons"
+           my_query <- "SELECT * FROM multipolygons WHERE (
                    amenity IN ('townhall', 'courthouse', 'embassy', 'police', 'fire_station') OR
                    building IN ('capitol', 'government')
                  )"
-      title <- "Government Buildings"
-    })
+           title <- "Government Buildings"
+         })
   
   # Use the bbox to get data with oe_get(), specifying the desired layer and a custom SQL query for fresh food places
   tryCatch({
@@ -108,6 +108,21 @@ get_places <- function(polygon_layer, type = "food" ) {
   }, error = function(e) {
     stop("Failed to retrieve or plot data: ", e$message)
   })
+}
+#' @param types types of amenities
+#' @param amenity pre-set list of amenities
+#' @export
+#' @rdname get_places
+get_amenities <- function(polygon_layer, types = all_types, amenity = list()) {
+  if(!is.list(amenity)) amenity <- list()
+  all_types <- c("food", "processed_food", "natural_habitats", "roads", "rivers", "government_buildings")
+  if(!length(types)) types <- all_types
+  types <- types[types %in% all_types]
+  types <- types[!(types %in% names(amenity))]
+  if(length(types)) for(type in types) {
+    amenity[[type]] <- get_places(polygon_layer, type)
+  }
+  amenity
 }
 #' @param cropped_places sf object for cropped places
 #' @param title title of cropped places

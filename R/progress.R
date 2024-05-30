@@ -8,8 +8,8 @@
 #' @importFrom shiny setProgress withProgress
 progress <- function(messagename = "", functionname, ...) {
   shiny::withProgress(
-    message = paste(messagename, 'calculations in progress'),
-    detail = 'This may take a while...',
+    message = paste(messagename, 'calculations in progress\n'),
+    detail = '... takes a while ...',
     value = 0.5,
     { 
       out <- functionname(...)

@@ -6,7 +6,8 @@
 \usage{
 get_city_state_list_from_redlining_data(
   url =
-    "https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk/main/MIv3Areas_2010TractCrosswalk.geojson"
+    file.path("https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk",
+    "main/MIv3Areas_2010TractCrosswalk.geojson")
 )
 }
 \arguments{
@@ -16,5 +17,7 @@ get_city_state_list_from_redlining_data(
 object of class `sf`
 }
 \description{
-Function to get a list of unique cities and states from the redlining data
+Function to get a list of unique cities and states from the redlining data.
+See <https://github.com/americanpanorama/mapping-inequality-census-crosswalk>
+for panorama files.
 }
