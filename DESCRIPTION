@@ -1,6 +1,6 @@
 Package: geospatial
-Version: 0.5.5
-Date: 2024-05-30
+Version: 0.5.6
+Date: 2024-05-31
 Title: Geospatial Workshop Tools
 Description: Tools to study geospatial data
 Authors@R: c(person("Erick Verleye",

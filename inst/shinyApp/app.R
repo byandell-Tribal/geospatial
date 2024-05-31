@@ -1,10 +1,20 @@
-ui <- geospatial::ui()
+devtools::install_github('Chrisjb/basemapR')
+devtools::install_github('byandell/geospatial')
 
-server <- function(input, output, session) {
-  geospatial::server(input, output, session)
-  
-  # Allow reconnect with Shiny Server.
-  session$allowReconnect(TRUE)
+title <- "Redlining"
+
+ui <- shiny::fluidPage(
+  shiny::titlePanel(title),
+  shiny::sidebarLayout(
+    shiny::sidebarPanel(
+      geospatial::redlineInput("redline")
+    ),
+    shiny::mainPanel(
+      geospatial::redlineOutput("redline")
+    )))
+
+server <- function(input, output, server) {
+  geospatial::redlineServer("redline")
 }
 
-shiny::shinyApp(ui = ui, server = server)
+shiny::shinyApp(ui, server)

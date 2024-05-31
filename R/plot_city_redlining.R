@@ -5,7 +5,7 @@
 #'
 #' @return ggplot object
 #' @export
-#' @importFrom dplyr filter mutate
+#' @importFrom dplyr filter
 #' @importFrom rlang .data
 #' @importFrom ggplot2 aes element_blank element_rect geom_sf
 #'             ggplot ggsave labs scale_fill_manual theme
@@ -19,8 +19,7 @@ plot_city_redlining <- function(redlining_data, amenity = get_amenities(redlinin
   
   # Plot the data using ggplot2
   ggplot2::ggplot(
-    dplyr::filter(redlining_data, .data$city_survey == TRUE & .data$grade != "") |>
-      dplyr::mutate(grade = ifelse(.data$grade %in% LETTERS[1:4], .data$grade, "D"))) +
+    dplyr::filter(redlining_data, .data$city_survey == TRUE & .data$grade != "")) +
     ggplot2::geom_sf(data = amenity$roads, alpha = 0.5, lwd = 0.1) +
     ggplot2::geom_sf(data = amenity$rivers, color = "blue", alpha = 0.5, lwd = 1.1) +
     ggplot2::geom_sf(ggplot2::aes(fill = grade), alpha = 0.5) +
