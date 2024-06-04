@@ -1,9 +1,10 @@
 #' Create word cloud per grade
 #'
-#' @param sf_object 
-#' @param title 
-#' @param max_size 
-#' @param col_select 
+#' @param sf_object object with class `sf`
+#' @param title title of wordcloud
+#' @param max_size maximum size for wordcloud plot
+#' @param col_select column selected from `sf_object`
+#' @param min_word minimum length for word
 #'
 #' @return ggplot object
 #' @export
@@ -16,7 +17,8 @@
 #' 
 create_wordclouds_by_grade <- function(sf_object,
                                        title = "Healthy food place names word cloud",
-                                       max_size =25, col_select = "name") {
+                                       max_size = 25, col_select = "name",
+                                       min_word = 3) {
   # Extract relevant data and prepare text data
   text_data <- sf_object |>
     dplyr::select(grade, col_select) |>
@@ -27,7 +29,7 @@ create_wordclouds_by_grade <- function(sf_object,
     dplyr::filter(dplyr::n() > 1)  # Filter to remove overly common or single-occurrence words
   
   # Ensure there are no NA values or 1-2 letter words in the 'word' column
-  text_data <- text_data |> dplyr::filter(!is.na(word) & nchar(word) > 2)
+  text_data <- text_data |> dplyr::filter(!is.na(word) & nchar(word) >= min_word)
   
   # Handle cases where text_data might be empty
   if (nrow(text_data) == 0) {

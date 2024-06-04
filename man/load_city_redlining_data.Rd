@@ -4,10 +4,14 @@
 \alias{load_city_redlining_data}
 \title{Stream HOLC data from a city}
 \usage{
-load_city_redlining_data(city_name)
+load_city_redlining_data(city_name, url = NULL, year = c("2010", "2020"))
 }
 \arguments{
 \item{city_name}{}
+
+\item{url}{URL for data (redline default if `NULL`)}
+
+\item{year}{year for data extraction (if `url` is `NULL`)}
 }
 \value{
 object of class `sf`

@@ -21,10 +21,8 @@ redlineServer <- function(id) {
     
     # City and State from URL
     city_state <- shiny::reactive({
-      if(shiny::isTruthy(input$url))
-        progress("City-State URL", get_city_state_list_from_redlining_data, input$url)
-      else
-        progress("City-State", get_city_state_list_from_redlining_data)
+      progress("City-State URL", get_city_state_list_from_redlining_data,
+               geourl(), shiny::req(input$year))
     })
     city_states <- shiny::reactive({
       dplyr::filter(shiny::req(city_state()),
@@ -41,10 +39,17 @@ redlineServer <- function(id) {
     output$city <- shiny::renderUI({
       shiny::selectInput(ns("city"), "Graded City:", choices = NULL)
     })
+    geourl <- shiny::reactive({
+      if(shiny::isTruthy(input$url))
+        input$url
+      else
+        NULL
+    })
     # City Data
     city_data <- shiny::reactive({
-      shiny::req(input$city)
-      progress(paste("Load", input$city), load_city_redlining_data, input$city)
+      shiny::req(input$city, input$year)
+      progress(paste("Load", input$city), load_city_redlining_data, input$city,
+               geourl(), input$year)
     })
     
     # The `amenities()` has currently examined amenities.
@@ -140,12 +145,14 @@ redlineInput <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
     shiny::fluidRow(
-      shiny::column(4, shiny::selectInput(ns("state"), "State:",
+      shiny::column(3, shiny::selectInput(ns("year"), "Year:",
+        choices = c("2010","2020"), selected = "2010")),
+      shiny::column(3, shiny::selectInput(ns("state"), "State:",
         choices = datasets::state.abb, selected = "CO", multiple = TRUE)),
-      shiny::column(8, shiny::uiOutput(ns("city")))),
+      shiny::column(6, shiny::uiOutput(ns("city")))),
     shiny::fluidRow(
-      shiny::column(4, shiny::uiOutput(ns("layer_choice"))),
-      shiny::column(8, shiny::checkboxGroupInput(ns("checks"), NULL, inline = TRUE,
+      shiny::column(6, shiny::uiOutput(ns("layer_choice"))),
+      shiny::column(6, shiny::checkboxGroupInput(ns("checks"), NULL, inline = TRUE,
         choices = c("By Grade?" = "grade_plot", "Amenity?" = "amenity", "WordCloud?" = "wordcloud")))),
 #    shiny::textInput(ns("url"), "GeoJSON URL (default redline if blank):")
     )

@@ -4,14 +4,12 @@
 \alias{get_city_state_list_from_redlining_data}
 \title{List cities where HOLC data are available}
 \usage{
-get_city_state_list_from_redlining_data(
-  url =
-    file.path("https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk",
-    "main/MIv3Areas_2010TractCrosswalk.geojson")
-)
+get_city_state_list_from_redlining_data(url = NULL, year = c("2010", "2020"))
 }
 \arguments{
-\item{url}{URL to the GeoJSON data}
+\item{url}{URL to the GeoJSON data (redline default if `NULL`)}
+
+\item{year}{year for GeoJSON data ("2010" or "2020")}
 }
 \value{
 object of class `sf`

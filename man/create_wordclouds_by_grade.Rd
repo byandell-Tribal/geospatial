@@ -8,17 +8,20 @@ create_wordclouds_by_grade(
   sf_object,
   title = "Healthy food place names word cloud",
   max_size = 25,
-  col_select = "name"
+  col_select = "name",
+  min_word = 3
 )
 }
 \arguments{
-\item{sf_object}{}
+\item{sf_object}{object with class `sf`}
 
-\item{title}{}
+\item{title}{title of wordcloud}
 
-\item{max_size}{}
+\item{max_size}{maximum size for wordcloud plot}
 
-\item{col_select}{}
+\item{col_select}{column selected from `sf_object`}
+
+\item{min_word}{minimum length for word}
 }
 \value{
 ggplot object

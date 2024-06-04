@@ -4,7 +4,8 @@
 #' See <https://github.com/americanpanorama/mapping-inequality-census-crosswalk>
 #' for panorama files.
 #' 
-#' @param url URL to the GeoJSON data
+#' @param url URL to the GeoJSON data (redline default if `NULL`)
+#' @param year year for GeoJSON data ("2010" or "2020")
 #' 
 #' @return object of class `sf`
 #' @export
@@ -13,12 +14,12 @@
 #' @importFrom rlang .data
 #' 
 get_city_state_list_from_redlining_data <- function(
-    url = file.path("https://raw.githubusercontent.com/americanpanorama/mapping-inequality-census-crosswalk",
-                    "main/MIv3Areas_2010TractCrosswalk.geojson")) {
+    url = NULL,
+    year = c("2010","2020")) {
   
   # Read the GeoJSON file into an sf object
   redlining_data <- tryCatch({
-    sf::read_sf(url)
+    sf::read_sf(url_crosswalk(url, year))
   }, error = function(e) {
     stop("Error reading GeoJSON data: ", e$message)
   })

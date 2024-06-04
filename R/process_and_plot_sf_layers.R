@@ -4,6 +4,7 @@
 #' @param layer2 name of amenity
 #' @param amenity list of amenities 
 #' @param plot previous plot if not `NULL`
+#' @param color_amenity color of amenity in plot
 #'
 #' @return list with `ggplot` object and polygon `sf` object
 #' @export
@@ -13,7 +14,8 @@
 #' @importFrom ggthemes theme_tufte
 #' @importFrom sf st_buffer st_intersects st_make_valid st_simplify
 #'
-process_and_plot_sf_layers <- function(object, layer2, amenity, plot = NULL) {
+process_and_plot_sf_layers <- function(object, layer2, amenity, plot = NULL,
+                                       color_amenity = "orange") {
   # layer2 is character string, find it in `amenity` list
   if(is.character(layer2))
     layer2 <- amenity[[layer2]]
@@ -78,7 +80,10 @@ process_and_plot_sf_layers <- function(object, layer2, amenity, plot = NULL) {
         panel.grid.minor = ggplot2::element_blank())
   }
   plot <- plot +
-    ggplot2::geom_sf(data = final_selected_polygons, fill = "black", color = "black", size = 0.1)
+    ggplot2::geom_sf(data = final_selected_polygons,
+                     fill = color_amenity,
+                     color = color_amenity,
+                     size = 0.1)
     
   # Return the plot for optional further use
   return(list(plot=plot, sf = final_selected_polygons))

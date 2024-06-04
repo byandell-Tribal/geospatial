@@ -1,5 +1,5 @@
 devtools::install_github('Chrisjb/basemapR')
-devtools::install_github('byandell/geospatial')
+#devtools::install_github('byandell/geospatial')
 
 title <- "Redlining"
 
