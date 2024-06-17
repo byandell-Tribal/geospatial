@@ -6,6 +6,7 @@
 #' 
 #' @param url URL to the GeoJSON data (redline default if `NULL`)
 #' @param year year for GeoJSON data ("2010" or "2020")
+#' @param graded limit to graded cities if `TRUE`
 #' 
 #' @return object of class `sf`
 #' @export
@@ -15,7 +16,8 @@
 #' 
 get_city_state_list_from_redlining_data <- function(
     url = NULL,
-    year = c("2010","2020")) {
+    year = c("2010","2020"),
+    graded = TRUE) {
   
   # Read the GeoJSON file into an sf object
   redlining_data <- tryCatch({
@@ -34,14 +36,16 @@ get_city_state_list_from_redlining_data <- function(
     sf::st_set_geometry(NULL) |>  # Drop the geometry to avoid issues with invalid shapes
     # Includes grades A,B,C,D only
     select(city, state, grade) |>
-    dplyr::mutate(grade = stringr::str_trim(.data$grade)) |>
+    dplyr::mutate(grade = ifelse(is.na(.data$grade), "", .data$grade),
+                  grade = stringr::str_trim(.data$grade)) |>
     dplyr::distinct(.data$city, .data$state, .data$grade) |>
-    dplyr::filter(!is.na(.data$grade), .data$grade != "") |>
-    # Include only cities with all 4 grades
-    dplyr::count(.data$city, .data$state) |>
-    dplyr::filter(.data$n > 1) |>
-    dplyr::select(-n) |>
+    dplyr::group_by(.data$city, .data$state) |>
+    dplyr::summarize(grade = paste(sort(.data$grade), collapse = "")) |>
+    dplyr::ungroup() |>
     dplyr::arrange(.data$state, .data$city )  # Arrange the list alphabetically by state, then by city
+  
+  if(graded)
+    city_state_df <- dplyr::filter(city_state_df, .data$grade != "")
   
   # Return the dataframe of unique city-state pairs
   return(city_state_df)

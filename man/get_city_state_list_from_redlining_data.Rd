@@ -4,12 +4,18 @@
 \alias{get_city_state_list_from_redlining_data}
 \title{List cities where HOLC data are available}
 \usage{
-get_city_state_list_from_redlining_data(url = NULL, year = c("2010", "2020"))
+get_city_state_list_from_redlining_data(
+  url = NULL,
+  year = c("2010", "2020"),
+  graded = TRUE
+)
 }
 \arguments{
 \item{url}{URL to the GeoJSON data (redline default if `NULL`)}
 
 \item{year}{year for GeoJSON data ("2010" or "2020")}
+
+\item{graded}{limit to graded cities if `TRUE`}
 }
 \value{
 object of class `sf`

@@ -5,6 +5,7 @@
 #' @param city_name 
 #' @param url URL for data (redline default if `NULL`)
 #' @param year year for data extraction (if `url` is `NULL`)
+#' @param graded limit to graded cities if `TRUE`
 #' @return object of class `sf`
 #' @export
 #' @importFrom dplyr filter mutate
@@ -13,15 +14,18 @@
 #'
 load_city_redlining_data <- function(city_name,
                                      url = NULL,
-                                     year = c("2010","2020")) {
+                                     year = c("2010","2020"),
+                                     graded = TRUE) {
   # Read the GeoJSON file into an sf object
   redlining_data <- sf::read_sf(url_crosswalk(url, year))
   
   # Filter the data for the specified city and non-empty grades
   city_redline <- redlining_data |>
     dplyr::filter(.data$city == city_name) |>
-    dplyr::mutate(grade = stringr::str_trim(.data$grade)) |>
-    dplyr::filter(!is.na(.data$grade), .data$grade != "")
+    dplyr::mutate(grade = stringr::str_trim(.data$grade))
+  if(graded)
+    city_redline <- dplyr::filter(city_redline,
+                                  !is.na(.data$grade), .data$grade != "")
   
   # Return the filtered data
   return(city_redline)

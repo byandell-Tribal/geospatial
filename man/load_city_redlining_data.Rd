@@ -4,7 +4,12 @@
 \alias{load_city_redlining_data}
 \title{Stream HOLC data from a city}
 \usage{
-load_city_redlining_data(city_name, url = NULL, year = c("2010", "2020"))
+load_city_redlining_data(
+  city_name,
+  url = NULL,
+  year = c("2010", "2020"),
+  graded = TRUE
+)
 }
 \arguments{
 \item{city_name}{}
@@ -12,6 +17,8 @@ load_city_redlining_data(city_name, url = NULL, year = c("2010", "2020"))
 \item{url}{URL for data (redline default if `NULL`)}
 
 \item{year}{year for data extraction (if `url` is `NULL`)}
+
+\item{graded}{limit to graded cities if `TRUE`}
 }
 \value{
 object of class `sf`

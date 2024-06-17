@@ -3,6 +3,8 @@
 #' For now, this uses the default redlining GeoJSON URL to extract
 #' cities from user-selected state(s). It is possible to put in your
 #' own URL, but it is tricky to find these URLs.
+#' Choosing a small or rare city may ironically lead to attempt to
+#' download a huge (>1GB) OSM file, which is generally not wise to do.
 #' 
 #' @param id identifier for shiny reactive
 #' @return reactive app
@@ -65,7 +67,8 @@ redlineServer <- function(id) {
     })
     output$layer_choice <- shiny::renderUI({
       shiny::selectInput(ns("layer_choice"), "Amenity Layer:",
-        c("food", "processed_food", "natural_habitats", "roads", "rivers", "government_buildings"))
+        c("food", "processed_food", "natural_habitats", "government_buildings"),
+        "")
     })
     # Plot City
     plot_city <- shiny::reactive({
@@ -132,7 +135,7 @@ redlineServer <- function(id) {
     shiny::observeEvent(cities(), {
       citlist <- cities()
       if("Denver" %in% citlist) citlist <- unique(c("Denver", citlist))
-      shiny::updateSelectInput(session, "city", choices = citlist)
+      shiny::updateSelectInput(session, "city", selected = "", choices = citlist)
     })
   })
 }
