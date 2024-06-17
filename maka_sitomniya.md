@@ -1,6 +1,8 @@
 # Maka Sitomniya Data Needs
 
-This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups) Maka Sitomniya that will be developing one or more sovereign enclaves (see [Sovereign Data Container](https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk) slide deck). See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>.
+This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups) Maka Sitomniya that will be developing one or more sovereign enclaves (see [Sovereign Data Container](https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk) slide deck). See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>
+and
+[American Indian, Alaska Native, and Native Hawaiian Areas (AIANNH) ESIIL Code](https://github.com/byandell/geospatial/blob/main/Alaska.Rmd).
 
 ## Specific Sources
 
@@ -35,6 +37,7 @@ These estimates are from an operational product developed at the NOAA National S
     -   [Emergent Trends Complicate the Interpretation of the United States Drought Monitor (USDM)](https://doi.org/10.1029/2023AV001070)
     -   Are there animal / plant distribution data available for this region that includes ecologically-important or culturally important species / beings)?
     -   [Planet Labs](https://www.planet.com/) is useable at sub-regional extents: 3m satellite imagery that as 4-band and most recently 8? band. Good if there is need for high spatial and temporal resolution multispectral imagery for specific problems (monitoring specific sites, for example, on a monthly basis at high resolution). Because it is multispec we can get useful indices (NDVI is a classic, that only requires R and NR). I use it mostly for veg indices and habitat dynamics.
+- 
 
 Robin O'Malley: Possible data source is South Dakota Wildlife Action Plan. Much information, but not readily ingestible My guess is that we could obtain data coverages for species of interest/concern. The Heritage program focuses on rare/declining species, but the wildlife plan covers everything.
 
@@ -46,7 +49,15 @@ Robin O'Malley: Agreed, and Nebraska might have useful info also, as it border R
 
 ## Specific Data Needs
 
-Joni Tobacco: Needs if I were working in my Tribe’s Natural Resources Department or responding to a federal agency’s [NEPA](https://www.epa.gov/nepa) document. I think we need to look at it from a watershed perspective and organized in such a way. I would like to see the traditional Lakota names for each stream used, as well as Lakota terms for each data type (mni, inyan, maka, etc). Lower Brule Sioux Tribe published an excellent map with a lot of our (Lakota) place names for reference, with some minor corrections needed. So, it should start with all watersheds within the treaty territories. Sub-categories should be water, earth, air, wildlife, imagery, climate, a placeholder for cultural/sacred sites.
+Joni Tobacco: Needs if I were working in my Tribe’s Natural Resources Department or responding to a federal agency’s [NEPA](https://www.epa.gov/nepa) document. I think we need to look at it from a watershed perspective and organized in such a way. I would like to see the traditional Lakota names for each stream used, as well as Lakota terms for each data type (mni, inyan, maka, etc). Lower Brule Sioux Tribe published an excellent map with a lot of our (Lakota) place names for reference, with some minor corrections needed.
+
+- [Lower Brule Sioux Tribe](https://www.lowerbrulesiouxtribe.com/)
+- [Lower Brule Wildlife, Fish and Recreation](https://lowerbrulewildlife.com/)
+  + [2024 Hunting Map](https://www.lowerbrulewildlife.com/image/cache/Lower_Brule_2024_Map_24.5x17.75_folded_to_4.4375_BGPRINT_2_.pdf)
+  + [2023 Hunting Map](https://lowerbrulewildlife.com/image/cache/23Map_Complete_Final.pdf)
+- [Geohydrology of Crow Creek and Lower Brule Indian Reservations, SD. Hydrologic Atlas 499. Lewis W. Howells](https://doi.org/10.3133/ha499)
+
+So, it should start with all watersheds within the treaty territories. Sub-categories should be water, earth, air, wildlife, imagery, climate, a placeholder for cultural/sacred sites.
 
 While we are doing this, we should keep in mind how to include or organize data used for specific purposes -- treaty rights, American Indian Religious Freedom Act, environmental and climate justice, environmental protection, etc. I am thinking data necessary for these purposes relate to:
 
@@ -72,3 +83,21 @@ Robin O'Malley: Things we'll need data for:
 -   stream and lake maps (i.e. hydrologic features)
 -   residences, non-residential built-up (NLCD?)
 -   range maps species of greatest conservation needs (SGCN, is a state designation)
+
+## Pragmatic Aspects
+
+We want resources making up this data cube that enable people of different technical skill levels to access data layers in intuitive ways. That is, where possible, existing tools for map overlays and visualizations should be made available.
+
+In addition, we need ready access to how to quickly develop R and/or Python code to add layers for different types of data indicated above. Ideally, we use code minimally to stream useful data layers (appropriately filtered by bounding boxes, subsetting, etc.) into a cube. This should not be a coding exercise, but a pulling together of useful resources.
+
+Not sure what the best platform (see Jim Sanovia's
+[Sovereign Data Container](https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk))
+for this will be, or how we might use multiple platforms and tools. These might include:
+
+- [ArcGIS Online](https://www.arcgis.com/sharing/rest/oauth2/signup?client_id=arcgisonline&response_type=token) (Tribal entities may have [ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview) access)
+- [QGIS](https://qgis.org/en/site/)
+- <https://sdn.ramadda.org>
+- R Shiny apps
+- Jupyter notebooks
+- other tools from EarthLab, etc.?
+

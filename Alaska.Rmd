@@ -10,6 +10,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 This code is from [American Indian and Alaska Native Areas](https://data-library.esiil.org/indian_country/aiannh/AIANNH/).
+See also
+
+- [US Census American Indian Areas Census Codes](https://www.census.gov/library/reference/code-lists/ansi/2020.html#aian)
+- [TIGERweb/AIANNHA MapServer](https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/AIANNHA/MapServer)
+- [US Census AIANNH Zip File](https://www2.census.gov/geo/tiger/TIGER2020/AIANNH/tl_2020_us_aiannh.zip) (used below)
 
 ```{r}
 # Install and load necessary libraries
@@ -52,4 +57,21 @@ ggplot(state_counts, aes(x = reorder(LSAD, -count), y = count)) +
        title = "Number of AIANNH per LSAD") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
+
+```{r}
+pineridge <- aiannh |>
+  dplyr::filter(NAME %in% c("Pine Ridge", "Rosebud", "Standing Rock","Cheyenne River","Lower Brule","Yankton","Sanlee","Crow Creek")) # Sanlee not found
+```
+
+```{r}
+ggplot() +
+  aes(fill="transparent") +
+  geom_sf(data = pineridge) +
+  labs(title = "Pine Ridge") +
+  theme(legend.position = "none")
+
+```
+
+Want to overlay roads and rivers, with bounding box extending beyond reservation boundaries.
+
 
