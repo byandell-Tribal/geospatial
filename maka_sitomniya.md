@@ -52,6 +52,7 @@ Robin O'Malley: Agreed, and Nebraska might have useful info also, as it border R
 Joni Tobacco: Needs if I were working in my Tribe’s Natural Resources Department or responding to a federal agency’s [NEPA](https://www.epa.gov/nepa) document. I think we need to look at it from a watershed perspective and organized in such a way. I would like to see the traditional Lakota names for each stream used, as well as Lakota terms for each data type (mni, inyan, maka, etc). Lower Brule Sioux Tribe published an excellent map with a lot of our (Lakota) place names for reference, with some minor corrections needed.
 
 - [Lower Brule Sioux Tribe](https://www.lowerbrulesiouxtribe.com/)
+- Lower Brule Sioux Tribe ArcGIS map with many Lakota place names (currently in ArcGIS Pro)
 - [Lower Brule Wildlife, Fish and Recreation](https://lowerbrulewildlife.com/)
   + [2024 Hunting Map](https://www.lowerbrulewildlife.com/image/cache/Lower_Brule_2024_Map_24.5x17.75_folded_to_4.4375_BGPRINT_2_.pdf)
   + [2023 Hunting Map](https://lowerbrulewildlife.com/image/cache/23Map_Complete_Final.pdf)
