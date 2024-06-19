@@ -52,7 +52,7 @@ Robin O'Malley: Agreed, and Nebraska might have useful info also, as it border R
 Joni Tobacco: Needs if I were working in my Tribe’s Natural Resources Department or responding to a federal agency’s [NEPA](https://www.epa.gov/nepa) document. I think we need to look at it from a watershed perspective and organized in such a way. I would like to see the traditional Lakota names for each stream used, as well as Lakota terms for each data type (mni, inyan, maka, etc). Lower Brule Sioux Tribe published an excellent map with a lot of our (Lakota) place names for reference, with some minor corrections needed.
 
 - [Lower Brule Sioux Tribe](https://www.lowerbrulesiouxtribe.com/)
-- Lower Brule Sioux Tribe ArcGIS map with many Lakota place names (currently in ArcGIS Pro)
+- Lower Brule Sioux Tribe ArcGIS map with many Lakota place names (currently in [ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/))
 - [Lower Brule Wildlife, Fish and Recreation](https://lowerbrulewildlife.com/)
   + [2024 Hunting Map](https://www.lowerbrulewildlife.com/image/cache/Lower_Brule_2024_Map_24.5x17.75_folded_to_4.4375_BGPRINT_2_.pdf)
   + [2023 Hunting Map](https://lowerbrulewildlife.com/image/cache/23Map_Complete_Final.pdf)
@@ -93,13 +93,27 @@ In addition, we need ready access to how to quickly develop R and/or Python code
 
 Not sure what the best platform (see Jim Sanovia's
 [Sovereign Data Container](https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk))
-for this will be, or how we might use multiple platforms and tools. These might include:
+for this will be, or how we might use multiple platforms and tools. These might include items from the following list, but will be informed by guidance from ESIIL staff.
 
-- [ArcGIS Online](https://www.arcgis.com/sharing/rest/oauth2/signup?client_id=arcgisonline&response_type=token) (Tribal entities may have [ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview) access)
+- [ArcGIS Online](https://www.arcgis.com/) and/or
+[ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/)
+(available to most Tribal entitie)
 - [QGIS](https://qgis.org/en/site/)
 - [CoLab](https://colab.research.google.com/) (Python based_)
-- <https://sdn.ramadda.org>
-- R Shiny apps
+- [Sovereign Data Network (SDN) Repository](https://sdn.ramadda.org)
+- [R Shiny apps](https://shiny.posit.co/r/gallery/)
+  - [Geospatial Health Data: Modeling and Visualization with R-INLA and Shiny](https://www.paulamoraga.com/book-geospatial/)
+  - [Appsilon](https://github.com/Appsilon/)
+    - [Appsilon R Shiny Demo Gallery](https://www.appsilon.com/shiny-demo-gallery)
+    - [Appsilon (2023) R Shiny In Life Sciences](https://www.appsilon.com/post/r-shiny-in-life-sciences-examples)
+  - [Markus Konrad (2021) Interactive Visualization Of Geospatial Data With R Shiny](https://datascience.blog.wzb.eu/2021/04/16/interactive-visualization-of-geospatial-data-with-r-shiny/)
+  - <https://github.com/byandell/geospatial>
 - Jupyter notebooks
+  - [Carpentries (2020) Interactive Maps in the Jupyter Notebook](https://carpentries-incubator.github.io/jupyter_maps/)
+  - [ESRI (2022) Mapping and Exploring Spatial Data in Jupyter Notebooks](https://mediaspace.esri.com/media/t/1_cblsugue/238781903)
+  - <https://notebooks.gishub.org/>
+  - [David Shean, UWGDA (2022) Geospatial Data Analysis with Python](https://uwgda-jupyterbook.readthedocs.io/en/latest/intro.html)
+  - [Carleton U Open Source GIS Tutorials: Creating Maps in Jupyter Notebook using GeoPandas and CartoPy](https://dges.carleton.ca/CUOSGwiki/index.php/Creating_Maps_in_Jupyter_Notebook_using_GeoPandas_and_CartoPy)
+  - [ExecutableBooks Gallery of Jupyter Books](https://executablebooks.org/en/latest/gallery/)
 - other tools from EarthLab, etc.?
 
