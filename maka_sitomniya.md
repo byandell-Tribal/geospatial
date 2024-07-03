@@ -1,5 +1,8 @@
 # Maka Sitomniya Data Needs
 
+- [Working Group Meeting Guide](https://docs.google.com/document/d/18MbLJbLDno1qh5qvqi0EycdghHa8GYWC884N5MN8S4s)
+- [Yandell ESIIL Collaboration](https://byandell.github.io/ESIIL/)
+
 This documents concerns the [ESIIL Working Group](https://esiil.org/working-groups) Maka Sitomniya that will be developing one or more sovereign enclaves (see [Sovereign Data Container](https://docs.google.com/presentation/d/1BtWngp1C28JHeSRx7v7Scp91InKcxygz6aAjOpVLGbk) slide deck). See also data sovereignty references and resources included in <https://byandell.github.io/pages/indigenous/>
 and
 [American Indian, Alaska Native, and Native Hawaiian Areas (AIANNH) ESIIL Code](https://github.com/byandell/geospatial/blob/main/Alaska.Rmd).
